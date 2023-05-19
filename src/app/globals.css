@@ -7,6 +7,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
 :root {
@@ -27,5 +28,10 @@
 body {
   color: rgb(var(--foreground-rgb));
   background: var(--background);
-  font-family: 'Poppins', sans-serif;
+  
+}
+
+a {
+  /* color: inherit; */
+  text-decoration: none !important;
 }

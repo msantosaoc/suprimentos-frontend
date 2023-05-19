@@ -1,7 +1,7 @@
 import ThemeContextParent from '@/contexts/theme'
 import './globals.css'
-import MenuContextParent from '@/contexts/menu'
-import Sidebar from '@/components/Sidebar/Sidebar'
+import MenuContextParent from '@/contexts/menu';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const metadata = {
   title: 'Create Next App',

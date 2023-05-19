@@ -16,20 +16,18 @@ import { FiMenu } from 'react-icons/fi';
 import { AiOutlineRight } from 'react-icons/ai'
 import { NewThemeToggle } from "../ThemeToggle";
 
-interface SidebarProps {
-    children: React.ReactNode
-}
+
 
 export default function Sidebar() {
 
     const { globalTheme } = useContext(ThemeContext);
     const { globalMenu, setGlobalMenu, globalSubmenu, setGlobalSubmenu } = useContext(MenuContext);
-    // const { user, signOutPrisma } = useContext(AuthContext);
+    
 
     // const router = useRouter()
 
-    const [collapse, setCollapse] = useState(false) //false significa submenu ABERTO
-    console.log(globalTheme)
+   
+    
 
     const toggleCollapse = () => {
         if (globalSubmenu === false) {
@@ -39,11 +37,11 @@ export default function Sidebar() {
             setGlobalSubmenu(false)
         }
     }
-
+    
+    
     const toggleMenu = () => { setGlobalMenu(!globalMenu); setGlobalSubmenu(false) }
 
     const [darkMode, setDarkMode] = useState(false)
-    const toggleTheme = () => setDarkMode(!darkMode)
 
     useEffect(() => {
         const root = window.document.documentElement;
@@ -73,7 +71,7 @@ export default function Sidebar() {
                     <span className="sr-only">Close menu</span>
                 </button>
 
-                <div className={`h-full py-4 pl-8 overflow-y-auto bg-[#f9fafc] overflow-hidden dark:bg-[#262626] flex flex-col justify-between border border-gray-900 dark:border-gray-900 duration-300 `}>
+                <div className={`h-full py-4 overflow-y-auto bg-[#f9fafc] overflow-hidden dark:bg-[#262626] flex flex-col justify-between border border-gray-900 dark:border-gray-900 duration-300 `}>
 
                     <ul className="space-y-2 -ml-[1.6rem] overflow-collapse max-sm:invisible ">
                         <Link href="/lobby" className={`flex items-center mb-5 dark:bg-[#363636] duration-300 ${globalMenu ? 'bg-transparent  border-[#cecece] rounded-xl dark:bg-transparent' : 'bg-gray-300 rounded-xl '} duration-300 mr-[0.45rem]
@@ -92,38 +90,34 @@ export default function Sidebar() {
 
                                 <IoHome className={`flex-shrink-0 w-8 h-8 ml-1 text-gray-500 transition duration-75  group-hover:text-gray-900 dark:group-hover:text-white `} />
 
-                                <span className={`flex-1 ml-5 whitespace-nowrap text-gray-900 dark:text-gray-400`}>Home</span>
+                                <span className={`flex-1 ml-5 whitespace-nowrap text-gray-900 dark:text-gray-400 `}>Home</span>
                             </Link>
                         </li>
                         <li>
                             <button type="button" onClick={toggleCollapse} className=" flex items-center w-[calc(100%-0.45rem)] p-2  text-base font-normal duration-300 text-gray-900 transition transform hover:-translate-y-1 rounded-lg group dark:hover:bg-[#363636] hover:bg-gray-300 " aria-expanded="false">
 
                                 <FaList className="flex-shrink-0 w-8 h-8 ml-1 p-1 text-gray-500   group-hover:text-gray-900  " />
-                                <span className="flex-1 ml-5 text-left whitespace-nowrap dark:text-gray-400" sidebar-toggle-item='true'>Cadastro</span>
+                                <span className="flex-1 ml-5 text-left whitespace-nowrap dark:text-gray-400" sidebar-toggle-item='true'>Módulos</span>
                                 <svg sidebar-toggle-item='true' className="w-8 h-8 ml-1 dark:text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
                             </button>
 
                             <Collapse isOpen={globalSubmenu} >
-                                <ul className={` visible py-1 ml-8 mr-4 flex flex-col gap-2  `} >
+                                
+                                <ul className={` visible py-1 ml-8 mr-4 flex flex-col gap-2 `} >
                                     <li>
-                                        <Link href="#" className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:-translate-y-1 dark:hover:bg-[#363636] dark:text-gray-400 hover:bg-gray-300  `}>Planos</Link>
+                                        <Link href="#" className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:-translate-y-1 dark:hover:bg-[#363636] dark:text-gray-400 hover:bg-gray-300  `}>Solicitar</Link>
                                     </li>
                                     <li>
-                                        <Link href="#" className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group  hover:-translate-y-1 dark:hover:bg-[#363636] hover:bg-gray-300 dark:text-gray-400  `}>Médicos</Link>
+                                        <Link href="#" className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group  hover:-translate-y-1 dark:hover:bg-[#363636] hover:bg-gray-300 dark:text-gray-400  `}>Estoque</Link>
                                     </li>
                                     <li>
-                                        <Link href="#" className={`flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 hover:bg-gray-300  hover:-translate-y-1dark:hover:bg-[#363636] text-gray-900 dark:text-gray-400 `}>Unid./Conv./Planos</Link>
+                                        <Link href="#" className={`flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 hover:bg-gray-300  hover:-translate-y-1dark:hover:bg-[#363636] text-gray-900 dark:text-gray-400 `}>Compras</Link>
                                     </li>
                                     <li>
-                                        <Link href="#" className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:-translate-y-1 dark:hover:bg-[#363636] hover:bg-gray-300 dark:text-gray-400 `}>Convênios</Link>
-                                    </li>
-                                    <li>
-                                        <Link href="#" className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:-translate-y-1 dark:hover:bg-[#363636] hover:bg-gray-300 dark:text-gray-400 `}>Procedimentos</Link>
-                                    </li>
-                                    <li>
-                                        <Link href="#" className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:-translate-y-1 dark:hover:bg-[#363636] hover:bg-gray-300 dark:text-gray-400 `}>Especialidades</Link>
+                                        <Link href="#" className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:-translate-y-1 dark:hover:bg-[#363636] hover:bg-gray-300 dark:text-gray-400 `}>Diretoria</Link>
                                     </li>
                                 </ul>
+                                
                             </Collapse>
                         </li>
                         <li>
@@ -132,17 +126,17 @@ export default function Sidebar() {
                                 <BsFillGearFill className="flex-shrink-0 w-8 h-8 ml-1 text-gray-500 transition duration-75  group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" />
                                 <span className="flex-1 ml-5 whitespace-nowrap dark:text-gray-400">Configurações</span>
                                 <span className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300">
-                                    {/* {
-                                        user?.email === 'msantos@americasoftalmocenter.com' ?
-                                        <HiLockOpen className="my-[2px]" />
-                                        :
+                                    {
+                                        // user?.email === 'msantos@americasoftalmocenter.com' ?
+                                        // <HiLockOpen className="my-[2px]" />
+                                        // :
                                         <HiLockClosed />
 
-                                    } */}
+                                    }
                                 </span>
                             </a>
                         </li>
-                        <li>
+                        {/* <li>
                             <Link href="#" className={`flex items-center mr-[0.45rem] p-2 text-base font-normal text-gray-900 duration-300 rounded-lg transition transform hover:-translate-y-1 dark:hover:bg-[#363636]  hover:bg-gray-300 `}>
 
 
@@ -157,7 +151,7 @@ export default function Sidebar() {
                                 <BiLibrary className={`flex-shrink-0 w-8 h-8 ml-2 text-gray-500 transition duration-75  group-hover:text-gray-900 dark:group-hover:text-white `} />
                                 <span className={`flex-1 ml-5 whitespace-nowrap `}>Wiki</span>
                             </Link>
-                        </li>
+                        </li> */}
 
                     </ul>
                     <div>

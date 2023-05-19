@@ -2,10 +2,11 @@
 
 import ButtonLogin from '@/components/Button/ButtonLogin';
 import Image from 'next/image';
-import Router from 'next/router';
-
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+
+  const router = useRouter()
   return (
     <div className='w-screen h-screen flex bg-background'>
       <div className='h-3/4 w-4/6 bg-transparent m-auto rounded-xl flex'>
@@ -47,7 +48,7 @@ export default function Home() {
               <a className='text-light-blue text-sm underline hover:cursor-pointer'>Esqueci a Senha</a>
             </div>
 
-            <ButtonLogin onClick={() => Router.push('/lobby')}>Login</ButtonLogin>
+            <ButtonLogin onClick={() => router.push('/lobby')}>Login</ButtonLogin>
 
           </div>
 
