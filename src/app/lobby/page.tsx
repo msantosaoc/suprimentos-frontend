@@ -15,7 +15,7 @@ export default function Lobby() {
                 </div>
 
             </div>
-            <div className="w-full h-2/3 ">
+            <div className="w-full h-2/3 "> 
 
                 <div className="w-10/12 mx-auto h-1/2 flex items-center justify-between">
 
