@@ -22,7 +22,7 @@ export default function Solicitacoes() {
                         <div className="h-full w-1/2  flex items-center gap-3">
 
                             <div className="h-20 w-20 bg-light-blue flex flex-col justify-end rounded-md relative">
-                                <Image alt='LIO' src='/iconTodos.svg' fill className="px-2 pt-1 pb-4 text-white" />
+                                <Image alt='LIO' src='/iconTodos.svg' fill className="px-2 pt-1 pb-4 " />
                                 <label className="text-center font-semibold text-gray-menu-icon text-sm">Todos</label>
                             </div>
                             <div className="h-20 w-20 bg-light-gray flex flex-col justify-end rounded-md relative">
