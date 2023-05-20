@@ -2,6 +2,7 @@ import ThemeContextParent from '@/contexts/theme'
 import './globals.css'
 import MenuContextParent from '@/contexts/menu';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Providers from '@/components/Providers';
 
 export const metadata = {
   title: 'Create Next App',
@@ -14,14 +15,16 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
+    <Providers>
       <ThemeContextParent>
-      <MenuContextParent>
-    <html lang="pt-br">
-      <body >
-        {children}
-      </body>
-    </html>
+        <MenuContextParent>
+          <html lang="pt-br">
+            <body >
+              {children}
+            </body>
+          </html>
         </MenuContextParent>
-        </ThemeContextParent>
+      </ThemeContextParent>
+    </Providers>
   )
 }

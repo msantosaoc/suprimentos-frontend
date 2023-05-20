@@ -15,7 +15,7 @@ import { FaList } from "react-icons/fa";
 import { FiMenu } from 'react-icons/fi';
 import { AiOutlineRight } from 'react-icons/ai'
 import { NewThemeToggle } from "../ThemeToggle";
-
+import { useSession, signOut } from 'next-auth/react';
 
 
 export default function Sidebar() {
@@ -23,8 +23,8 @@ export default function Sidebar() {
     const { globalTheme } = useContext(ThemeContext);
     const { globalMenu, setGlobalMenu, globalSubmenu, setGlobalSubmenu } = useContext(MenuContext);
     
+    const { data:session } = useSession();
 
-    // const router = useRouter()
 
    
     
@@ -155,10 +155,12 @@ export default function Sidebar() {
 
                     </ul>
                     <div>
-                        <button onClick={() => { }} className={`flex items-center w-[calc(100%-1rem)] mx-auto p-2 text-base font-normal text-gray-900 transition dark:hover:bg-[#363636]  rounded-lg group hover:bg-gray-300 `}>
+                        <button onClick={() => signOut()} className={`flex items-center w-[calc(100%-1rem)] mx-auto p-2 text-base font-normal text-gray-900 transition dark:hover:bg-[#363636]  rounded-lg group hover:bg-gray-300 `}>
 
                             <IoExitOutline className='w-8 h-8 ml-[0.40rem] flex-shrink-0 text-gray-600 dark:text-gray-400 hover:text-red-800 dark:hover:text-red-800' />
-                            <span className="flex-1 ml-4 whitespace-nowrap text-left dark:text-gray-400 ">Sair</span>
+                            <span className="flex-1 ml-4 whitespace-nowrap text-left dark:text-gray-400 ">{
+                                session?.user ? "Sair" : "Login"
+                            }</span>
 
                         </button>
                         <button type="button" onClick={() => setGlobalMenu(true)} className=" flex items-center w-[calc(100%-1rem)] mx-auto p-2 text-base font-normal text-gray-900 transition dark:hover:bg-[#363636]  rounded-lg group hover:bg-gray-300 " aria-expanded="false">
