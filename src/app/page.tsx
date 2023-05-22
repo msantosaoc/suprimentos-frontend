@@ -30,13 +30,14 @@ export default function Home() {
   
 
   return (
-    <div className='w-screen h-screen flex bg-background'>
-      <div className='h-3/4 w-4/6 bg-transparent m-auto rounded-xl flex'>
-        <div className='h-full flex-1 bg-light-blue rounded-s-xl flex flex-col'>
+    <div className=' w-screen h-screen flex bg-background'>
+      <div className='h-3/4 w-4/6 max-w-screen-xl  max-sm:flex-col sm:flex bg-transparent m-auto rounded-xl '>
+        <div className='h-full flex-1 bg-light-blue rounded-s-xl flex flex-col max-sm:hidden'>
+
           <div className='h-3/5 w-4/5  m-auto flex flex-col'>
             <Image alt='logo' src='/iconLogin.svg' width={350} height={600} className='m-auto' />
-            <h2 className='mx-auto text-center mt-4'>Novas opções de acompanhamento de solicitações<br/> de materiais e compras</h2>
-            <label className='text-xs mx-auto mt-2'>Trazendo mais rapidez e controle sobre os processos</label>
+            <h2 className='mx-auto text-center mt-4 text-white text-xl'>Novas opções de acompanhamento de solicitações<br/> de materiais e compras</h2>
+            <label className='text-xs mx-auto mt-2 text-white'>Trazendo mais rapidez e controle sobre os processos</label>
           </div>
           
         </div>
