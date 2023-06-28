@@ -8,7 +8,6 @@ import { useSession} from 'next-auth/react';
 export default function Lobby() {
     const { data:session } = useSession();
     const router = useRouter();
-console.log(session)
     return (
         <div>
 

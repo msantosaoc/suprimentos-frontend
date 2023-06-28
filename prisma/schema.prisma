@@ -11,18 +11,18 @@ datasource db {
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -42,7 +42,7 @@ model User {
   name          String?
   email         String?   @unique
   emailVerified DateTime?
-  password String
+  password      String
   image         String?
   accounts      Account[]
   sessions      Session[]
@@ -54,4 +54,55 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Unidade {
+  id   String @id @default(cuid())
+  name String
+}
+
+model Categoria {
+  id      String    @id @default(cuid())
+  name    String
+  produto Produto[]
+}
+
+model Marca {
+  id      String    @id @default(cuid())
+  name    String
+  produto Produto[]
+}
+
+model Dioptria {
+  id      String    @id @default(cuid())
+  name    String
+  produto Produto[]
+}
+
+model Cilindro {
+  id      String    @id @default(cuid())
+  name    String
+  produto Produto[]
+}
+
+model Medico {
+  id      String    @id @default(cuid())
+  name String
+}
+
+model Produto {
+  id          String  @id @default(cuid())
+  name        String
+  categoriaId String?
+  marcaId     String?
+  dioptriaId String?
+  cilindroId String?
+  qtdeMin Int?
+  qtdeMax Int?
+  unidMedida String?
+
+  Categoria  Categoria? @relation(fields: [categoriaId], references: [id])
+  Marca      Marca?     @relation(fields: [marcaId], references: [id])
+  Dioptria   Dioptria?  @relation(fields: [dioptriaId], references: [id])
+  Cilindro   Cilindro?  @relation(fields: [cilindroId], references: [id])
 }

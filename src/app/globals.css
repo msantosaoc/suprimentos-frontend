@@ -8,6 +8,26 @@
   margin: 0;
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    /* width of the entire scrollbar */
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 5px;
+    /* color of the tracking area */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #cecece;
+    /* color of the scroll thumb */
+    border-radius: 5px;
+    /* roundness of the scroll thumb */
+    border: 2px solid #cecece;
+    /* creates padding around scroll thumb */
+  }
+
 }
 
 :root {

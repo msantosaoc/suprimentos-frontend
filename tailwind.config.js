@@ -24,7 +24,14 @@ module.exports = {
         'padrao': '#333',
         'light-gray': '#d9d9d9',
         'light-blue': '#5ea9d3',
-        'gray-menu-icon': '#5f5f61'
+        'gray-menu-icon': '#5f5f61',
+        'desativado': '#E5E5E5',
+        'white': '#fff',
+        'title': '#4A4545',
+        'subTitle': '#4A4545 '
+      },
+      outlineColor: {
+        'indian-red': '#E25662'
       }
     },
 

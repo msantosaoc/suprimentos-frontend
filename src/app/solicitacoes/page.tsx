@@ -2,11 +2,166 @@
 
 import Card from "@/components/Card/Card";
 import Sidebar from "@/components/Sidebar/Sidebar";
-import Image from "next/image";
+import {  ShoppingCart } from 'lucide-react'
+import Categorias from "@/components/Categorias/page";
+import ModalLIO from "@/components/Modal/ModalLIO/page";
+import { useEffect, useState } from "react";
+import { api } from "@/services/api";
+import { useSession} from 'next-auth/react';
+
+
+
+interface SolicitacaoProps {
+    id: string;
+    paciente: string;
+    dtCirurgia: string;
+    lentePrincipal: string;
+    dioptria: string;
+    cilindro: string;
+    lenteReserva?: string;
+    dioptriaReserva?: string;
+    cilindroReserva?: string;
+    medico: string;
+    unidade: string;
+    solicitante: string;
+    injetorCartucho?: string;
+    dtPagamento: string;
+    status: string;
+};
+
+interface Produto {
+    name: string;
+    categoriaId: string | null;
+    marcaId: string | null;
+    dioprtiaId: string | null;
+    cilindroId: string | null;
+    qtdeMin: number | null;
+    qtdeMax: number | null;
+    unidMedida: string | null;
+};
+
+interface UnidadesProps {
+    name: string;
+};
+
+interface Dioptria {
+    name: string;
+};
+
+interface Cilindro {
+    name: string;
+};
+
+interface Medico {
+    name: string;
+};
+
+interface User {
+    expires?: string;
+    user?: {
+        id: string;
+        name: string;
+        email: string;
+        accessToken: string;
+    }
+}
 
 export default function Solicitacoes() {
+    
+    const { data:session } = useSession();
+
+    const mock: SolicitacaoProps[] = [{
+        id: '1',
+        paciente: 'Maria Tereza Cristina',
+        lentePrincipal: "ASPHINA +20.0D",
+        dioptria: '',
+        cilindro: '',
+        lenteReserva: 'Sansar AR40e',
+        dioptriaReserva: '',
+        cilindroReserva: '',
+        medico: "Ana Paula Gonçalves",
+        unidade: "Barra",
+        solicitante: 'Bruna Eduarda',
+        injetorCartucho: '',
+        dtCirurgia: '04/08/2023',
+        dtPagamento: '22/05/2023',
+        status: "Não visto"
+    }, {
+        id: '2',
+        paciente: 'Maria Tereza Cristina',
+        lentePrincipal: "ASPHINA +20.0D",
+        dioptria: '',
+        cilindro: '',
+        lenteReserva: 'Sansar AR40e',
+        dioptriaReserva: '',
+        cilindroReserva: '',
+        medico: "Ana Paula Gonçalves",
+        unidade: "Barra",
+        solicitante: 'Bruna Eduarda',
+        injetorCartucho: '',
+        dtCirurgia: '04/08/2023',
+        dtPagamento: '22/05/2023',
+        status: "Disponível"
+    }];
+
+
+    const [modalSolicitaLio, setModalSolicitaLio] = useState(false);
+    const toggleModalSolicitaLio = () => setModalSolicitaLio(!modalSolicitaLio);
+
+    const [unidades, setUnidades] = useState<UnidadesProps[]>();
+
+    const [produtos, setProdutos] = useState<Produto[]>();
+
+    const [dioptrias, setDioprias] = useState<Dioptria[]>();
+
+    const [cilindros, setCilindros] = useState<Cilindro[]>();
+
+    const [medicos, setMedicos] = useState<Medico[]>();
+
+    async function buscarUnidades() {
+        const unidades = await api.get('api/unidade').then(response => setUnidades(response.data)).catch(error => console.log(error));
+
+        return unidades;
+
+    };
+
+    async function buscarDioptrias() {
+        const dioptrias = await api.get('/api/dioptria').then(response => setDioprias(response.data)).catch(error => console.log(error));
+
+        return dioptrias;
+    };
+
+    async function buscarCilindros() {
+        const cilindros = await api.get('/api/cilindro').then(response => setCilindros(response.data)).catch(error => console.log(error));
+
+        return cilindros;
+    };
+    
+    async function buscarProdutos() {
+        const produtos = await api.get('/api/produto').then(response => setProdutos(response.data)).catch(error => console.log(error));
+
+        return produtos;
+    };
+
+    async function buscarMedicos() {
+        const medicos = await api.get('/api/medico').then(response => setMedicos(response.data)).catch(error => console.log(error));
+
+        return medicos;
+    };
+
+    
+
+    useEffect(() => {
+        buscarUnidades();
+        buscarDioptrias();
+        buscarCilindros();
+        buscarProdutos();
+        buscarMedicos();
+    }, []);
+
     return (
         <div>
+            <ModalLIO isOpen={modalSolicitaLio} toggle={toggleModalSolicitaLio } unidades={unidades} produtos={produtos} dioptrias={dioptrias} cilindros={cilindros} medicos={medicos} user={session}/>
             <div className="h-screen w-screen flex flex-col bg-background pl-[4.3rem]">
                 <div className="absolute top-0 left-0 w-screen h-sreen overflow-hidden">
                     <Sidebar />
@@ -21,34 +176,13 @@ export default function Solicitacoes() {
                     <div className="w-full h-full m-auto rounded-xl shadow-xl bg-white flex items-center px-3">
 
                         <div className="h-full w-1/2  flex items-center gap-3">
-
-                            <div className="h-20 w-20 bg-light-blue flex flex-col justify-end rounded-md relative pb-1">
-                                <Image alt='LIO' src='/iconTodos.svg' fill className="px-2 pt-1 pb-4 " />
-                                <label className="text-center font-semibold text-gray-menu-icon text-sm">Todos</label>
-                            </div>
-                            <div className="h-20 w-20 bg-light-gray flex flex-col justify-end rounded-md relative pb-1">
-                                <Image alt='LIO' src='/iconLIO.svg' fill className="px-2 pt-2 pb-4" />
-                                <label className="text-center font-semibold text-gray-menu-icon text-sm">LIO</label>
-                            </div>
-                            <div className="h-20 w-20 bg-light-gray flex flex-col justify-end rounded-md relative pb-1">
-                                <Image alt='LIO' src='/iconUniforme.svg' fill className="px-2 pt-2 pb-4" />
-                                <label className="text-center font-semibold text-gray-menu-icon text-sm">Uniforme</label>
-                            </div>
-                            <div className="h-20 w-20 bg-light-gray flex flex-col justify-end rounded-md relative pb-1">
-                                <Image alt='LIO' src='/iconCirurgico.svg' fill className="px-2 pt-2 pb-4" />
-                                <label className="text-center font-semibold text-gray-menu-icon text-sm">Cirúrgico</label>
-                            </div>
-                            <div className="h-20 w-20 bg-light-gray flex flex-col justify-end rounded-md relative pb-1">
-                                <Image alt='LIO' src='/iconEscritorio.svg' fill className="px-2 pt-2 pb-4" />
-                                <label className="text-center font-semibold text-gray-menu-icon text-sm">Escritório</label>
-                            </div>
-
+                            <Categorias />
 
                         </div>
-                        <div className="h-full w-1/2 flex items-center justify-end gap-3">
-                        <div className="h-20 w-20 bg-light-gray flex flex-col justify-end rounded-md relative pb-1">
-                                <Image alt='LIO' src='/iconCarrinho.svg' fill className="px-3 pt-2 pb-4" />
-                                <label className="text-center font-semibold text-gray-menu-icon text-sm">Comprar</label>
+                        <div className="h-full w-1/2 flex items-center justify-end  gap-3">
+                            <div className="h-20 w-20 bg-light-gray flex flex-col justify-end items-center rounded-md relative pb-1 hover:scale-110 hover:cursor-pointer duration-200  ">
+                                <ShoppingCart className="text-gray-menu-icon " size={48} onClick={toggleModalSolicitaLio} />
+                                <label className="text-center font-semibold text-gray-menu-icon text-sm hover:cursor-pointer">Solicitar</label>
                             </div>
                         </div>
                     </div>
@@ -57,17 +191,17 @@ export default function Solicitacoes() {
                 <div className="w-full h-[82%] px-10 py-3  ">
                     <div className="w-full h-full m-auto rounded-xl shadow-xl flex flex-col bg-white px-3 pt-2">
                         <div className="grid grid-cols-9 py-2">
-                        <label className="text-base font-semibold flex items-center justify-center ">Paciente</label>
-                        <label className="text-base font-semibold flex items-center justify-center ">Lente Principal</label>
-                        <label className="text-base font-semibold flex items-center justify-center ">Lente Reserva</label>
-                        <label className="text-base font-semibold flex items-center justify-center ">Dt. Crirugia</label>
-                        <label className="text-base font-semibold flex items-center justify-center ">Médico</label>
-                        <label className="text-base font-semibold flex items-center justify-center ">Unidade</label>
-                        <label className="text-base font-semibold flex items-center justify-center ">Injetor/Cartucho</label>
-                        <label className="text-base font-semibold flex items-center justify-center ">Status</label>
-                        <label className="text-base font-semibold flex items-center justify-center "></label>
+                            <label className="text-base font-semibold flex items-center justify-center ">Paciente</label>
+                            <label className="text-base font-semibold flex items-center justify-center ">Lente Principal</label>
+                            <label className="text-base font-semibold flex items-center justify-center ">Lente Reserva</label>
+                            <label className="text-base font-semibold flex items-center justify-center ">Dt. Crirugia</label>
+                            <label className="text-base font-semibold flex items-center justify-center ">Médico</label>
+                            <label className="text-base font-semibold flex items-center justify-center ">Unidade</label>
+                            <label className="text-base font-semibold flex items-center justify-center ">Injetor/Cartucho</label>
+                            <label className="text-base font-semibold flex items-center justify-center ">Status</label>
+                            <label className="text-base font-semibold flex items-center justify-center "></label>
                         </div>
-                        <Card />
+                        <Card solicitacao={mock} />
                     </div>
 
                 </div>
