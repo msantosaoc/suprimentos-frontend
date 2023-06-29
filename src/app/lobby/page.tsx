@@ -3,10 +3,11 @@
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import Image from "next/image";
-import { useSession} from 'next-auth/react';
+import { getServerSession } from 'next-auth';
+import { authOptions } from "@/utils/authOptions";
 
 export default function Lobby() {
-    const { data:session } = useSession();
+
     const router = useRouter();
     return (
         <div>

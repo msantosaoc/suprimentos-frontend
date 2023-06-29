@@ -26,6 +26,27 @@ interface SolicitacaoProps {
     solicitante: string;
     injetorCartucho?: string;
     dtPagamento: string;
+    comprovante?: string;
+    formCirurgico?: string;
+    status: string;
+};
+
+interface CreateSolicitacaoProps {
+    paciente: string;
+    dtCirurgia: string;
+    lentePrincipal: string;
+    dioptria: string;
+    cilindro: string;
+    lenteReserva?: string;
+    dioptriaReserva?: string;
+    cilindroReserva?: string;
+    medico: string;
+    unidade: string;
+    solicitante: string;
+    injetorCartucho?: string;
+    dtPagamento: string;
+    comprovante: string;
+    formCirurgico: string;
     status: string;
 };
 
@@ -118,6 +139,14 @@ export default function Solicitacoes() {
 
     const [medicos, setMedicos] = useState<Medico[]>();
 
+    const [solicitacoes, setSolicitacoes] = useState<SolicitacaoProps[]>();
+
+    async function buscarSolicitacoes() {
+        const solicitacoes = await api.get('/api/solicitacao').then(response => setSolicitacoes(response.data)).catch(error => console.log(error));
+
+        return solicitacoes
+    }
+
     async function buscarUnidades() {
         const unidades = await api.get('api/unidade').then(response => setUnidades(response.data)).catch(error => console.log(error));
 
@@ -152,12 +181,17 @@ export default function Solicitacoes() {
     
 
     useEffect(() => {
+        buscarSolicitacoes();
         buscarUnidades();
         buscarDioptrias();
         buscarCilindros();
         buscarProdutos();
         buscarMedicos();
     }, []);
+
+    async function createSolicitacao(solicitacao: CreateSolicitacaoProps) {
+        await api.post('/api/solicitacao', solicitacao).then(response => mock.push(response.data)).catch(error => console.log(error))
+    }
 
     return (
         <div>
@@ -190,18 +224,18 @@ export default function Solicitacoes() {
                 </div>
                 <div className="w-full h-[82%] px-10 py-3  ">
                     <div className="w-full h-full m-auto rounded-xl shadow-xl flex flex-col bg-white px-3 pt-2">
-                        <div className="grid grid-cols-9 py-2">
-                            <label className="text-base font-semibold flex items-center justify-center ">Paciente</label>
-                            <label className="text-base font-semibold flex items-center justify-center ">Lente Principal</label>
-                            <label className="text-base font-semibold flex items-center justify-center ">Lente Reserva</label>
-                            <label className="text-base font-semibold flex items-center justify-center ">Dt. Crirugia</label>
-                            <label className="text-base font-semibold flex items-center justify-center ">Médico</label>
+                        <div className="grid grid-cols-9 py-2 ">
+                            <label className="text-base font-semibold flex items-center justify-center  ">Item</label>
+                            <label className="text-base font-semibold flex items-center justify-center col-span-2 ">Solicitante</label>
+                            <label className="text-base font-semibold flex items-center justify-center col-span-2">Detalhes</label>
                             <label className="text-base font-semibold flex items-center justify-center ">Unidade</label>
-                            <label className="text-base font-semibold flex items-center justify-center ">Injetor/Cartucho</label>
+                            <label className="text-base font-semibold flex items-center justify-center text-center">Dt. Solicitação</label>
                             <label className="text-base font-semibold flex items-center justify-center ">Status</label>
-                            <label className="text-base font-semibold flex items-center justify-center "></label>
+                            <label className="text-base font-semibold flex items-center justify-center ">Resposta</label>
+                            {/* <label className="text-base font-semibold flex items-center justify-center ">Status</label>
+                            <label className="text-base font-semibold flex items-center justify-center "></label> */}
                         </div>
-                        <Card solicitacao={mock} />
+                        <Card solicitacoesList={solicitacoes} />
                     </div>
 
                 </div>

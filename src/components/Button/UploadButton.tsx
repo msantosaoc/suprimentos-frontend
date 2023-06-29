@@ -1,28 +1,58 @@
 'use client';
-import React from "react";
+import React, { useState } from "react";
 import { JsxElement } from "typescript";
+import { useController, Controller, UseFormRegister, FieldValues } from 'react-hook-form';
 
-interface UploadProps extends React.ButtonHTMLAttributes<HTMLButtonElement>{
-    children: React.ReactNode;
+interface UploadProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    children?: React.ReactNode;
     loading?: boolean;
-    Icon?: JsxElement   
+    Icon?: JsxElement;
+    name: string;
+    control: any;
 }
 
-export default function UploadButton({children, Icon, loading, ...rest}: UploadProps) {
+const UploadButton: React.FC<UploadProps> = ({ children, Icon, loading, name, control, ...rest }) => {
+    const { field: { value, onChange, onBlur }, fieldState: { error } } = useController({ name, control });
+
+    const [fileName, setFileName] = useState<string>("ANEXAR");
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        onChange(files);
+
+        if (files && files.length > 0) {
+            const fileName = files[0].name;
+            const extractedFileName = fileName.split("\\").pop() || "";
+            // console.log(extractedFileName);
+            setFileName(extractedFileName);
+          };
+
+    };
+
     return (
 
-        <div className="flex items-center justify-center w-full">
-            <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-10 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                <div className="flex flex-col items-center justify-center ">
-                    {/* <svg aria-hidden="true" className="w-8 h-8 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg> */}
-                    <span className="text-sm uppercase">{children}</span>
+        <div className="flex items-center flex-col justify-center w-full relative">
+            <label  className="flex flex-col items-center justify-center  w-full h-10 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                <div className="flex items-center justify-center max-w-[150px] ">
+                    <span className="text-xs uppercase truncate max-w-[120px] ">{ fileName }</span>
                 </div>
-                <input id="dropzone-file" type="file" className="hidden" />
+                <Controller
+                    name={name}
+                    control={control}
+                    {...rest}
+                    render={({ field: { onChange, value } }) => (
+                        <input id="dropzone-file" type="file" onChange={handleFileChange}  multiple={false} accept="application/pdf,image/*" className="hidden" />
+                        )}
+                />
+
             </label>
+                        {/* <span className="text-xs pt-2 absolute top-10">{ fileName !== "ANEXAR" && fileName}</span> */}
 
 
         </div>
 
     )
 }
+
+
+export default UploadButton;

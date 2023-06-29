@@ -6,7 +6,7 @@ import { Modal } from "reactstrap";
 import { ZodType, z } from "zod";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod'
-import SelectItems from "@/components/Select/SelectItems";
+import { SelectItems } from "@/components/Select/SelectItems";
 import { useEffect, useRef, useState } from "react";
 import SelectComponent from "@/components/Select/SelectComponent";
 import { useSession} from 'next-auth/react';
@@ -75,6 +75,8 @@ type FormData = {
     injetorCartucho?: string;
     dtPagamento: Date;
     status?: string;
+    comprovante: FileList | undefined;
+    formCirurgico: FileList | undefined;
 }
 
 export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias, cilindros, medicos, user }: Props) {
@@ -82,34 +84,30 @@ export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias
     
 
     const schema: ZodType<FormData> = z.object({
-        paciente: z.string().min(1, "Nome completo do paciente"),
+        paciente: z.string().nonempty('Nome do paciente é obrigatório'),
         dtCirurgia: z.coerce.date().refine((date) => date > new Date(), "Deve ser maior que hoje"),
-        lentePrincipal: z.string().min(1),
-        dioptria: z.string().min(1),
-        cilindro: z.string().min(1),
+        lentePrincipal: z.string().nonempty('Este campo é obrigatório'),
+        dioptria: z.string().nonempty('Este campo é obrigatório'),
+        cilindro: z.string().nonempty('Este campo é obrigatório'),
         lenteReserva: z.string(),
         dioptriaReserva: z.string(),
         cilindroReserva: z.string(),
-        medico: z.string().min(1),
-        unidade: z.string().min(1),
-        solicitante: z.string().min(1),
+        medico: z.string().nonempty('Este campo é obrigatório'),
+        unidade: z.string().nonempty('Este campo é obrigatório'),
+        solicitante: z.string().nonempty('Este campo é obrigatório'),
         injetorCartucho: z.string(),
-        dtPagamento: z.coerce.date().refine((date) => date <= new Date(), "Deve ser maior que hoje")
+        dtPagamento: z.coerce.date().refine((date) => date <= new Date(), "Deve ser maior que hoje"),
+        comprovante: z.instanceof(FileList),
+        formCirurgico: z.instanceof(FileList),
     });
     // .transform((fields) => ({
-        
-    //     solicitante: fields.solicitante,
-    //     injetorCartucho: fields.injetorCartucho
+    //     ...fields,
+    //     paciente: fields.paciente.trim().split(' ').map(palavra => palavra[0].toLocaleUpperCase().concat(palavra.substring(1))).join(' ')
+    //     // solicitante: fields.solicitante,
+    //     // injetorCartucho: fields.injetorCartucho
     // }))
 
-    const [valorInputUnidade, setValorInputUnidade] = useState("");
-    const [valorInputLentePrincipal, setValorInputLentePrincipal] = useState("");
-    const [valorInputLenteReserva, setValorInputLenteReserva] = useState("");
-    const [valorInputDioptria, setValorInputDioptria] = useState('');
-    const [valorInputDioptriaReserva, setValorInputDioptriaReserva] = useState("");
-    const [valorInputCilindro, setValorInputCilindro] = useState("");
-    const [valorInputCilindroReserva, setValorInputCilindroReserva] = useState("");
-    const [valorInputMedico, setValorInputMedico] = useState("");
+    
 
     const { register, handleSubmit, formState: { errors }, control } = useForm<FormData>({
         resolver: zodResolver(schema), defaultValues: {
@@ -125,43 +123,17 @@ export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias
             unidade: '',
             solicitante: user?.user?.name ? user.user.name : 'Teste',
             injetorCartucho: '',
-            dtPagamento: undefined
+            dtPagamento: undefined,
+            comprovante: undefined,
+            formCirurgico: undefined
         }
     });
 
     const submitData = (data: FormData) => {
         console.log(data)
-        alert(data);
+        // alert(data);
     };
-    console.log(errors)
-
-    const handleInputChangeUnidade = (valor: string) => {
-        setValorInputUnidade(valor);
-    };
-
-    const handleInputChangeLentePrincipal = (valor: string) => {
-        setValorInputLentePrincipal(valor);
-    };
-    const handleInputChangeLenteReserva = (valor: string) => {
-        setValorInputLenteReserva(valor);
-    };
-    const handleInputChangeDioptria = (valor: string) => {
-        setValorInputDioptria(valor);
-    };
-    const handleInputChangeDioptriaReserva = (valor: string) => {
-        setValorInputDioptriaReserva(valor);
-    };
-
-    const handleInputChangeCilindro = (valor: string) => {
-        setValorInputCilindro(valor);
-    };
-    const handleInputChangeCilindroReserva = (valor: string) => {
-        setValorInputCilindroReserva(valor);
-    };
-
-    const handleInputChangeMedico = (valor: string) => {
-        setValorInputMedico(valor);
-    };
+    console.log(errors);
 
     
 
@@ -202,6 +174,7 @@ export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias
                                         Lente Principal <span className={`text-red-500 ${!errors.lentePrincipal?.message && 'hidden'}`}>*</span>
                                     </label> {/* <SelectItems id="lentePrincipal" name="lentePrincipal" placeholder="Selecione" register={register} values={produtos} errors={errors.lentePrincipal?.message} onInputChange={handleInputChangeLentePrincipal} value={valorInputLentePrincipal} /> */}
                                     <SelectComponent name="lentePrincipal" control={control} options={produtos} />
+                                    {/* <SelectItems {...register("lentePrincipal")} name="lentePrincipal" placeholder="Selecione" values={produtos}/> */}
                                 </div>
                                 <div className="md:w-1/4 w-full px-3">
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
@@ -288,17 +261,18 @@ export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias
 
                             <div className="md:flex mb-2">
                                 <div className="md:w-1/4 w-full px-3">
-                                    <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " >
+                                    <label className="block tracking-wide text-subTitle text-center text-xs font-semibold mb-2 " >
                                         Comprovante
                                     </label>
-                                    <UploadButton>Anexar</UploadButton>
+                                    <UploadButton name="comprovante" control={control} />
 
                                 </div>
                                 <div className="md:w-1/4 w-full px-3">
-                                    <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " >
+                                    <label className="block tracking-wide text-subTitle text-center text-xs font-semibold mb-2 " >
                                         Form. Cirúrgico
                                     </label>
-                                    <UploadButton>Anexar</UploadButton>
+                                    <UploadButton name="formCirurgico" control={control} />
+                                    
 
                                 </div>
                                 <div className="md:w-1/4 w-full px-3 flex mb-1 items-end">

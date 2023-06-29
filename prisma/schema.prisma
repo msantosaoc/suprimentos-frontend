@@ -86,7 +86,7 @@ model Cilindro {
 }
 
 model Medico {
-  id      String    @id @default(cuid())
+  id   String @id @default(cuid())
   name String
 }
 
@@ -95,14 +95,34 @@ model Produto {
   name        String
   categoriaId String?
   marcaId     String?
-  dioptriaId String?
-  cilindroId String?
-  qtdeMin Int?
-  qtdeMax Int?
-  unidMedida String?
+  dioptriaId  String?
+  cilindroId  String?
+  qtdeMin     Int?
+  qtdeMax     Int?
+  unidMedida  String?
 
-  Categoria  Categoria? @relation(fields: [categoriaId], references: [id])
-  Marca      Marca?     @relation(fields: [marcaId], references: [id])
-  Dioptria   Dioptria?  @relation(fields: [dioptriaId], references: [id])
-  Cilindro   Cilindro?  @relation(fields: [cilindroId], references: [id])
+  Categoria Categoria? @relation(fields: [categoriaId], references: [id])
+  Marca     Marca?     @relation(fields: [marcaId], references: [id])
+  Dioptria  Dioptria?  @relation(fields: [dioptriaId], references: [id])
+  Cilindro  Cilindro?  @relation(fields: [cilindroId], references: [id])
+}
+
+model Solicitacao {
+  id              String @id @default(cuid())
+  paciente        String
+  dtCirurgia      String
+  lentePrincipal  String
+  dioptria        String
+  cilindro        String
+  lenteReserva    String?
+  dioptriaReserva String?
+  cilindroReserva String?
+  medico          String
+  unidade         String
+  solicitante     String
+  injetorCartucho String?
+  dtPagamento     String
+  comprovante     String?
+  formCirurgico   String?
+  status String?
 }

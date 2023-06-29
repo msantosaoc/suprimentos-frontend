@@ -96,7 +96,7 @@ const SelectComponent: React.FC<SelectComponentProps> = ({ name, control, option
                   cursor: 'pointer'
                 }
               }),
-
+ 
             }}
           />
         )}
