@@ -35,10 +35,13 @@ export default function Categorias({ selectedCategory, onCategoryChange }: Categ
     const [categories, setCategories] = useState<CategoriasProps[]>(mock);
     const [filtroCategoria, setFiltroCategoria] = useState<string>(selectedCategory);
 
-  
+    useEffect(()=> {
+        setFiltroCategoria("Todos")
+    }, [])
 
     const handleFilter = (category: string) => {
         let categoria = category === "Todos" ? "" : category
+        console.log(categoria)
         onCategoryChange(categoria);
         setFiltroCategoria(category);
       };

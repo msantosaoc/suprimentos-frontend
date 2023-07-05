@@ -2,7 +2,7 @@
 
 import Card from "@/components/Card/Card";
 import Sidebar from "@/components/Sidebar/Sidebar";
-import { ShoppingCart } from 'lucide-react'
+import { Eye, Printer, Shirt, ShoppingCart, Stethoscope } from 'lucide-react'
 import Categorias from "@/components/Categorias/page";
 import ModalLIO from "@/components/Modal/ModalLIO/page";
 import { useEffect, useState } from "react";
@@ -103,7 +103,7 @@ export default function Solicitacoes() {
 
     const { data: session } = useSession();
 
-   
+
 
 
     const [modalSolicitaLio, setModalSolicitaLio] = useState(false);
@@ -111,19 +111,19 @@ export default function Solicitacoes() {
     const toggleModalSolicitaLio = () => setModalSolicitaLio(!modalSolicitaLio);
     const toggleModalSolicitaLioEdit = () => setModalSolicitaLioEdit(!modalSolicitaLioEdit);
 
-    const [unidades, setUnidades] = useState<UnidadesProps[]>([{name: ""}]);
+    const [unidades, setUnidades] = useState<UnidadesProps[]>([{ name: "" }]);
 
-    const [produtos, setProdutos] = useState<Produto[]>([{name: "", categoriaId: "", dioprtiaId: "", cilindroId: "", marcaId: '', qtdeMax: 0, qtdeMin: 0, unidMedida: ''}]);
+    const [produtos, setProdutos] = useState<Produto[]>([{ name: "", categoriaId: "", dioprtiaId: "", cilindroId: "", marcaId: '', qtdeMax: 0, qtdeMin: 0, unidMedida: '' }]);
 
-    const [dioptrias, setDioprias] = useState<Dioptria[]>([{name: ""}]);
+    const [dioptrias, setDioprias] = useState<Dioptria[]>([{ name: "" }]);
 
-    const [cilindros, setCilindros] = useState<Cilindro[]>([{name: ""}]);
+    const [cilindros, setCilindros] = useState<Cilindro[]>([{ name: "" }]);
 
-    const [medicos, setMedicos] = useState<Medico[]>([{name: ''}]);
+    const [medicos, setMedicos] = useState<Medico[]>([{ name: '' }]);
 
-    const [solicitacao, setSolicitacao] = useState<SolicitacaoProps>({id: '', paciente: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', unidade: '', medico: '', categoria: '', dtCirurgia: '', dtPagamento: '', solicitante: '', status: '', comprovante: '', formCirurgico: '', injetorCartucho: '', createdAt: '', updatedAt: '', resposta: ''});
+    const [solicitacao, setSolicitacao] = useState<SolicitacaoProps>({ id: '', paciente: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', unidade: '', medico: '', categoria: '', dtCirurgia: '', dtPagamento: '', solicitante: '', status: '', comprovante: '', formCirurgico: '', injetorCartucho: '', createdAt: '', updatedAt: '', resposta: '' });
 
-    
+
 
     const [solicitacoes, setSolicitacoes] = useState<SolicitacaoProps[]>();
 
@@ -198,7 +198,7 @@ export default function Solicitacoes() {
         const update = await api.put('/api/solicitacao/lio/edit', solicitacao).then(response => {
             buscarSolicitacoes();
             toggleModalSolicitaLioEdit();
-        }).catch(error=> console.log(error));
+        }).catch(error => console.log(error));
 
         return update;
     }
@@ -210,7 +210,9 @@ export default function Solicitacoes() {
 
     function toggleModalEdit() {
         toggleModalSolicitaLioEdit();
-    }
+    };
+
+    const [menuOptions, setMenuOptions] = useState(false);
 
     return (
         <div>
@@ -225,7 +227,7 @@ export default function Solicitacoes() {
                 user={session}
                 createSolicitacao={createSolicitacao}
             />
-            <ModalLioEdit 
+            <ModalLioEdit
                 isOpen={modalSolicitaLioEdit}
                 toggle={toggleModalSolicitaLioEdit}
                 formData={solicitacao}
@@ -237,6 +239,7 @@ export default function Solicitacoes() {
                 updateSolicitacao={updateSolicitacao}
 
             />
+            {/* <div className={`w-screen h-screen bg-black/30 z-10 absolute ${!menuOptions && 'hidden'}`} /> */}
             <div className="h-screen w-screen flex flex-col bg-background pl-[4.3rem]">
                 <div className="absolute top-0 left-0 w-screen h-sreen overflow-hidden">
                     <Sidebar />
@@ -254,11 +257,25 @@ export default function Solicitacoes() {
                             <Categorias selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
 
                         </div>
-                        <div className="h-full w-1/2 flex items-center justify-end  gap-3">
-                            <div className="h-20 w-20 bg-light-gray flex flex-col justify-end items-center rounded-md relative pb-1 hover:scale-110 hover:cursor-pointer duration-200  ">
-                                <ShoppingCart className="text-gray-menu-icon " size={48} onClick={toggleModalSolicitaLio} />
+                        <div className="h-full w-1/2 flex items-center justify-end z-20 gap-3 relative ">
+                            <div className="h-20 w-20 bg-white border border-gray-menu-icon shadow-sm flex flex-col justify-end items-center rounded-md relative pb-1  duration-200 group"  >
+                                <ShoppingCart className="text-gray-menu-icon  " size={48}  />
                                 <label className="text-center font-semibold text-gray-menu-icon text-sm hover:cursor-pointer">Solicitar</label>
+
+                                <div className={` flex  bg-transparent absolute -bottom-14 -translate-x-4 group-hover:visible invisible transition-all `} >
+                                    <div className="flex mt-4 rounded-lg shadow-lg p-2 bg-white gap-1">
+                                        <Eye size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={toggleModalSolicitaLio}/>
+                                        <div className="h-full border border-gray-menu-icon"/>
+                                        <Shirt size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer"/>
+                                        <div className="h-full border border-gray-menu-icon"/>
+                                        <Stethoscope size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" />
+                                        <div className="h-full border border-gray-menu-icon"/>
+                                        <Printer size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" />
+                                    </div>
+                                </div>
                             </div>
+
+
                         </div>
                     </div>
 
@@ -279,6 +296,7 @@ export default function Solicitacoes() {
 
                 </div>
             </div>
+
         </div>
     )
 }

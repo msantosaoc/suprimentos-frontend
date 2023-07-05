@@ -38,14 +38,15 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String        @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?       @unique
   emailVerified DateTime?
   password      String
   image         String?
   accounts      Account[]
   sessions      Session[]
+  Solicitacao   Solicitacao[]
 }
 
 model VerificationToken {
@@ -112,16 +113,19 @@ model Produto {
 }
 
 model Solicitacao {
-  id        String    @id @default(cuid())
-  produtos  Produto[]
-  categoria Categoria @relation(fields: [categoriaId], references: [id])
-  unidade   Unidade   @relation(fields: [unidadeId], references: [id])
-  resposta String?
-  status    String
+  id          String    @id @default(cuid())
+  name        String
+  produtos    Produto[]
+  categoria   Categoria @relation(fields: [categoriaId], references: [id])
+  unidade     Unidade   @relation(fields: [unidadeId], references: [id])
+  usuario     User      @relation(fields: [userId], references: [id])
+  resposta    String?
+  status      String
   createdAt   DateTime? @default(now())
   updatedAt   DateTime? @updatedAt
   categoriaId String
   unidadeId   String
+  userId      String
 }
 
 model SolicitacaoLio {
@@ -141,7 +145,7 @@ model SolicitacaoLio {
   dtPagamento     String
   comprovante     String?
   formCirurgico   String?
-  resposta String?
+  resposta        String?
   status          String?
   categoria       String  @default("Lio")
 

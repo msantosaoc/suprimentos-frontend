@@ -32,6 +32,9 @@ module.exports = {
       },
       outlineColor: {
         'indian-red': '#E25662'
+      },
+      borderColor: {
+        'gray-menu-icon': '#5f5f61',
       }
     },
 
