@@ -46,6 +46,22 @@ export async function GET (request:Request) {
     const produto = await prisma.produto.findMany({
         orderBy: {
             name: 'asc'
+        },
+        select: {
+            id: true,
+            name: true,
+            categoriaId: true,
+            Categoria: {
+                select: {
+                    name: true
+                }
+            },
+            marcaId: true,
+            dioptriaId: true,
+            cilindroId: true,
+            qtdeMin: true,
+            qtdeMax: true,
+            unidMedida: true
         }
     });
 

@@ -4,6 +4,7 @@ import { JsxElement } from "typescript";
 import { useController, Controller, UseFormRegister, FieldValues } from 'react-hook-form';
 import { api } from "@/services/api";
 import axios from "axios";
+import { ArrowDown, Download } from "lucide-react";
 
 interface UploadProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children?: React.ReactNode;
@@ -13,7 +14,7 @@ interface UploadProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     control: any;
 }
 
-const UploadButton: React.FC<UploadProps> = ({ children, Icon, loading, name, control, ...rest }) => {
+const ViewFileButton: React.FC<UploadProps> = ({ children, Icon, loading, name, control, ...rest }) => {
     const { field: { value, onChange, onBlur }, fieldState: { error } } = useController({ name, control });
 
     const [fileName, setFileName] = useState<string>("ANEXAR");
@@ -69,24 +70,17 @@ const UploadButton: React.FC<UploadProps> = ({ children, Icon, loading, name, co
 //           }
 //     }
 
+
+
     return (
 
         <div className="flex items-center flex-col justify-center w-full relative">
             <label className="flex flex-col items-center justify-center  w-full h-10 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                <div className="flex items-center justify-center max-w-[150px] ">
-                    <span className="text-xs uppercase truncate max-w-[120px] ">{fileName}</span>
+                <div className="flex items-center gap-1 justify-center max-w-[150px] ">
+                    <span className="text-xs uppercase truncate max-w-[120px] "><a href={value} target="_blank"  className="text-inherit" >{value ? value?.slice(-15) : "Sem anexo"}</a></span>
+                    <Download className={`text-gray-menu-icon ${!value && 'hidden'}`} width={15} height={15}  />
                 </div>
-                <Controller
-                    name={name}
-                    control={control}
-                    {...rest}
-                    render={({ field: { onChange, value, onBlur } }) => (
-                        <input id="dropzone-file" type="file" onChange={handleFileChange} multiple={false} accept="application/pdf,image/*" className="hidden" />
-                    )}
-                />
-
             </label>
-            {/* <span className="text-xs pt-2 absolute top-10">{ fileName !== "ANEXAR" && fileName}</span> */}
 
 
         </div>
@@ -95,4 +89,4 @@ const UploadButton: React.FC<UploadProps> = ({ children, Icon, loading, name, co
 }
 
 
-export default UploadButton;
+export default ViewFileButton;

@@ -6,7 +6,8 @@ import ValueType from 'react-select';
 
 
 interface ValuesProps {
-  name: string;
+  value: string;
+  label: string;
 }
 
 interface OptionType {
@@ -21,20 +22,20 @@ interface SelectComponentProps extends SelectProps<any> {
   isDisabled?: boolean;
 }
 
-const SelectComponent: React.FC<SelectComponentProps> = ({ name, control, options, isDisabled, ...rest }) => {
-  const { field: { value, onChange, onBlur }, fieldState: { error } } = useController({ name, control });
+const DropdownStatus: React.FC<SelectComponentProps> = ({ name, control, options, isDisabled, ...rest }) => {
+  const { field: { value, onChange, onBlur }, fieldState: { error } } = useController({ name, control }); 
 
   const newArray = [] as OptionType[];
 
-  options?.forEach(item => {
-    // Transforme o objeto
-    const transformedItem = {
-      value: item.name,
-      label: item.name
-    };
+//   options?.forEach(item => {
+//     // Transforme o objeto
+//     const transformedItem = {
+//       value: item,
+//       label: item
+//     };
 
-    newArray.push(transformedItem);
-  });
+//     newArray.push(transformedItem);
+//   });
 
 
   return (
@@ -46,7 +47,7 @@ const SelectComponent: React.FC<SelectComponentProps> = ({ name, control, option
         render={({ field: { onChange, value } }) => (
           <Select
             placeholder={rest.placeholder}
-            options={newArray}
+            options={options}
             isDisabled={isDisabled}
             onChange={(e) => {
               // onChange's arg will send value into hook form
@@ -97,7 +98,8 @@ const SelectComponent: React.FC<SelectComponentProps> = ({ name, control, option
                 ":hover": {
                   backgroundColor: 'RGBA(94,169,211, 0.3)' && state.isSelected ? '' : 'RGBA(94,169,211, 0.3)',
                   cursor: 'pointer'
-                }
+                },
+                
               }),
  
             }}
@@ -108,4 +110,4 @@ const SelectComponent: React.FC<SelectComponentProps> = ({ name, control, option
   );
 };
 
-export default SelectComponent;
+export default DropdownStatus;

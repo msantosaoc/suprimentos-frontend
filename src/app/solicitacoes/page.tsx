@@ -2,12 +2,13 @@
 
 import Card from "@/components/Card/Card";
 import Sidebar from "@/components/Sidebar/Sidebar";
-import {  ShoppingCart } from 'lucide-react'
+import { ShoppingCart } from 'lucide-react'
 import Categorias from "@/components/Categorias/page";
 import ModalLIO from "@/components/Modal/ModalLIO/page";
 import { useEffect, useState } from "react";
 import { api } from "@/services/api";
-import { useSession} from 'next-auth/react';
+import { useSession } from 'next-auth/react';
+import ModalLioEdit from "@/components/Modal/ModalLioEdit/page";
 
 
 
@@ -29,6 +30,10 @@ interface SolicitacaoProps {
     comprovante?: string;
     formCirurgico?: string;
     status: string;
+    categoria: string;
+    createdAt: string;
+    updatedAt: string;
+    resposta?: string;
 };
 
 interface CreateSolicitacaoProps {
@@ -45,9 +50,16 @@ interface CreateSolicitacaoProps {
     solicitante: string;
     injetorCartucho?: string;
     dtPagamento: string;
+    status?: string;
     comprovante: string;
     formCirurgico: string;
-    status: string;
+    resposta?: string;
+};
+
+interface UpdateSolicitacao {
+    id: string;
+    resposta?: string;
+    status?: string;
 };
 
 interface Produto {
@@ -88,61 +100,44 @@ interface User {
 }
 
 export default function Solicitacoes() {
-    
-    const { data:session } = useSession();
 
-    const mock: SolicitacaoProps[] = [{
-        id: '1',
-        paciente: 'Maria Tereza Cristina',
-        lentePrincipal: "ASPHINA +20.0D",
-        dioptria: '',
-        cilindro: '',
-        lenteReserva: 'Sansar AR40e',
-        dioptriaReserva: '',
-        cilindroReserva: '',
-        medico: "Ana Paula Gonçalves",
-        unidade: "Barra",
-        solicitante: 'Bruna Eduarda',
-        injetorCartucho: '',
-        dtCirurgia: '04/08/2023',
-        dtPagamento: '22/05/2023',
-        status: "Não visto"
-    }, {
-        id: '2',
-        paciente: 'Maria Tereza Cristina',
-        lentePrincipal: "ASPHINA +20.0D",
-        dioptria: '',
-        cilindro: '',
-        lenteReserva: 'Sansar AR40e',
-        dioptriaReserva: '',
-        cilindroReserva: '',
-        medico: "Ana Paula Gonçalves",
-        unidade: "Barra",
-        solicitante: 'Bruna Eduarda',
-        injetorCartucho: '',
-        dtCirurgia: '04/08/2023',
-        dtPagamento: '22/05/2023',
-        status: "Disponível"
-    }];
+    const { data: session } = useSession();
+
+   
 
 
     const [modalSolicitaLio, setModalSolicitaLio] = useState(false);
+    const [modalSolicitaLioEdit, setModalSolicitaLioEdit] = useState(false);
     const toggleModalSolicitaLio = () => setModalSolicitaLio(!modalSolicitaLio);
+    const toggleModalSolicitaLioEdit = () => setModalSolicitaLioEdit(!modalSolicitaLioEdit);
 
-    const [unidades, setUnidades] = useState<UnidadesProps[]>();
+    const [unidades, setUnidades] = useState<UnidadesProps[]>([{name: ""}]);
 
-    const [produtos, setProdutos] = useState<Produto[]>();
+    const [produtos, setProdutos] = useState<Produto[]>([{name: "", categoriaId: "", dioprtiaId: "", cilindroId: "", marcaId: '', qtdeMax: 0, qtdeMin: 0, unidMedida: ''}]);
 
-    const [dioptrias, setDioprias] = useState<Dioptria[]>();
+    const [dioptrias, setDioprias] = useState<Dioptria[]>([{name: ""}]);
 
-    const [cilindros, setCilindros] = useState<Cilindro[]>();
+    const [cilindros, setCilindros] = useState<Cilindro[]>([{name: ""}]);
 
-    const [medicos, setMedicos] = useState<Medico[]>();
+    const [medicos, setMedicos] = useState<Medico[]>([{name: ''}]);
+
+    const [solicitacao, setSolicitacao] = useState<SolicitacaoProps>({id: '', paciente: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', unidade: '', medico: '', categoria: '', dtCirurgia: '', dtPagamento: '', solicitante: '', status: '', comprovante: '', formCirurgico: '', injetorCartucho: '', createdAt: '', updatedAt: '', resposta: ''});
+
+    
 
     const [solicitacoes, setSolicitacoes] = useState<SolicitacaoProps[]>();
 
+    const [selectedCategory, setSelectedCategory] = useState("");
+
+    const handleCategoryChange = (category: string) => {
+        setSelectedCategory(category);
+    };
+
+    const filteredRequests = solicitacoes?.filter((request) => request.categoria.includes(selectedCategory));
+    console.log(selectedCategory);
+
     async function buscarSolicitacoes() {
-        const solicitacoes = await api.get('/api/solicitacao').then(response => setSolicitacoes(response.data)).catch(error => console.log(error));
+        const solicitacoes = await api.get('/api/solicitacao/lio').then(response => setSolicitacoes(response.data)).catch(error => console.log(error));
 
         return solicitacoes
     }
@@ -165,7 +160,7 @@ export default function Solicitacoes() {
 
         return cilindros;
     };
-    
+
     async function buscarProdutos() {
         const produtos = await api.get('/api/produto').then(response => setProdutos(response.data)).catch(error => console.log(error));
 
@@ -178,7 +173,7 @@ export default function Solicitacoes() {
         return medicos;
     };
 
-    
+
 
     useEffect(() => {
         buscarSolicitacoes();
@@ -190,12 +185,58 @@ export default function Solicitacoes() {
     }, []);
 
     async function createSolicitacao(solicitacao: CreateSolicitacaoProps) {
-        await api.post('/api/solicitacao', solicitacao).then(response => mock.push(response.data)).catch(error => console.log(error))
+        const solicitar = await api.post('/api/solicitacao/lio', solicitacao).then(response => {
+            buscarSolicitacoes();
+            toggleModalSolicitaLio();
+        }).catch(error => console.log(error));
+
+        return solicitar;
+    };
+
+    async function updateSolicitacao(solicitacao: UpdateSolicitacao) {
+        console.log(solicitacao);
+        const update = await api.put('/api/solicitacao/lio/edit', solicitacao).then(response => {
+            buscarSolicitacoes();
+            toggleModalSolicitaLioEdit();
+        }).catch(error=> console.log(error));
+
+        return update;
+    }
+
+    function selectedSolicitacao(solicitacao: SolicitacaoProps) {
+        console.log(solicitacao);
+        setSolicitacao(solicitacao);
+    };
+
+    function toggleModalEdit() {
+        toggleModalSolicitaLioEdit();
     }
 
     return (
         <div>
-            <ModalLIO isOpen={modalSolicitaLio} toggle={toggleModalSolicitaLio } unidades={unidades} produtos={produtos} dioptrias={dioptrias} cilindros={cilindros} medicos={medicos} user={session}/>
+            <ModalLIO
+                isOpen={modalSolicitaLio}
+                toggle={toggleModalSolicitaLio}
+                unidades={unidades}
+                produtos={produtos}
+                dioptrias={dioptrias}
+                cilindros={cilindros}
+                medicos={medicos}
+                user={session}
+                createSolicitacao={createSolicitacao}
+            />
+            <ModalLioEdit 
+                isOpen={modalSolicitaLioEdit}
+                toggle={toggleModalSolicitaLioEdit}
+                formData={solicitacao}
+                unidades={unidades}
+                produtos={produtos}
+                dioptrias={dioptrias}
+                cilindros={cilindros}
+                medicos={medicos}
+                updateSolicitacao={updateSolicitacao}
+
+            />
             <div className="h-screen w-screen flex flex-col bg-background pl-[4.3rem]">
                 <div className="absolute top-0 left-0 w-screen h-sreen overflow-hidden">
                     <Sidebar />
@@ -210,7 +251,7 @@ export default function Solicitacoes() {
                     <div className="w-full h-full m-auto rounded-xl shadow-xl bg-white flex items-center px-3">
 
                         <div className="h-full w-1/2  flex items-center gap-3">
-                            <Categorias />
+                            <Categorias selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
 
                         </div>
                         <div className="h-full w-1/2 flex items-center justify-end  gap-3">
@@ -223,7 +264,7 @@ export default function Solicitacoes() {
 
                 </div>
                 <div className="w-full h-[82%] px-10 py-3  ">
-                    <div className="w-full h-full m-auto rounded-xl shadow-xl flex flex-col bg-white px-3 pt-2">
+                    <div className="w-full h-full m-auto rounded-xl shadow-xl flex flex-col bg-white px-3 pt-2 overflow-auto">
                         <div className="grid grid-cols-9 py-2 ">
                             <label className="text-base font-semibold flex items-center justify-center  ">Item</label>
                             <label className="text-base font-semibold flex items-center justify-center col-span-2 ">Solicitante</label>
@@ -232,10 +273,8 @@ export default function Solicitacoes() {
                             <label className="text-base font-semibold flex items-center justify-center text-center">Dt. Solicitação</label>
                             <label className="text-base font-semibold flex items-center justify-center ">Status</label>
                             <label className="text-base font-semibold flex items-center justify-center ">Resposta</label>
-                            {/* <label className="text-base font-semibold flex items-center justify-center ">Status</label>
-                            <label className="text-base font-semibold flex items-center justify-center "></label> */}
                         </div>
-                        <Card solicitacoesList={solicitacoes} />
+                        <Card solicitacoesList={filteredRequests} selectedSolicitacao={selectedSolicitacao} toggleModalSolicitacaoLioEdit={toggleModalEdit} />
                     </div>
 
                 </div>

@@ -57,14 +57,16 @@ model VerificationToken {
 }
 
 model Unidade {
-  id   String @id @default(cuid())
-  name String
+  id          String        @id @default(cuid())
+  name        String
+  Solicitacao Solicitacao[]
 }
 
 model Categoria {
-  id      String    @id @default(cuid())
-  name    String
-  produto Produto[]
+  id          String        @id @default(cuid())
+  name        String
+  produto     Produto[]
+  Solicitacao Solicitacao[]
 }
 
 model Marca {
@@ -101,14 +103,29 @@ model Produto {
   qtdeMax     Int?
   unidMedida  String?
 
-  Categoria Categoria? @relation(fields: [categoriaId], references: [id])
-  Marca     Marca?     @relation(fields: [marcaId], references: [id])
-  Dioptria  Dioptria?  @relation(fields: [dioptriaId], references: [id])
-  Cilindro  Cilindro?  @relation(fields: [cilindroId], references: [id])
+  Categoria     Categoria?   @relation(fields: [categoriaId], references: [id])
+  Marca         Marca?       @relation(fields: [marcaId], references: [id])
+  Dioptria      Dioptria?    @relation(fields: [dioptriaId], references: [id])
+  Cilindro      Cilindro?    @relation(fields: [cilindroId], references: [id])
+  Solicitacao   Solicitacao? @relation(fields: [solicitacaoId], references: [id])
+  solicitacaoId String?
 }
 
 model Solicitacao {
-  id              String @id @default(cuid())
+  id        String    @id @default(cuid())
+  produtos  Produto[]
+  categoria Categoria @relation(fields: [categoriaId], references: [id])
+  unidade   Unidade   @relation(fields: [unidadeId], references: [id])
+  resposta String?
+  status    String
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
+  categoriaId String
+  unidadeId   String
+}
+
+model SolicitacaoLio {
+  id              String  @id @default(cuid())
   paciente        String
   dtCirurgia      String
   lentePrincipal  String
@@ -124,5 +141,10 @@ model Solicitacao {
   dtPagamento     String
   comprovante     String?
   formCirurgico   String?
-  status String?
+  resposta String?
+  status          String?
+  categoria       String  @default("Lio")
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
 }
