@@ -7,6 +7,7 @@ import { useSession, signOut, signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { SignInSchema } from '@/lib/schemas/SignInSchema';
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react';
 
 
 export default function Home() {
@@ -15,14 +16,18 @@ export default function Home() {
   // const { data:session } = useSession();
   const { register, handleSubmit, formState: { errors } } = useForm<SignInSchema>({
     resolver: zodResolver(SignInSchema)
-  })
+  });
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   async function onSubmit(data: SignInSchema) {
+    setLoading(true);
     await signIn('credentials', {
       ...data,
       redirect: true,
       callbackUrl: '/lobby'
-    })
+    });
+    // setLoading(false);
   }
 
 
@@ -80,7 +85,7 @@ export default function Home() {
               <a className='text-light-blue text-sm underline hover:cursor-pointer'>Esqueci a Senha</a>
             </div>
 
-            <ButtonLogin type='submit' form='login'>Login</ButtonLogin>
+            <ButtonLogin type='submit' form='login' loading={loading}>Login</ButtonLogin> 
 
           </div>
 

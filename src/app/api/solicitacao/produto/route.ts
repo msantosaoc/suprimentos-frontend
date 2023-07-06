@@ -19,6 +19,6 @@ export async function POST(req:Request) {
             produtos: true
         }
     });
-
+    
     return new Response(JSON.stringify(solicitaProduto))
 }

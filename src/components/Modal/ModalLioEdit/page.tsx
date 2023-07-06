@@ -314,7 +314,7 @@ export default function ModalLioEdit({ formData, cilindros, dioptrias, medicos, 
 
                                 <div className="md:w-1/4 w-full px-3 flex mb-1 items-end">
                                     {/* <CancelButton onClick={toggle}>Cancelar</CancelButton> */}
-                                    <DropdownStatus name="status" control={control} options={status} isDisabled={true} />
+                                    <DropdownStatus name="status" control={control} options={status} isDisabled={false} />
 
                                 </div>
                                 <div className="md:w-3/4 w-full px-3 flex justify-end items-center ">

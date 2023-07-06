@@ -78,7 +78,7 @@ export default function Card({solicitacoesList, selectedSolicitacao, toggleModal
                                 undefined
                     }
                     </label>
-                    <Image alt='resposta' src='/iconMessage.svg' width={25} height={25} priority={false} className="m-auto hover:scale-110"/>
+                    <Image alt='resposta' src='/iconMessage.svg' width={25} height={25} priority={false} className={`m-auto hover:scale-110 `} />
                 </div>
             </div>
 

@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { api } from "@/services/api";
 import { useSession } from 'next-auth/react';
 import ModalLioEdit from "@/components/Modal/ModalLioEdit/page";
+import ModalProduto from "@/components/Modal/ModalProduto/page";
 
 
 
@@ -89,6 +90,10 @@ interface Medico {
     name: string;
 };
 
+interface Categoria {
+    name: string;
+}
+
 interface User {
     expires?: string;
     user?: {
@@ -99,7 +104,7 @@ interface User {
     }
 }
 
-export default function Solicitacoes() {
+export default function Solicitacoes( ) {
 
     const { data: session } = useSession();
 
@@ -108,8 +113,10 @@ export default function Solicitacoes() {
 
     const [modalSolicitaLio, setModalSolicitaLio] = useState(false);
     const [modalSolicitaLioEdit, setModalSolicitaLioEdit] = useState(false);
+    const [modalSolicitaProduto, setModalSolicitaProduto] = useState(false);
     const toggleModalSolicitaLio = () => setModalSolicitaLio(!modalSolicitaLio);
     const toggleModalSolicitaLioEdit = () => setModalSolicitaLioEdit(!modalSolicitaLioEdit);
+    const toggleModalSolicitaProduto = () => setModalSolicitaProduto(!modalSolicitaProduto);
 
     const [unidades, setUnidades] = useState<UnidadesProps[]>([{ name: "" }]);
 
@@ -123,11 +130,13 @@ export default function Solicitacoes() {
 
     const [solicitacao, setSolicitacao] = useState<SolicitacaoProps>({ id: '', paciente: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', unidade: '', medico: '', categoria: '', dtCirurgia: '', dtPagamento: '', solicitante: '', status: '', comprovante: '', formCirurgico: '', injetorCartucho: '', createdAt: '', updatedAt: '', resposta: '' });
 
-
+    const [categorias, setCategorias] = useState<Categoria[]>([{name: ''}])
 
     const [solicitacoes, setSolicitacoes] = useState<SolicitacaoProps[]>();
 
     const [selectedCategory, setSelectedCategory] = useState("");
+
+    const [categoria, setCategoria] = useState("");
 
     const handleCategoryChange = (category: string) => {
         setSelectedCategory(category);
@@ -173,6 +182,11 @@ export default function Solicitacoes() {
         return medicos;
     };
 
+    async function buscarCartegorias() {
+        const categorias = await api.get('/api/categoria').then(response => setCategorias(response.data)).catch(error => console.log(error));
+
+        return categorias;
+    };
 
 
     useEffect(() => {
@@ -182,6 +196,7 @@ export default function Solicitacoes() {
         buscarCilindros();
         buscarProdutos();
         buscarMedicos();
+        buscarCartegorias();
     }, []);
 
     async function createSolicitacao(solicitacao: CreateSolicitacaoProps) {
@@ -213,7 +228,6 @@ export default function Solicitacoes() {
     };
 
     const [menuOptions, setMenuOptions] = useState(false);
-
     return (
         <div>
             <ModalLIO
@@ -238,6 +252,15 @@ export default function Solicitacoes() {
                 medicos={medicos}
                 updateSolicitacao={updateSolicitacao}
 
+            />
+            <ModalProduto 
+            isOpen={modalSolicitaProduto}
+            toggle={toggleModalSolicitaProduto}
+            unidades={unidades}
+            produtos={produtos}
+            categorias={categorias}
+            categoria={categoria}
+            user={session}
             />
             {/* <div className={`w-screen h-screen bg-black/30 z-10 absolute ${!menuOptions && 'hidden'}`} /> */}
             <div className="h-screen w-screen flex flex-col bg-background pl-[4.3rem]">
@@ -264,13 +287,13 @@ export default function Solicitacoes() {
 
                                 <div className={` flex  bg-transparent absolute -bottom-14 -translate-x-4 group-hover:visible invisible transition-all `} >
                                     <div className="flex mt-4 rounded-lg shadow-lg p-2 bg-white gap-1">
-                                        <Eye size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={toggleModalSolicitaLio}/>
+                                        <Eye size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={()=> { toggleModalSolicitaLio(); setCategoria('Lio')}}/>
                                         <div className="h-full border border-gray-menu-icon"/>
-                                        <Shirt size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer"/>
+                                        <Shirt size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={() => { toggleModalSolicitaProduto(); setCategoria('Uniforme')}}/>
                                         <div className="h-full border border-gray-menu-icon"/>
-                                        <Stethoscope size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" />
+                                        <Stethoscope size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={() => { toggleModalSolicitaProduto(); setCategoria('Cirúrgico')}}/>
                                         <div className="h-full border border-gray-menu-icon"/>
-                                        <Printer size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" />
+                                        <Printer size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={()=> { setCategoria('Escritório'); toggleModalSolicitaProduto(); }}/>
                                     </div>
                                 </div>
                             </div>

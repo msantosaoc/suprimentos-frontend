@@ -17,7 +17,8 @@ module.exports = {
       backgroundColor: {
         'background': '#f7f6f6',
         'light-blue': '#5ea9d3',
-        'light-gray': '#d9d9d9'
+        'light-gray': '#d9d9d9',
+        'gray-menu-icon': '#5f5f61',
       },
       textColor: {
         'smaller': '#2f2f2f',
