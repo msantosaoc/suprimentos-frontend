@@ -94,38 +94,50 @@ model Medico {
 }
 
 model Produto {
-  id          String  @id @default(cuid())
-  name        String
-  categoriaId String?
-  marcaId     String?
-  dioptriaId  String?
-  cilindroId  String?
-  qtdeMin     Int?
-  qtdeMax     Int?
-  unidMedida  String?
-
-  Categoria     Categoria?   @relation(fields: [categoriaId], references: [id])
-  Marca         Marca?       @relation(fields: [marcaId], references: [id])
-  Dioptria      Dioptria?    @relation(fields: [dioptriaId], references: [id])
-  Cilindro      Cilindro?    @relation(fields: [cilindroId], references: [id])
-  Solicitacao   Solicitacao? @relation(fields: [solicitacaoId], references: [id])
-  solicitacaoId String?
+  id                  String                @id @default(cuid())
+  name                String?
+  categoriaId         String?
+  marcaId             String?
+  dioptriaId          String?
+  cilindroId          String?
+  qtdeMin             Int?
+  qtdeMax             Int?
+  unidMedida          String?
+  qtde                Int
+  Categoria           Categoria?            @relation(fields: [categoriaId], references: [id])
+  Marca               Marca?                @relation(fields: [marcaId], references: [id])
+  Dioptria            Dioptria?             @relation(fields: [dioptriaId], references: [id])
+  Cilindro            Cilindro?             @relation(fields: [cilindroId], references: [id])
+  Solicitacao         Solicitacao?          @relation(fields: [solicitacaoId], references: [id])
+  solicitacaoId       String?
+  ProdutosSolicitados ProdutosSolicitados[]
 }
 
 model Solicitacao {
-  id          String    @id @default(cuid())
-  name        String
-  produtos    Produto[]
-  categoria   Categoria @relation(fields: [categoriaId], references: [id])
-  unidade     Unidade   @relation(fields: [unidadeId], references: [id])
-  usuario     User      @relation(fields: [userId], references: [id])
-  resposta    String?
-  status      String
-  createdAt   DateTime? @default(now())
-  updatedAt   DateTime? @updatedAt
-  categoriaId String
-  unidadeId   String
-  userId      String
+  id                  String                @id @default(cuid())
+  name                String
+  produtos            Produto[]
+  categoria           Categoria             @relation(fields: [categoriaId], references: [id])
+  unidade             Unidade               @relation(fields: [unidadeId], references: [id])
+  usuario             User                  @relation(fields: [userId], references: [id])
+  resposta            String?
+  status              String
+  createdAt           DateTime?             @default(now())
+  updatedAt           DateTime?             @updatedAt
+  categoriaId         String
+  unidadeId           String
+  userId              String
+  ProdutosSolicitados ProdutosSolicitados[]
+}
+
+model ProdutosSolicitados {
+  id            String      @id @default(cuid())
+  produtos      Produto     @relation(fields: [produtoId], references: [id], onDelete: Cascade)
+  produtoId     String
+  produto String?
+  solicitaco    Solicitacao @relation(fields: [solicitacaoId], references: [id], onDelete: Cascade)
+  solicitacaoId String
+  qtde Int
 }
 
 model SolicitacaoLio {

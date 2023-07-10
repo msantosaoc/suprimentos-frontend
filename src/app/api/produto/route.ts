@@ -9,6 +9,7 @@ interface RequestBody {
     qtdeMin: number;
     qtdeMax?: number;
     unidMedida?: string;
+    qtde: number;
 }
 
 export async function POST (request:Request) {
@@ -33,7 +34,8 @@ export async function POST (request:Request) {
             cilindroId: body.cilindroId,
             qtdeMin: body.qtdeMin,
             qtdeMax: body.qtdeMax,
-            unidMedida: body.unidMedida
+            unidMedida: body.unidMedida,
+            qtde: body.qtde
         }
     });
 

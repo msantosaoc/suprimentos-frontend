@@ -6,10 +6,12 @@ import ValueType from 'react-select';
 
 
 interface ValuesProps {
+  id: string;
   name: string;
 }
 
 interface OptionType {
+  id: string;
   value: string;
   label: string;
 }
@@ -21,16 +23,18 @@ interface SelectComponentProps extends SelectProps<any> {
   isDisabled?: boolean;
 }
 
-const SelectComponent: React.FC<SelectComponentProps> = ({ name, control, options, isDisabled, ...rest }) => {
+const SelectComponentProdutos: React.FC<SelectComponentProps> = ({ name, control, options, isDisabled, ...rest }) => {
   const { field: { value, onChange, onBlur }, fieldState: { error } } = useController({ name, control });
 
   const newArray = [] as OptionType[];
+  const [values, setValues] = useState<OptionType>({value: '', id: '', label: ''})
 
   options?.forEach(item => {
     // Transforme o objeto
     const transformedItem = {
       value: item.name,
-      label: item.name
+      label: item.name,
+      id: item.id
     };
 
     newArray.push(transformedItem);
@@ -42,6 +46,7 @@ const SelectComponent: React.FC<SelectComponentProps> = ({ name, control, option
       <Controller
         name={name}
         control={control}
+
         {...rest}
         render={({ field: { onChange, value } }) => (
           <Select
@@ -50,14 +55,16 @@ const SelectComponent: React.FC<SelectComponentProps> = ({ name, control, option
             isDisabled={isDisabled}
             onChange={(e) => {
               // onChange's arg will send value into hook form
-              onChange(e?.value);
+              onChange(e?.id);
+              setValues(e as any);
+              console.log(values)
             }}
             value={{
-              // make sure we remain the corect format for the controlled component
-              value: value,
-              label: value,
-              
+                label: values.label,
+                value: values.id,
+                id: values.id
             }}
+            defaultValue={{value: 'asd', label: 'asd', id: 'id'}}
             isSearchable
             noOptionsMessage={() => "Não encontrado"}
             styles={{
@@ -109,4 +116,4 @@ const SelectComponent: React.FC<SelectComponentProps> = ({ name, control, option
   );
 };
 
-export default SelectComponent;
+export default SelectComponentProdutos;

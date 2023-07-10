@@ -10,6 +10,8 @@ import { api } from "@/services/api";
 import { useSession } from 'next-auth/react';
 import ModalLioEdit from "@/components/Modal/ModalLioEdit/page";
 import ModalProduto from "@/components/Modal/ModalProduto/page";
+import { ListarProdutosSolicitados } from "@/lib/types/global";
+import ModalProdutoEdit from "@/components/Modal/ModalProdutoEdit/page";
 
 
 
@@ -64,6 +66,7 @@ interface UpdateSolicitacao {
 };
 
 interface Produto {
+    id: string;
     name: string;
     categoriaId: string | null;
     marcaId: string | null;
@@ -75,6 +78,7 @@ interface Produto {
 };
 
 interface UnidadesProps {
+    id: string;
     name: string;
 };
 
@@ -91,6 +95,7 @@ interface Medico {
 };
 
 interface Categoria {
+    id: string;
     name: string;
 }
 
@@ -108,19 +113,18 @@ export default function Solicitacoes( ) {
 
     const { data: session } = useSession();
 
-
-
-
     const [modalSolicitaLio, setModalSolicitaLio] = useState(false);
     const [modalSolicitaLioEdit, setModalSolicitaLioEdit] = useState(false);
     const [modalSolicitaProduto, setModalSolicitaProduto] = useState(false);
+    const [modalSolicitaProdutoEdit, setModalSolicitaProdutoEdit] = useState(false);
     const toggleModalSolicitaLio = () => setModalSolicitaLio(!modalSolicitaLio);
     const toggleModalSolicitaLioEdit = () => setModalSolicitaLioEdit(!modalSolicitaLioEdit);
     const toggleModalSolicitaProduto = () => setModalSolicitaProduto(!modalSolicitaProduto);
+    const toggleModalSolicitaProdutoEdit = () => setModalSolicitaProdutoEdit(!modalSolicitaProdutoEdit);
 
-    const [unidades, setUnidades] = useState<UnidadesProps[]>([{ name: "" }]);
+    const [unidades, setUnidades] = useState<UnidadesProps[]>([{id: '', name: "" }]);
 
-    const [produtos, setProdutos] = useState<Produto[]>([{ name: "", categoriaId: "", dioprtiaId: "", cilindroId: "", marcaId: '', qtdeMax: 0, qtdeMin: 0, unidMedida: '' }]);
+    const [produtos, setProdutos] = useState<Produto[]>([{id: '', name: "", categoriaId: "", dioprtiaId: "", cilindroId: "", marcaId: '', qtdeMax: 0, qtdeMin: 0, unidMedida: '' }]);
 
     const [dioptrias, setDioprias] = useState<Dioptria[]>([{ name: "" }]);
 
@@ -130,26 +134,40 @@ export default function Solicitacoes( ) {
 
     const [solicitacao, setSolicitacao] = useState<SolicitacaoProps>({ id: '', paciente: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', unidade: '', medico: '', categoria: '', dtCirurgia: '', dtPagamento: '', solicitante: '', status: '', comprovante: '', formCirurgico: '', injetorCartucho: '', createdAt: '', updatedAt: '', resposta: '' });
 
-    const [categorias, setCategorias] = useState<Categoria[]>([{name: ''}])
+    const [solicitacaoProdutos, setSolicitacaoProdutos] = useState<ListarProdutosSolicitados>({id: '', name: '', resposta: '', status: '', usuario: {id: '',  name: ''}, categoria: { id: '', name: '',}, unidade: { id: '', name: ''}, ProdutosSolicitados: [{id: '', produtoId: '', solicitacaoId: '', produto: '', qtde: 0}] });
 
-    const [solicitacoes, setSolicitacoes] = useState<SolicitacaoProps[]>();
+    const [categorias, setCategorias] = useState<Categoria[]>([{id: '', name: ''}])
+
+    const [solicitacoes, setSolicitacoes] = useState<SolicitacaoProps[]>([{id: '', paciente: '', categoria: '', cilindro: '', dioptria: '', dtCirurgia: '', dtPagamento: '', lentePrincipal: '', medico: '', solicitante: '', status: '', unidade: '', cilindroReserva: '', comprovante: '', dioptriaReserva: '', formCirurgico: '', injetorCartucho: '', lenteReserva: '', resposta: '', createdAt: '', updatedAt: ''}]);
+
+    const [solicitacoesProdutos, setSolicitacoesProdutos] = useState<ListarProdutosSolicitados[]>([{id: '', name: '', resposta: '', status: '', usuario: {id: '',  name: ''}, categoria: { id: '', name: '',}, unidade: { id: '', name: ''}, ProdutosSolicitados: [{id: '', produtoId: '', solicitacaoId: '',produto: '', qtde: 0}] }]);
 
     const [selectedCategory, setSelectedCategory] = useState("");
 
-    const [categoria, setCategoria] = useState("");
+    const [categoria, setCategoria] = useState<Categoria>({id: '', name: ''});
 
     const handleCategoryChange = (category: string) => {
         setSelectedCategory(category);
     };
 
-    const filteredRequests = solicitacoes?.filter((request) => request.categoria.includes(selectedCategory));
-    console.log(selectedCategory);
+    
+    const filteredRequests = solicitacoes?.filter((request, index) => request.categoria.includes(selectedCategory));
+    const filteredRequestsProdutos = solicitacoesProdutos?.filter((request) => request.categoria?.name.includes(selectedCategory));
+    
+    
+    
 
     async function buscarSolicitacoes() {
         const solicitacoes = await api.get('/api/solicitacao/lio').then(response => setSolicitacoes(response.data)).catch(error => console.log(error));
 
         return solicitacoes
-    }
+    };
+    
+    async function buscarSolicitacoesProdutos() {
+        const solicitacoesProdutos = await api.get('/api/solicitacao/produto').then(response => setSolicitacoesProdutos(response.data)).catch(error => console.log(error));
+
+        return solicitacoesProdutos
+    };
 
     async function buscarUnidades() {
         const unidades = await api.get('api/unidade').then(response => setUnidades(response.data)).catch(error => console.log(error));
@@ -197,12 +215,22 @@ export default function Solicitacoes( ) {
         buscarProdutos();
         buscarMedicos();
         buscarCartegorias();
+        buscarSolicitacoesProdutos();
     }, []);
 
     async function createSolicitacao(solicitacao: CreateSolicitacaoProps) {
         const solicitar = await api.post('/api/solicitacao/lio', solicitacao).then(response => {
             buscarSolicitacoes();
             toggleModalSolicitaLio();
+        }).catch(error => console.log(error));
+
+        return solicitar;
+    };
+
+    async function createSolicitacaoProduto(solicitacao: FormSolicitacaoProduto) {
+        const solicitar = await api.post('/api/solicitacao/produto', solicitacao).then(response => {
+            buscarSolicitacoes();
+            toggleModalSolicitaProduto();
         }).catch(error => console.log(error));
 
         return solicitar;
@@ -216,18 +244,37 @@ export default function Solicitacoes( ) {
         }).catch(error => console.log(error));
 
         return update;
-    }
+    };
+    
+    async function updateSolicitacaoProduto(solicitacao: ListarProdutosSolicitados) {
+        console.log(solicitacao);
+        const update = await api.put('', solicitacao).then(response => {
+            // buscarSolicitacoes();
+            // toggleModalSolicitaLioEdit();
+        }).catch(error => console.log(error));
+
+        return update;
+    };
+
 
     function selectedSolicitacao(solicitacao: SolicitacaoProps) {
         console.log(solicitacao);
         setSolicitacao(solicitacao);
     };
 
-    function toggleModalEdit() {
+    function selectedSolicitacaoProdutos(solicitacao: ListarProdutosSolicitados) {
+        console.log(solicitacao);
+        setSolicitacaoProdutos(solicitacao);
+    };
+
+    function toggleModaLioEdit() {
         toggleModalSolicitaLioEdit();
     };
 
-    const [menuOptions, setMenuOptions] = useState(false);
+    function toggleModaLioEditProdutos() {
+        toggleModalSolicitaProdutoEdit();
+    };
+
     return (
         <div>
             <ModalLIO
@@ -261,8 +308,21 @@ export default function Solicitacoes( ) {
             categorias={categorias}
             categoria={categoria}
             user={session}
+            createSolicitacaoProduto={createSolicitacaoProduto}
             />
-            {/* <div className={`w-screen h-screen bg-black/30 z-10 absolute ${!menuOptions && 'hidden'}`} /> */}
+
+            <ModalProdutoEdit 
+            isOpen={modalSolicitaProdutoEdit}
+            toggle={toggleModalSolicitaProdutoEdit}
+            categoria={categoria}
+            user={session}
+            unidades={unidades}
+            medicos={medicos}
+            formData={solicitacaoProdutos}
+            updateSolicitacaoProduto={updateSolicitacaoProduto}
+            produtos={produtos}
+            />
+
             <div className="h-screen w-screen flex flex-col bg-background pl-[4.3rem]">
                 <div className="absolute top-0 left-0 w-screen h-sreen overflow-hidden">
                     <Sidebar />
@@ -281,19 +341,19 @@ export default function Solicitacoes( ) {
 
                         </div>
                         <div className="h-full w-1/2 flex items-center justify-end z-20 gap-3 relative ">
-                            <div className="h-20 w-20 bg-white border border-gray-menu-icon shadow-sm flex flex-col justify-end items-center rounded-md relative pb-1  duration-200 group"  >
-                                <ShoppingCart className="text-gray-menu-icon  " size={48}  />
-                                <label className="text-center font-semibold text-gray-menu-icon text-sm hover:cursor-pointer">Solicitar</label>
+                            <div className="h-20 w-20 bg-white border border-gray-menu-icon shadow-sm flex flex-col justify-end items-center rounded-md relative pb-1  duration-200 group hover:cursor-pointer"  >
+                                <ShoppingCart className="text-gray-menu-icon  group-hover:cursor-pointer" size={48}  />
+                                <label className="text-center font-semibold text-gray-menu-icon text-sm group-hover:cursor-pointer">Solicitar</label>
 
                                 <div className={` flex  bg-transparent absolute -bottom-14 -translate-x-4 group-hover:visible invisible transition-all `} >
                                     <div className="flex mt-4 rounded-lg shadow-lg p-2 bg-white gap-1">
-                                        <Eye size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={()=> { toggleModalSolicitaLio(); setCategoria('Lio')}}/>
+                                        <Eye size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={() => { setCategoria({id: 'cljhn5we20002vvmcpxedty2c', name: 'Lio'}); toggleModalSolicitaLio();}}/>
                                         <div className="h-full border border-gray-menu-icon"/>
-                                        <Shirt size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={() => { toggleModalSolicitaProduto(); setCategoria('Uniforme')}}/>
+                                        <Shirt size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={() => { setCategoria({id: 'cljszugu1000svvgkyw4lxze1', name: 'Uniforme'}); toggleModalSolicitaProduto();}}/>
                                         <div className="h-full border border-gray-menu-icon"/>
-                                        <Stethoscope size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={() => { toggleModalSolicitaProduto(); setCategoria('Cirúrgico')}}/>
+                                        <Stethoscope size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={() => { setCategoria({id: 'cljszujtz000uvvgk46gobtav', name: 'Cirúrgico'}); toggleModalSolicitaProduto();}}/>
                                         <div className="h-full border border-gray-menu-icon"/>
-                                        <Printer size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={()=> { setCategoria('Escritório'); toggleModalSolicitaProduto(); }}/>
+                                        <Printer size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={()=> { setCategoria({id: 'cljhn61rz0004vvmcmqo4qmbt', name: 'Escritório'}); toggleModalSolicitaProduto(); }}/>
                                     </div>
                                 </div>
                             </div>
@@ -314,7 +374,7 @@ export default function Solicitacoes( ) {
                             <label className="text-base font-semibold flex items-center justify-center ">Status</label>
                             <label className="text-base font-semibold flex items-center justify-center ">Resposta</label>
                         </div>
-                        <Card solicitacoesList={filteredRequests} selectedSolicitacao={selectedSolicitacao} toggleModalSolicitacaoLioEdit={toggleModalEdit} />
+                        <Card solicitacoesList={filteredRequests} solicitacaoesProdutosList={filteredRequestsProdutos} selectedSolicitacao={selectedSolicitacao} selectedSolicitacaoProdutos={selectedSolicitacaoProdutos} toggleModalSolicitacaoLioEdit={toggleModaLioEdit} toggleModalSolicitacaoProdutoEdit={toggleModaLioEditProdutos} selectedCategoria={selectedCategory} />
                     </div>
 
                 </div>

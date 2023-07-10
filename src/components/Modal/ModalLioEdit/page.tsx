@@ -140,8 +140,7 @@ export default function ModalLioEdit({ formData, cilindros, dioptrias, medicos, 
     })
 
 
-    console.log(formData)
-    console.log(errors)
+    
 
     const submitData = (data: FormData) => {
         let {id, resposta, status } = data;
@@ -166,7 +165,6 @@ export default function ModalLioEdit({ formData, cilindros, dioptrias, medicos, 
             <div className="md:w-full flex-col justify-between p-8 bg-white rounded-xl border-none shadow-xl">
                 <div className="border-b w-full ">
                     <h1 className="text-2xl text-title font-semibold pb-4">Formulário de Solicitação de LIO</h1>
-                    {/* <label className="text-base text-subTitle pb-4">Acrescente no formulário os dados do(a) Paciente e a Lente vendida.</label> */}
                 </div>
                 <div>
                     <form onSubmit={handleSubmit(submitData)}>
@@ -313,13 +311,11 @@ export default function ModalLioEdit({ formData, cilindros, dioptrias, medicos, 
                             <div className="md:flex mb-2">
 
                                 <div className="md:w-1/4 w-full px-3 flex mb-1 items-end">
-                                    {/* <CancelButton onClick={toggle}>Cancelar</CancelButton> */}
-                                    <DropdownStatus name="status" control={control} options={status} isDisabled={false} />
+                                    <DropdownStatus name="status" control={control} options={status} isDisabled={true} />
 
                                 </div>
                                 <div className="md:w-3/4 w-full px-3 flex justify-end items-center ">
 
-                                    {/* <SaveButton type="submit">Enviar</SaveButton> */}
                                     <label className="text-title hover:cursor-pointer" onClick={toggle}>Fechar</label>
 
                                 </div>

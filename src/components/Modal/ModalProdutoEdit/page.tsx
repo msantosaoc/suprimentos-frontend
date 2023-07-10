@@ -9,16 +9,23 @@ import SaveButton from "@/components/Button/SaveButton";
 import { useEffect } from "react";
 import { Minus, Plus } from "lucide-react";
 import SelectComponentProdutos from "@/components/Select/Produtos/SelectComponentProdutos";
+import { ListarProdutosSolicitados } from "@/lib/types/global";
+import DropdownStatus from "@/components/Dropdown/DropdownStatus";
 
 interface Props {
     isOpen: boolean;
     toggle: () => void;
     unidades: Unidades[] | undefined;
+    formData: ListarProdutosSolicitados;
+    medicos: Medicos[] | undefined;
     produtos: Produto[] | undefined;
-    categorias: Categoria[] | undefined;
     categoria: Categoria;
     user: User | null;
-    createSolicitacaoProduto: (solicitacao: FormSolicitacaoProduto) => void;
+    updateSolicitacaoProduto: (solicitacao: ListarProdutosSolicitados) => void;
+};
+
+interface Medicos {
+    name: string;
 };
 
 interface Unidades {
@@ -44,75 +51,107 @@ interface Produto {
     unidMedida: string | null;
 };
 
-export default function ModalProduto({ isOpen, toggle, produtos, unidades, categorias, categoria, user, createSolicitacaoProduto }: Props) {
-
+export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, user, formData, produtos, medicos, updateSolicitacaoProduto }: Props) {
+    
+    const status = [
+        {value: 'Em análise', label: 'Em análise'},
+        {value: 'Recusado', label: 'Recusado'},
+        {value: 'Em compra', label: 'Em compra'},
+        {value: 'Disponível', label: 'Disponível'},
+        {value: 'Finalizado', label: 'Finalizado'},
+    ]
 
     const schema: ZodType<any> = z.object({
+        id: z.string(),
         name: z.string().nonempty(),
-        userId: z.string(),
-        unidade: z.string(),
-        categoria: z.string(),
-        resposta: z.string(),
-        produto: z.array(z.object({
+        usuario: z.object({
             id: z.string(),
+            name: z.string()
+        }),
+        unidade: z.object({
+            id: z.string(),
+            name: z.string()
+        }),
+        categoria: z.object({
+            id: z.string(),
+            name: z.string()
+        }),
+        status: z.string(),
+        resposta: z.string(),
+        ProdutosSolicitados: z.array(z.object({
+            id: z.string(),
+            produtoId: z.string(),
             produto: z.string(),
+            SolicitacaoId: z.string(),
             qtde: z.coerce.number().min(1)
-        }))
+        })).nonempty()
 
     }).transform((fields) => ({
-        ...fields,
-        userId: user?.user?.id,
-        categoria: categoria.id
+        // ...fields,
     }))
 
-    const { register, handleSubmit, formState: { errors }, control, reset } = useForm<FormSolicitacaoProduto>({
+    const { register, handleSubmit, formState: { errors }, control, reset } = useForm<ListarProdutosSolicitados>({
         resolver: zodResolver(schema), defaultValues: {
-            name: '',
-            userId: 'Matheus Santos',
-            categoria: categoria.name,
-            resposta: 'asdasd',
-            unidade: '',
-            produto: [{  id: '', qtde: 0 }],
+            // name: formData.name,
+            // userId: formData.usuario.name,
+            // categoria: formData.categoria?.name,
+            // resposta: formData.resposta,
+            // unidade: formData.unidade?.name,
+            // produto: formData.ProdutosSolicitados,
 
         }
     });
 
+    console.log(formData)
+
     const { fields, append, remove } = useFieldArray({
         control,
-        name: 'produto'
+        name: 'ProdutosSolicitados'
     });
 
     useEffect(() => {
 
         reset({
-            categoria: categoria.name,
-            userId: user?.user?.name,
-            unidade: "cljhnk9bj003pvvmccqos7kmk",
-            resposta: 'asdasd'
+            // ...formData,
+            name: formData.id,
+            categoria: formData.categoria,
+            unidade: formData.unidade,
+            usuario: formData.usuario,
+            ProdutosSolicitados: formData.ProdutosSolicitados,
+            status: formData.status
+
+            // userId: user?.user?.name,
+            // unidade: 'barra',
+            // resposta: 'asdasd'
         });
     }, [isOpen, reset]);
 
-    const submitData = (data: FormSolicitacaoProduto) => {
+    const submitData = (data: ListarProdutosSolicitados) => {
         console.log(data);
-        createSolicitacaoProduto(data);
+        updateSolicitacaoProduto(data);
     };
 
     function addNewProduto() {
-        append({ id: '',  qtde: 0 })
+        append({ id: '', produtoId: '', produto: '', solicitacaoId: '', qtde: 0 })
     };
 
     console.log(errors)
-
+    console.log(formData.unidade)
 
     const arraySolicitaProdutos = fields.map((field, index) => {
         return (
             <div key={field.id} className="flex w-full gap-2">
                 <div className="w-3/4">
-                    <SelectComponentProdutos name={`produto.${index}.id` as any} control={control} options={produtos} />
+                    {/* <input {...register(`ProdutosSolicitados.${index}.produto` as any)}
+                    className="appearance-none w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-1 "
+                    /> */}
+                    {/* <SelectComponentProdutos name={`ProdutosSolicitados.${index}.produto` as any}  control={control} options={produtos} /> */}
+                    <SelectComponent name={`ProdutosSolicitados.${index}.id` as any} isDisabled={true} control={control} options={produtos} />
                 </div>
                 <input
                     type='number'
-                    {...register(`produto.${index}.qtde` as any)}
+                    disabled
+                    {...register(`ProdutosSolicitados.${index}.qtde` as any)}
                     className="appearance-none w-1/4 bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-1 "
                     id="grid-name"
                     placeholder="Qtde" />
@@ -130,7 +169,7 @@ export default function ModalProduto({ isOpen, toggle, produtos, unidades, categ
         <Modal size='lg' isOpen={isOpen} toggle={toggle} className="">
             <div className="md:w-full flex-col justify-between pb-2 pt-8 px-8 bg-white rounded-xl border-none shadow-xl">
                 <div className="border-b w-full ">
-                    <h1 className="text-2xl text-title font-semibold">Solicitar Produtos</h1>
+                    <h1 className="text-2xl text-title font-semibold">Formulário de Solicitação de Produtos</h1>
                 </div>
                 <div>
                     <form onSubmit={handleSubmit(submitData)}>
@@ -141,14 +180,14 @@ export default function ModalProduto({ isOpen, toggle, produtos, unidades, categ
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name" >
                                         Descrição <span className={`text-red-500 ${!errors.name && 'hidden'}`}>*</span>
                                     </label>
-                                    <input {...register("name")} value={'Número aleatório'} className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-1 " id="grid-name" placeholder="" />
+                                    <input {...register("name")} disabled className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-1 " id="grid-name" placeholder="" />
 
                                 </div>
                                 <div className="md:w-1/4 w-full px-3 relative">
                                     <label className="block tracking-wide whitespace-nowrap text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
                                         Data da Solicitação
                                     </label>
-                                    <input type='date' disabled value={moment(new Date()).format("YYYY-MM-DD")} className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-1" id="grid-name" placeholder="Selecione" />
+                                    <input type='date' disabled className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-1" id="grid-name" placeholder="Selecione" />
 
                                 </div>
                             </div>
@@ -158,21 +197,21 @@ export default function ModalProduto({ isOpen, toggle, produtos, unidades, categ
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
                                         Solicitante
                                     </label>
-                                    <input {...register("userId")} disabled className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-3" id="grid-name" placeholder="Usuário solicitante" />
+                                    <input {...register("usuario.name")} disabled className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-3" id="grid-name" placeholder="Usuário solicitante" />
                                 </div>
 
                                 <div className="md:w-1/4 w-full px-3">
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
                                         Categoria <span className={`text-red-500 ${!errors.categoria?.message && 'hidden'}`}>*</span>
                                     </label>
-                                    <input {...register("categoria")} disabled  className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-3" id="grid-name" placeholder="Usuário solicitante" />
+                                    <input {...register("categoria.name")} disabled className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-3" id="grid-name" placeholder="Usuário solicitante" />
                                 </div>
 
                                 <div className="md:w-1/4 w-full px-3">
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
                                         Unidade <span className={`text-red-500 ${!errors.unidade?.message && 'hidden'}`}>*</span>
                                     </label>
-                                    <SelectComponentProdutos name="unidade" control={control} options={unidades} placeholder="Selecione" />
+                                    <SelectComponent name="unidade.name" isDisabled={true} control={control} options={unidades} placeholder="Selecione" />
                                 </div>
 
 
@@ -181,7 +220,7 @@ export default function ModalProduto({ isOpen, toggle, produtos, unidades, categ
                             <div className="md:flex mb-4 ">
                                 <div className="md:w-4/4 w-full px-3">
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 border-t border-l border-r rounded-t-lg p-2 " htmlFor="grid-name">
-                                        Produtos <span className={`text-red-500 ${!errors.produto && 'hidden'}`}>*</span>
+                                        Produtos <span className={`text-red-500 ${!errors.ProdutosSolicitados && 'hidden'}`}>*</span>
                                     </label>
                                     <div className="border rounded-b-lg p-2 -mt-2">
 
@@ -191,19 +230,24 @@ export default function ModalProduto({ isOpen, toggle, produtos, unidades, categ
 
 
                             </div>
+                            
+
                             <div className="md:flex mb-2">
 
-                                <div className="md:w-3/4 w-full px-3">
+                                <div className="md:w-1/4 w-full px-3 flex mb-1 items-end">
+                                    <DropdownStatus name="status" control={control} options={status} isDisabled={true} />
 
                                 </div>
-                                <div className="md:w-1/4 w-full px-3 flex  items-end">
+                                <div className="md:w-3/4 w-full px-3 flex justify-end items-center ">
 
-                                    <SaveButton type="submit">Enviar</SaveButton>
+                                    <label className="text-title hover:cursor-pointer" onClick={toggle}>Fechar</label>
 
                                 </div>
+
+
+
+
                             </div>
-
-
 
 
 

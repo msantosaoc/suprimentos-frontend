@@ -23,7 +23,7 @@ declare global {
         unidMedida: string;
     };
 
-    type FormSolicitacaoProduto =  {
+    type FormSolicitacaoProduto = {
         name: string;
         userId: string;
         unidade: string;
@@ -31,11 +31,12 @@ declare global {
         resposta: string;
         produto: [
             {
-                name: string;
+                id: string;
                 qtde: number;
             }
         ],
     };
+
 
     type User = {
         expires?: string;
@@ -48,4 +49,33 @@ declare global {
     };
 };
 
-export {FormSolicitacaoProduto}
+interface ListarProdutosSolicitados {
+    id: string;
+    name: string;
+    categoria: {
+        id: string;
+        name: string;
+    };
+    status: string;
+    resposta: string;
+    unidade: {
+        id: string;
+        name: string;
+    };
+    usuario: {
+        id: string;
+        name: string;
+    };
+    ProdutosSolicitados: [
+        {
+            id: string;
+            produtoId: string;
+            produto: string;
+            solicitacaoId: string;
+            qtde: number;
+        }
+    ]
+
+}
+
+export { FormSolicitacaoProduto, ListarProdutosSolicitados }
