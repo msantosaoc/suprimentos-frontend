@@ -19,6 +19,7 @@ interface Props {
     cilindros: Cilindros[] | undefined;
     medicos: Medicos[] | undefined;
     user: User | null;
+    categorias: Categoria[] | undefined;
     createSolicitacao: (solicitcao: FormData) => void;
 };
 
@@ -33,6 +34,11 @@ interface Cilindros {
 interface Unidades {
     name: string;
 };
+
+interface Categoria {
+    id: string;
+    name: string;
+}
 
 interface Produto {
     name: string;
@@ -70,6 +76,10 @@ type FormData = {
     cilindroReserva?: string;
     medico: string;
     unidade: string;
+    categoria: {
+        id: string;
+        name: string;
+    };
     solicitante: string;
     injetorCartucho?: string;
     dtPagamento: string;
@@ -79,7 +89,7 @@ type FormData = {
     resposta?: string;
 }
 
-export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias, cilindros, medicos, user, createSolicitacao }: Props) {
+export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias, cilindros, medicos, user, categorias, createSolicitacao }: Props) {
 
     
 
@@ -99,6 +109,10 @@ export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias
         dtPagamento: z.string().nonempty(),
         comprovante: z.string().nonempty(),
         formCirurgico: z.string().nonempty(),
+        categoria: z.object({
+            id: z.string(),
+            name: z.string()
+        }),
         status: z.string()
     });
     // .transform((fields) => ({
@@ -122,13 +136,14 @@ export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias
             cilindroReserva: '',
             medico: '',
             unidade: '',
-            solicitante: user?.user?.name ? user.user.name : 'Teste',
+            solicitante: user?.user?.id ? user.user.id : 'Teste',
             injetorCartucho: '',
             dtPagamento: '',
             comprovante: '',
             formCirurgico: '',
             status: 'Não visto',
-            resposta: ''
+            resposta: '',
+            categoria: {id: 'cljhn5we20002vvmcpxedty2c', name: 'Lio'}
         }
     });
 

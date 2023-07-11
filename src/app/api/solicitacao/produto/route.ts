@@ -2,31 +2,42 @@ import prisma from "@/lib/prisma";
 
 export async function POST(req:Request) {
     const body:FormSolicitacaoProduto = await req.json();
-
+    
     const solicita = await prisma.solicitacao.create({
                 data: {
                     name: body.name,
+                    status: 'Não visto',
                     userId: body.userId,
                     unidadeId: body.unidade,
                     categoriaId: body.categoria,
-                    resposta: body.resposta,
-                    status: 'Não visto',
+                    resposta: '',
                 },
                 select: {
                     id: true
                 }
             });
 
-            
             const solicitaProduto = body.produto.map(async produto => await prisma.produtosSolicitados.create({
                 data: {
                     produtoId: produto.id,
                     solicitacaoId: solicita.id,
                     qtde: produto.qtde,
+
+
                 }
             }));
+
+            const solicitacaoInicial = await prisma.solicitacaoInicial.create({
+                data: {
+                    solicitacaoId: solicita.id,
+                    userId: body.userId,
+                    unidadeId: body.unidade,
+                    status: 'Não visto',
+                    categoriaId: body.categoria
+                }
+            });
             
-            console.log(solicitaProduto)
+
     return new Response(JSON.stringify(solicitaProduto))
 };
 

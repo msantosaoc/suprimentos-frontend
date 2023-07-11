@@ -15,10 +15,14 @@ interface RequestBody {
     injetorCartucho?: string;
     dtPagamento: string;
     status?: string;
-    categoria: string;
+    categoria: {
+        id: string;
+        name: string;
+    };
     comprovante?: string;
     formCirurgico?: string;
     resposta?:string;
+    
 }
 
 
@@ -43,7 +47,21 @@ export async function POST (request:Request) {
                 dtPagamento: body.dtPagamento,
                 status: body.status,
                 comprovante: body.comprovante,
-                formCirurgico: body.formCirurgico
+                formCirurgico: body.formCirurgico,
+                categoriaId: body.categoria.id
+            },
+            select: {
+                id: true
+            }
+        });
+
+        const solicitacaoInicial = await prisma.solicitacaoInicial.create({
+            data: {
+                solicitacaoLioId: solicitacaoLio.id,
+                userId: body.solicitante,
+                unidadeId: "cljhnk9bj003pvvmccqos7kmk",
+                status: 'Não visto',
+                categoriaId: body.categoria.id
             }
         });
         
@@ -71,7 +89,7 @@ export async function GET (request:Request) {
             injetorCartucho: true,
             dtPagamento: true,
             status: true,
-             categoria: true,
+             Categoria: true,
              createdAt: true,
              updatedAt:true,
              comprovante: true,

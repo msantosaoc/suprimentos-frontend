@@ -3,10 +3,16 @@
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import Image from "next/image";
+import Skeleton from "react-loading-skeleton";
+import { useEffect, useState } from "react";
+
 
 export default function Lobby() {
-
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
+
+    
+
     return (
         <div>
 
@@ -28,8 +34,8 @@ export default function Lobby() {
 
                         <div onClick={() => router.push('/solicitacoes')} className="w-80 h-full bg-white rounded-xl shadow-xl p-4 hover:bg-light-blue hover:cursor-pointer duration-300">
                             <div className="flex flex-col relative w-full h-full ">
-
-                                <Image alt='logo diretoria' src='/iconSolicita.svg' className=" " fill loading="lazy" />
+                                
+                                 <Image alt='logo diretoria' src='/iconSolicita.svg' className=" " fill loading="lazy" />
                             </div>
                         </div>
                         <div className="w-80 h-full bg-white rounded-xl shadow-xl p-4 hover:bg-light-blue hover:cursor-pointer duration-300">

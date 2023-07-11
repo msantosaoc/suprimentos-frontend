@@ -5,14 +5,15 @@ import Sidebar from "@/components/Sidebar/Sidebar";
 import { Eye, Printer, Shirt, ShoppingCart, Stethoscope } from 'lucide-react'
 import Categorias from "@/components/Categorias/page";
 import ModalLIO from "@/components/Modal/ModalLIO/page";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { api } from "@/services/api";
 import { useSession } from 'next-auth/react';
 import ModalLioEdit from "@/components/Modal/ModalLioEdit/page";
 import ModalProduto from "@/components/Modal/ModalProduto/page";
-import { ListarProdutosSolicitados } from "@/lib/types/global";
+import { BuscaSolicitacaoInicial, ListarProdutosSolicitados } from "@/lib/types/global";
 import ModalProdutoEdit from "@/components/Modal/ModalProdutoEdit/page";
-
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 
 interface SolicitacaoProps {
@@ -109,7 +110,7 @@ interface User {
     }
 }
 
-export default function Solicitacoes( ) {
+export default function Solicitacoes() {
 
     const { data: session } = useSession();
 
@@ -122,9 +123,11 @@ export default function Solicitacoes( ) {
     const toggleModalSolicitaProduto = () => setModalSolicitaProduto(!modalSolicitaProduto);
     const toggleModalSolicitaProdutoEdit = () => setModalSolicitaProdutoEdit(!modalSolicitaProdutoEdit);
 
-    const [unidades, setUnidades] = useState<UnidadesProps[]>([{id: '', name: "" }]);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const [produtos, setProdutos] = useState<Produto[]>([{id: '', name: "", categoriaId: "", dioprtiaId: "", cilindroId: "", marcaId: '', qtdeMax: 0, qtdeMin: 0, unidMedida: '' }]);
+    const [unidades, setUnidades] = useState<UnidadesProps[]>([{ id: '', name: "" }]);
+
+    const [produtos, setProdutos] = useState<Produto[]>([{ id: '', name: "", categoriaId: "", dioprtiaId: "", cilindroId: "", marcaId: '', qtdeMax: 0, qtdeMin: 0, unidMedida: '' }]);
 
     const [dioptrias, setDioprias] = useState<Dioptria[]>([{ name: "" }]);
 
@@ -132,37 +135,38 @@ export default function Solicitacoes( ) {
 
     const [medicos, setMedicos] = useState<Medico[]>([{ name: '' }]);
 
-    const [solicitacao, setSolicitacao] = useState<SolicitacaoProps>({ id: '', paciente: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', unidade: '', medico: '', categoria: '', dtCirurgia: '', dtPagamento: '', solicitante: '', status: '', comprovante: '', formCirurgico: '', injetorCartucho: '', createdAt: '', updatedAt: '', resposta: '' });
+    const [solicitacao, setSolicitacao] = useState<BuscaSolicitacaoInicial>({ id: '', User: { name: '' }, Categoria: { id: '', name: '' }, solicitacaoId: '', solicitacaoLioId: '', status: '', Unidade: { name: '' }, createdAt: '', Solicitacao: { id: '', name: '', resposta: '', status: '', createdAt: '', updatedAt: '', categoriaId: '', unidadeId: '', userId: '' }, SolicitacaoLio: { id: '', paciente: '', dtCirurgia: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', medico: '', unidade: '', solicitante: '', injetorCartucho: '', dtPagamento: '', comprovante: '', formCirurgico: '', resposta: '', status: '', categoria: '', createdAt: '', updatedAt: '' } });
 
-    const [solicitacaoProdutos, setSolicitacaoProdutos] = useState<ListarProdutosSolicitados>({id: '', name: '', resposta: '', status: '', usuario: {id: '',  name: ''}, categoria: { id: '', name: '',}, unidade: { id: '', name: ''}, ProdutosSolicitados: [{id: '', produtoId: '', solicitacaoId: '', produto: '', qtde: 0}] });
+    const [solicitacaoProdutos, setSolicitacaoProdutos] = useState<BuscaSolicitacaoInicial>({ id: '', User: { name: '' }, Categoria: { id: '', name: '' }, solicitacaoId: '', solicitacaoLioId: '', status: '', Unidade: { name: '' }, createdAt: '', Solicitacao: { id: '', name: '', resposta: '', status: '', createdAt: '', updatedAt: '', categoriaId: '', unidadeId: '', userId: '' }, SolicitacaoLio: { id: '', paciente: '', dtCirurgia: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', medico: '', unidade: '', solicitante: '', injetorCartucho: '', dtPagamento: '', comprovante: '', formCirurgico: '', resposta: '', status: '', categoria: '', createdAt: '', updatedAt: '' } });
 
-    const [categorias, setCategorias] = useState<Categoria[]>([{id: '', name: ''}])
+    const [categorias, setCategorias] = useState<Categoria[]>([{ id: '', name: '' }])
 
-    const [solicitacoes, setSolicitacoes] = useState<SolicitacaoProps[]>([{id: '', paciente: '', categoria: '', cilindro: '', dioptria: '', dtCirurgia: '', dtPagamento: '', lentePrincipal: '', medico: '', solicitante: '', status: '', unidade: '', cilindroReserva: '', comprovante: '', dioptriaReserva: '', formCirurgico: '', injetorCartucho: '', lenteReserva: '', resposta: '', createdAt: '', updatedAt: ''}]);
+    const [solicitacoes, setSolicitacoes] = useState<SolicitacaoProps[]>([{ id: '', paciente: '', categoria: '', cilindro: '', dioptria: '', dtCirurgia: '', dtPagamento: '', lentePrincipal: '', medico: '', solicitante: '', status: '', unidade: '', cilindroReserva: '', comprovante: '', dioptriaReserva: '', formCirurgico: '', injetorCartucho: '', lenteReserva: '', resposta: '', createdAt: '', updatedAt: '' }]);
 
-    const [solicitacoesProdutos, setSolicitacoesProdutos] = useState<ListarProdutosSolicitados[]>([{id: '', name: '', resposta: '', status: '', usuario: {id: '',  name: ''}, categoria: { id: '', name: '',}, unidade: { id: '', name: ''}, ProdutosSolicitados: [{id: '', produtoId: '', solicitacaoId: '',produto: '', qtde: 0}] }]);
+    const [solicitacoesProdutos, setSolicitacoesProdutos] = useState<ListarProdutosSolicitados[]>([{ id: '', name: '', resposta: '', status: '', usuario: { id: '', name: '' }, categoria: { id: '', name: '', }, unidade: { id: '', name: '' }, ProdutosSolicitados: [{ id: '', produtoId: '', solicitacaoId: '', produto: '', qtde: 0 }] }]);
 
-    const [selectedCategory, setSelectedCategory] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState<Categoria>({ id: '', name: '' });
 
-    const [categoria, setCategoria] = useState<Categoria>({id: '', name: ''});
+    const [categoria, setCategoria] = useState<Categoria>({ id: '', name: '' });
 
-    const handleCategoryChange = (category: string) => {
+    const [solicitacoesIniciais, setSolicitacoesIniciais] = useState<BuscaSolicitacaoInicial[]>([{ id: '', User: { name: '' }, Categoria: { id: '', name: '' }, solicitacaoId: '', solicitacaoLioId: '', status: '', Unidade: { name: '' }, createdAt: '', Solicitacao: { id: '', name: '', resposta: '', status: '', createdAt: '', updatedAt: '', categoriaId: '', unidadeId: '', userId: '' }, SolicitacaoLio: { id: '', paciente: '', dtCirurgia: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', medico: '', unidade: '', solicitante: '', injetorCartucho: '', dtPagamento: '', comprovante: '', formCirurgico: '', resposta: '', status: '', categoria: '', createdAt: '', updatedAt: '' } }])
+
+    const handleCategoryChange = (category: Categoria) => {
         setSelectedCategory(category);
     };
 
-    
-    const filteredRequests = solicitacoes?.filter((request, index) => request.categoria.includes(selectedCategory));
-    const filteredRequestsProdutos = solicitacoesProdutos?.filter((request) => request.categoria?.name.includes(selectedCategory));
-    
-    
-    
+
+    const filteredRequests = solicitacoes?.filter((request, index) => request.categoria?.includes(selectedCategory.name));
+    const filteredRequestsProdutos = solicitacoesProdutos?.filter((request) => request.categoria?.name?.includes(selectedCategory.name));
+
+    const filterSolicitacoesIniciais = solicitacoesIniciais.filter((item, index) => item.Categoria.name.includes(selectedCategory.name))
 
     async function buscarSolicitacoes() {
         const solicitacoes = await api.get('/api/solicitacao/lio').then(response => setSolicitacoes(response.data)).catch(error => console.log(error));
 
         return solicitacoes
     };
-    
+
     async function buscarSolicitacoesProdutos() {
         const solicitacoesProdutos = await api.get('/api/solicitacao/produto').then(response => setSolicitacoesProdutos(response.data)).catch(error => console.log(error));
 
@@ -206,6 +210,13 @@ export default function Solicitacoes( ) {
         return categorias;
     };
 
+    async function buscarSolicitacoesIniciais() {
+        setIsLoading(true);
+        const solicitacoesIniciais = await api.get('/api/solicitacao').then(response => setSolicitacoesIniciais(response.data)).catch(error => console.log(error));
+        setIsLoading(false);
+        return solicitacoesIniciais;
+    }
+
 
     useEffect(() => {
         buscarSolicitacoes();
@@ -216,12 +227,14 @@ export default function Solicitacoes( ) {
         buscarMedicos();
         buscarCartegorias();
         buscarSolicitacoesProdutos();
+        buscarSolicitacoesIniciais();
     }, []);
 
     async function createSolicitacao(solicitacao: CreateSolicitacaoProps) {
         const solicitar = await api.post('/api/solicitacao/lio', solicitacao).then(response => {
             buscarSolicitacoes();
             toggleModalSolicitaLio();
+            buscarSolicitacoesIniciais()
         }).catch(error => console.log(error));
 
         return solicitar;
@@ -231,6 +244,7 @@ export default function Solicitacoes( ) {
         const solicitar = await api.post('/api/solicitacao/produto', solicitacao).then(response => {
             buscarSolicitacoes();
             toggleModalSolicitaProduto();
+            buscarSolicitacoesIniciais()
         }).catch(error => console.log(error));
 
         return solicitar;
@@ -245,7 +259,7 @@ export default function Solicitacoes( ) {
 
         return update;
     };
-    
+
     async function updateSolicitacaoProduto(solicitacao: ListarProdutosSolicitados) {
         console.log(solicitacao);
         const update = await api.put('', solicitacao).then(response => {
@@ -257,12 +271,12 @@ export default function Solicitacoes( ) {
     };
 
 
-    function selectedSolicitacao(solicitacao: SolicitacaoProps) {
+    function selectedSolicitacao(solicitacao: BuscaSolicitacaoInicial) {
         console.log(solicitacao);
         setSolicitacao(solicitacao);
     };
 
-    function selectedSolicitacaoProdutos(solicitacao: ListarProdutosSolicitados) {
+    function selectedSolicitacaoProdutos(solicitacao: BuscaSolicitacaoInicial) {
         console.log(solicitacao);
         setSolicitacaoProdutos(solicitacao);
     };
@@ -287,6 +301,7 @@ export default function Solicitacoes( ) {
                 medicos={medicos}
                 user={session}
                 createSolicitacao={createSolicitacao}
+                categorias={categorias}
             />
             <ModalLioEdit
                 isOpen={modalSolicitaLioEdit}
@@ -300,18 +315,18 @@ export default function Solicitacoes( ) {
                 updateSolicitacao={updateSolicitacao}
 
             />
-            <ModalProduto 
-            isOpen={modalSolicitaProduto}
-            toggle={toggleModalSolicitaProduto}
-            unidades={unidades}
-            produtos={produtos}
-            categorias={categorias}
-            categoria={categoria}
-            user={session}
-            createSolicitacaoProduto={createSolicitacaoProduto}
+            <ModalProduto
+                isOpen={modalSolicitaProduto}
+                toggle={toggleModalSolicitaProduto}
+                unidades={unidades}
+                produtos={produtos}
+                categorias={categorias}
+                categoria={categoria}
+                user={session}
+                createSolicitacaoProduto={createSolicitacaoProduto}
             />
 
-            <ModalProdutoEdit 
+            {/* <ModalProdutoEdit 
             isOpen={modalSolicitaProdutoEdit}
             toggle={toggleModalSolicitaProdutoEdit}
             categoria={categoria}
@@ -321,7 +336,7 @@ export default function Solicitacoes( ) {
             formData={solicitacaoProdutos}
             updateSolicitacaoProduto={updateSolicitacaoProduto}
             produtos={produtos}
-            />
+            /> */}
 
             <div className="h-screen w-screen flex flex-col bg-background pl-[4.3rem]">
                 <div className="absolute top-0 left-0 w-screen h-sreen overflow-hidden">
@@ -337,23 +352,26 @@ export default function Solicitacoes( ) {
                     <div className="w-full h-full m-auto rounded-xl shadow-xl bg-white flex items-center px-3">
 
                         <div className="h-full w-1/2  flex items-center gap-3">
+                            
                             <Categorias selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
+
+                            
 
                         </div>
                         <div className="h-full w-1/2 flex items-center justify-end z-20 gap-3 relative ">
                             <div className="h-20 w-20 bg-white border border-gray-menu-icon shadow-sm flex flex-col justify-end items-center rounded-md relative pb-1  duration-200 group hover:cursor-pointer"  >
-                                <ShoppingCart className="text-gray-menu-icon  group-hover:cursor-pointer" size={48}  />
+                                <ShoppingCart className="text-gray-menu-icon  group-hover:cursor-pointer" size={48} />
                                 <label className="text-center font-semibold text-gray-menu-icon text-sm group-hover:cursor-pointer">Solicitar</label>
 
                                 <div className={` flex  bg-transparent absolute -bottom-14 -translate-x-4 group-hover:visible invisible transition-all `} >
                                     <div className="flex mt-4 rounded-lg shadow-lg p-2 bg-white gap-1">
-                                        <Eye size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={() => { setCategoria({id: 'cljhn5we20002vvmcpxedty2c', name: 'Lio'}); toggleModalSolicitaLio();}}/>
-                                        <div className="h-full border border-gray-menu-icon"/>
-                                        <Shirt size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={() => { setCategoria({id: 'cljszugu1000svvgkyw4lxze1', name: 'Uniforme'}); toggleModalSolicitaProduto();}}/>
-                                        <div className="h-full border border-gray-menu-icon"/>
-                                        <Stethoscope size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={() => { setCategoria({id: 'cljszujtz000uvvgk46gobtav', name: 'Cirúrgico'}); toggleModalSolicitaProduto();}}/>
-                                        <div className="h-full border border-gray-menu-icon"/>
-                                        <Printer size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={()=> { setCategoria({id: 'cljhn61rz0004vvmcmqo4qmbt', name: 'Escritório'}); toggleModalSolicitaProduto(); }}/>
+                                        <Eye size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={() => { setCategoria({ id: 'cljhn5we20002vvmcpxedty2c', name: 'Lio' }); toggleModalSolicitaLio(); }} />
+                                        <div className="h-full border border-gray-menu-icon" />
+                                        <Shirt size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={() => { setCategoria({ id: 'cljszugu1000svvgkyw4lxze1', name: 'Uniforme' }); toggleModalSolicitaProduto(); }} />
+                                        <div className="h-full border border-gray-menu-icon" />
+                                        <Stethoscope size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={() => { setCategoria({ id: 'cljszujtz000uvvgk46gobtav', name: 'Cirúrgico' }); toggleModalSolicitaProduto(); }} />
+                                        <div className="h-full border border-gray-menu-icon" />
+                                        <Printer size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={() => { setCategoria({ id: 'cljhn61rz0004vvmcmqo4qmbt', name: 'Escritório' }); toggleModalSolicitaProduto(); }} />
                                     </div>
                                 </div>
                             </div>
@@ -374,7 +392,14 @@ export default function Solicitacoes( ) {
                             <label className="text-base font-semibold flex items-center justify-center ">Status</label>
                             <label className="text-base font-semibold flex items-center justify-center ">Resposta</label>
                         </div>
-                        <Card solicitacoesList={filteredRequests} solicitacaoesProdutosList={filteredRequestsProdutos} selectedSolicitacao={selectedSolicitacao} selectedSolicitacaoProdutos={selectedSolicitacaoProdutos} toggleModalSolicitacaoLioEdit={toggleModaLioEdit} toggleModalSolicitacaoProdutoEdit={toggleModaLioEditProdutos} selectedCategoria={selectedCategory} />
+                        {
+                            isLoading
+                                ?
+                                <Skeleton count={10} className="h-16 overflow-hidden" />
+                                :
+                                <Card solicitacoesList={filteredRequests} solicitacoesIniciais={filterSolicitacoesIniciais} solicitacaoesProdutosList={filteredRequestsProdutos} selectedSolicitacao={selectedSolicitacao} selectedSolicitacaoProdutos={selectedSolicitacaoProdutos} toggleModalSolicitacaoLioEdit={toggleModaLioEdit} toggleModalSolicitacaoProdutoEdit={toggleModaLioEditProdutos} selectedCategoria={selectedCategory} />
+                        }
+
                     </div>
 
                 </div>

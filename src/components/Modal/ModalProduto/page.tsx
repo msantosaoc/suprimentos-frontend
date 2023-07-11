@@ -55,23 +55,21 @@ export default function ModalProduto({ isOpen, toggle, produtos, unidades, categ
         resposta: z.string(),
         produto: z.array(z.object({
             id: z.string(),
-            produto: z.string(),
             qtde: z.coerce.number().min(1)
         }))
 
     }).transform((fields) => ({
         ...fields,
         userId: user?.user?.id,
-        categoria: categoria.id
+        categoria: categoria.id,
     }))
 
     const { register, handleSubmit, formState: { errors }, control, reset } = useForm<FormSolicitacaoProduto>({
         resolver: zodResolver(schema), defaultValues: {
             name: '',
-            userId: 'Matheus Santos',
+            userId: user?.user?.id ? user.user.name : 'Teste',
             categoria: categoria.name,
-            resposta: 'asdasd',
-            unidade: '',
+            resposta: '',
             produto: [{  id: '', qtde: 0 }],
 
         }
@@ -86,9 +84,8 @@ export default function ModalProduto({ isOpen, toggle, produtos, unidades, categ
 
         reset({
             categoria: categoria.name,
-            userId: user?.user?.name,
-            unidade: "cljhnk9bj003pvvmccqos7kmk",
-            resposta: 'asdasd'
+            userId: user?.user ? user.user.name : 'Teste',
+            resposta: ''
         });
     }, [isOpen, reset]);
 
@@ -165,7 +162,8 @@ export default function ModalProduto({ isOpen, toggle, produtos, unidades, categ
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
                                         Categoria <span className={`text-red-500 ${!errors.categoria?.message && 'hidden'}`}>*</span>
                                     </label>
-                                    <input {...register("categoria")} disabled  className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-3" id="grid-name" placeholder="Usuário solicitante" />
+                                    {/* <input {...register("categoria")} disabled  className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-3" id="grid-name" placeholder="Usuário solicitante" /> */}
+                                    <SelectComponent name="categoria" control={control} options={categorias} placeholder="Selecione" />
                                 </div>
 
                                 <div className="md:w-1/4 w-full px-3">

@@ -19,6 +19,7 @@ export default function RootLayout({
       <ThemeContextParent>
         <MenuContextParent>
           <html lang="pt-br">
+            
             <body >
               {children}
             </body>

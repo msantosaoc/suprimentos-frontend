@@ -22,7 +22,7 @@ interface valuesProps {
 
 
 
-export const SelectItems = React.forwardRef<HTMLInputElement, InputProps>(({placeholder, name, values, ...props}, ref) => {
+const SelectItems = React.forwardRef<HTMLInputElement, InputProps>(({placeholder, name, values, ...props}, ref) => {
 
     const [dropdown, setDropdown] = useState('hidden');
     const [selectItem, setSelectItem] = useState('');
@@ -87,4 +87,10 @@ export const SelectItems = React.forwardRef<HTMLInputElement, InputProps>(({plac
             </div>
         </>
     )
-})
+
+
+});
+
+SelectItems.displayName = "SelectItems";
+
+export { SelectItems }

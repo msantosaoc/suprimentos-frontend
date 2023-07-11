@@ -9,18 +9,19 @@ import SaveButton from "@/components/Button/SaveButton";
 import { useEffect } from "react";
 import { Minus, Plus } from "lucide-react";
 import SelectComponentProdutos from "@/components/Select/Produtos/SelectComponentProdutos";
-import { ListarProdutosSolicitados } from "@/lib/types/global";
+import { BuscaSolicitacaoInicial, ListarProdutosSolicitados } from "@/lib/types/global";
 import DropdownStatus from "@/components/Dropdown/DropdownStatus";
 
 interface Props {
     isOpen: boolean;
     toggle: () => void;
     unidades: Unidades[] | undefined;
-    formData: ListarProdutosSolicitados;
+    formData: BuscaSolicitacaoInicial;
     medicos: Medicos[] | undefined;
     produtos: Produto[] | undefined;
     categoria: Categoria;
     user: User | null;
+    categorias: Categoria[] | undefined;
     updateSolicitacaoProduto: (solicitacao: ListarProdutosSolicitados) => void;
 };
 
@@ -51,7 +52,7 @@ interface Produto {
     unidMedida: string | null;
 };
 
-export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, user, formData, produtos, medicos, updateSolicitacaoProduto }: Props) {
+export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, user, formData, produtos, categorias, medicos, updateSolicitacaoProduto }: Props) {
     
     const status = [
         {value: 'Em análise', label: 'Em análise'},
@@ -204,7 +205,8 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
                                         Categoria <span className={`text-red-500 ${!errors.categoria?.message && 'hidden'}`}>*</span>
                                     </label>
-                                    <input {...register("categoria.name")} disabled className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-3" id="grid-name" placeholder="Usuário solicitante" />
+                                    {/* <input {...register("categoria.name")} disabled className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-3" id="grid-name" placeholder="Usuário solicitante" /> */}
+                                    <SelectComponent name="categoria.name" isDisabled={true} control={control} options={categorias} placeholder="Selecione" />
                                 </div>
 
                                 <div className="md:w-1/4 w-full px-3">

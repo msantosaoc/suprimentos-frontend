@@ -38,15 +38,16 @@ model Session {
 }
 
 model User {
-  id            String        @id @default(cuid())
-  name          String?
-  email         String?       @unique
-  emailVerified DateTime?
-  password      String
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  Solicitacao   Solicitacao[]
+  id                 String               @id @default(cuid())
+  name               String?
+  email              String?              @unique
+  emailVerified      DateTime?
+  password           String
+  image              String?
+  accounts           Account[]
+  sessions           Session[]
+  Solicitacao        Solicitacao[]
+  SolicitacaoInicial SolicitacaoInicial[]
 }
 
 model VerificationToken {
@@ -58,16 +59,19 @@ model VerificationToken {
 }
 
 model Unidade {
-  id          String        @id @default(cuid())
-  name        String
-  Solicitacao Solicitacao[]
+  id                 String               @id @default(cuid())
+  name               String
+  Solicitacao        Solicitacao[]
+  SolicitacaoInicial SolicitacaoInicial[]
 }
 
 model Categoria {
-  id          String        @id @default(cuid())
-  name        String
-  produto     Produto[]
-  Solicitacao Solicitacao[]
+  id                 String               @id @default(cuid())
+  name               String
+  produto            Produto[]
+  Solicitacao        Solicitacao[]
+  SolicitacaoInicial SolicitacaoInicial[]
+  SolicitacaoLio     SolicitacaoLio[]
 }
 
 model Marca {
@@ -128,39 +132,60 @@ model Solicitacao {
   unidadeId           String
   userId              String
   ProdutosSolicitados ProdutosSolicitados[]
+  SolicitacaoInicial  SolicitacaoInicial[]
 }
 
 model ProdutosSolicitados {
   id            String      @id @default(cuid())
   produtos      Produto     @relation(fields: [produtoId], references: [id], onDelete: Cascade)
   produtoId     String
-  produto String?
+  produto       String?
   solicitaco    Solicitacao @relation(fields: [solicitacaoId], references: [id], onDelete: Cascade)
   solicitacaoId String
-  qtde Int
+  qtde          Int
+}
+
+model SolicitacaoInicial {
+  id String @id @default(cuid())
+
+  User             User?           @relation(fields: [userId], references: [id])
+  userId           String?
+  Solicitacao      Solicitacao?    @relation(fields: [solicitacaoId], references: [id])
+  solicitacaoId    String?
+  SolicitacaoLio   SolicitacaoLio? @relation(fields: [solicitacaoLioId], references: [id])
+  solicitacaoLioId String?
+  createdAt        DateTime?       @default(now())
+  updatedAt        DateTime?       @updatedAt
+  status           String          @default("Lio")
+  Unidade          Unidade?        @relation(fields: [unidadeId], references: [id])
+  unidadeId        String?
+  Categoria        Categoria?      @relation(fields: [categoriaId], references: [id])
+  categoriaId      String?
 }
 
 model SolicitacaoLio {
-  id              String  @id @default(cuid())
-  paciente        String
-  dtCirurgia      String
-  lentePrincipal  String
-  dioptria        String
-  cilindro        String
-  lenteReserva    String?
-  dioptriaReserva String?
-  cilindroReserva String?
-  medico          String
-  unidade         String
-  solicitante     String
-  injetorCartucho String?
-  dtPagamento     String
-  comprovante     String?
-  formCirurgico   String?
-  resposta        String?
-  status          String?
-  categoria       String  @default("Lio")
+  id                 String               @id @default(cuid())
+  paciente           String
+  dtCirurgia         String
+  lentePrincipal     String
+  dioptria           String
+  cilindro           String
+  lenteReserva       String?
+  dioptriaReserva    String?
+  cilindroReserva    String?
+  medico             String
+  unidade            String
+  solicitante        String
+  injetorCartucho    String?
+  dtPagamento        String
+  comprovante        String?
+  formCirurgico      String?
+  resposta           String?
+  status             String?
+  SolicitacaoInicial SolicitacaoInicial[]
 
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
+  createdAt   DateTime?  @default(now())
+  updatedAt   DateTime?  @updatedAt
+  Categoria   Categoria? @relation(fields: [categoriaId], references: [id])
+  categoriaId String?
 }

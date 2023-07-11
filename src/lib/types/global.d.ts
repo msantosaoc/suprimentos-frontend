@@ -76,6 +76,58 @@ interface ListarProdutosSolicitados {
         }
     ]
 
+};
+
+interface BuscaSolicitacaoInicial {
+    id: string;
+    User: {
+        name: string;
+    },
+    Categoria: {
+        id: string;
+        name: string;
+    },
+    solicitacaoId?: string;
+    solicitacaoLioId?: string;
+    status: string;
+    Unidade: {
+        name: string;
+    },
+    createdAt: string;
+    Solicitacao?: {
+        id: string;
+        name: string;
+        resposta?: string;
+        status: string;
+        createdAt: string;
+        updatedAt: string;
+        categoriaId: string;
+        unidadeId: string;
+        userId: string;
+    },
+    SolicitacaoLio?: {
+        id: string;
+        paciente: string;
+        dtCirurgia: string;
+        lentePrincipal: string;
+        dioptria: string;
+        cilindro: string;
+        lenteReserva?: string;
+        dioptriaReserva: string;
+        cilindroReserva: string;
+        medico: string;
+        unidade: string;
+        solicitante: string;
+        injetorCartucho?: string;
+        dtPagamento: string;
+        comprovante: string;
+        formCirurgico: string;
+        resposta?: string;
+        status: string;
+        categoria: string;
+        createdAt: string;
+        updatedAt: string; 
+    }
 }
 
-export { FormSolicitacaoProduto, ListarProdutosSolicitados }
+export { FormSolicitacaoProduto, ListarProdutosSolicitados, BuscaSolicitacaoInicial }

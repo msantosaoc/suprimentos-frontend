@@ -40,6 +40,18 @@ const SelectComponentProdutos: React.FC<SelectComponentProps> = ({ name, control
     newArray.push(transformedItem);
   });
 
+  const handleSelectChange = (selectedOption: OptionType | null) => {
+    if (selectedOption) {
+      const { id } = selectedOption;
+      setValues(selectedOption);
+      onChange(id); // Passa o ID do item selecionado
+      console.log(id);
+    } else {
+      setValues({ value: '', id: '', label: '' });
+      onChange(''); // Define como vazio caso nenhum item seja selecionado
+    }
+  };
+
 
   return (
     <>
@@ -48,22 +60,13 @@ const SelectComponentProdutos: React.FC<SelectComponentProps> = ({ name, control
         control={control}
 
         {...rest}
-        render={({ field: { onChange, value } }) => (
+        render={({ field }) => (
           <Select
             placeholder={rest.placeholder}
             options={newArray}
             isDisabled={isDisabled}
-            onChange={(e) => {
-              // onChange's arg will send value into hook form
-              onChange(e?.id);
-              setValues(e as any);
-              console.log(values)
-            }}
-            value={{
-                label: values.label,
-                value: values.id,
-                id: values.id
-            }}
+            onChange={handleSelectChange}
+            value={values}
             defaultValue={{value: 'asd', label: 'asd', id: 'id'}}
             isSearchable
             noOptionsMessage={() => "Não encontrado"}
