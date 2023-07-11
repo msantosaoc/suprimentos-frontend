@@ -8,12 +8,12 @@ import { BuscaSolicitacaoInicial, ListarProdutosSolicitados } from "@/lib/types/
 
 interface CardProps {
     // children: ReactNode;
-    solicitacoesList?: SolicitacaoProps[];
+    // solicitacoesList?: SolicitacaoProps[];
     selectedSolicitacao: (solicitacao: BuscaSolicitacaoInicial) => void;
     selectedSolicitacaoProdutos: (solicitacao: BuscaSolicitacaoInicial) => void;
     toggleModalSolicitacaoLioEdit: () => void;
     toggleModalSolicitacaoProdutoEdit: () => void;
-    solicitacaoesProdutosList?: ListarProdutosSolicitados[];
+    // solicitacaoesProdutosList?: ListarProdutosSolicitados[];
     selectedCategoria: Categoria;
     solicitacoesIniciais: BuscaSolicitacaoInicial[];
 };
@@ -47,15 +47,22 @@ interface SolicitacaoProps {
     resposta?: string;
 }
 
-export default function Card({solicitacoesList, selectedSolicitacao, selectedSolicitacaoProdutos, toggleModalSolicitacaoLioEdit,toggleModalSolicitacaoProdutoEdit, solicitacaoesProdutosList, selectedCategoria, solicitacoesIniciais}: CardProps) {
+export default function Card({ selectedSolicitacao, selectedSolicitacaoProdutos, toggleModalSolicitacaoLioEdit,toggleModalSolicitacaoProdutoEdit, selectedCategoria, solicitacoesIniciais}: CardProps) {
   
 
     function handleSelectSolicitacao(solicitacao: BuscaSolicitacaoInicial) {
-        selectedSolicitacao(solicitacao);
-        console.log(solicitacao)
-        toggleModalSolicitacaoLioEdit();
-    };
 
+        if(solicitacao.Categoria.name === "Lio") {
+            selectedSolicitacao(solicitacao);
+            toggleModalSolicitacaoLioEdit();
+
+        }else {
+        handleSelectSolicitacaoProdutos(solicitacao);  
+        }
+        
+        
+    };
+    
     function handleSelectSolicitacaoProdutos(solicitacao: BuscaSolicitacaoInicial) {
         selectedSolicitacaoProdutos(solicitacao);
         console.log(solicitacao)
@@ -183,7 +190,7 @@ export default function Card({solicitacoesList, selectedSolicitacao, selectedSol
 
     const arraySolicitacoesIniciais: any = solicitacoesIniciais?.map((solicitacao, index) => {
         return (
-            <div key={solicitacao.id} className="w-full h-16 rounded-lg shadow-md border border-[#d3d3d3] flex my-1 relative hover:scale-[101%] duration-200 hover:cursor-pointer" ><label className={`${ solicitacao.status === "Não visto" ? "visible px-2 rounded-xl absolute left-4 -top-2 bg-light-blue text-white text-xs" : "invisilbe"}  `}>{ solicitacao.status === "Não visto" ? "Novo" : undefined}</label>
+            <div key={solicitacao.id} className="w-full h-16 rounded-lg shadow-md border border-[#d3d3d3] flex my-1 relative hover:scale-[101%] duration-200 hover:cursor-pointer" onClick={() => handleSelectSolicitacao(solicitacao)}><label className={`${ solicitacao.status === "Não visto" ? "visible px-2 rounded-xl absolute left-4 -top-2 bg-light-blue text-white text-xs" : "invisilbe"}  `} >{ solicitacao.status === "Não visto" ? "Novo" : undefined}</label>
                 
                 
                 <div className="w-full h-full grid grid-cols-9 group ">
@@ -256,7 +263,7 @@ export default function Card({solicitacoesList, selectedSolicitacao, selectedSol
 
 
    
-    return arraySolicitacoesIniciais
+    return arraySolicitacoesIniciais;
     
     
     

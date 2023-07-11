@@ -30,7 +30,20 @@ export async function GET(req:Request) {
                 }
             },
             createdAt: true,
-            Solicitacao: true,
+            Solicitacao: {
+                select: {
+                    id: true,
+                    name: true,
+                    resposta: true,
+                    status: true,
+                    createdAt: true,
+                    updatedAt: true,
+                    categoriaId: true,
+                    unidadeId: true,
+                    userId: true,
+                    ProdutosSolicitados: true
+                }
+            },
             SolicitacaoLio: true
         }
         

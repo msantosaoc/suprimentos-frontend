@@ -66,6 +66,7 @@ interface ListarProdutosSolicitados {
         id: string;
         name: string;
     };
+    createdAt: string;
     ProdutosSolicitados: [
         {
             id: string;
@@ -104,6 +105,13 @@ interface BuscaSolicitacaoInicial {
         categoriaId: string;
         unidadeId: string;
         userId: string;
+        ProdutosSolicitados: [{
+            id: string;
+            produtoId: string;
+            produto: string;
+            SolicitacaoId: string;
+            qtde: number;
+        }]
     },
     SolicitacaoLio?: {
         id: string;

@@ -12,9 +12,10 @@ import { useEffect } from "react";
 import moment from 'moment';
 import ViewFileButton from "@/components/Button/ViewFileButton";
 import DropdownStatus from "@/components/Dropdown/DropdownStatus";
+import { BuscaSolicitacaoInicial } from "@/lib/types/global";
 
 interface Props {
-    formData: FormData;
+    formData: BuscaSolicitacaoInicial;
     isOpen: boolean;
     toggle: () => void;
     updateSolicitacao: (solicitacao: UpdateSolicitacao) => void;
@@ -85,7 +86,7 @@ interface Medicos {
 };
 
 export default function ModalLioEdit({ formData, cilindros, dioptrias, medicos, produtos, unidades, isOpen, toggle, updateSolicitacao }: Props) {
-
+console.log(formData)
     const status = [
         {value: 'Em análise', label: 'Em análise'},
         {value: 'Recusado', label: 'Recusado'},
@@ -118,24 +119,24 @@ export default function ModalLioEdit({ formData, cilindros, dioptrias, medicos, 
 
     const { register, handleSubmit, formState: { errors }, control, reset } = useForm<FormData>({
         resolver: zodResolver(schema), defaultValues: {
-            id: formData.id,
-            paciente: formData.paciente,
-            dtCirurgia: formData.dtCirurgia,
-            lentePrincipal: formData.lentePrincipal,
-            dioptria: formData.dioptria,
-            cilindro: formData.cilindro,
-            lenteReserva: formData.lenteReserva,
-            dioptriaReserva: formData.dioptriaReserva,
-            cilindroReserva: formData.cilindroReserva,
-            medico: formData.medico,
-            unidade: formData.unidade,
-            solicitante: formData.solicitante,
-            injetorCartucho: formData.injetorCartucho,
-            dtPagamento: formData.dtPagamento,
-            comprovante: formData.comprovante,
-            formCirurgico: formData.formCirurgico,
-            status: formData.status,
-            resposta: formData.resposta
+            id: formData.SolicitacaoLio?.id,
+            paciente: formData.SolicitacaoLio?.paciente,
+            dtCirurgia: formData.SolicitacaoLio?.dtCirurgia,
+            lentePrincipal: formData.SolicitacaoLio?.lentePrincipal,
+            dioptria: formData.SolicitacaoLio?.dioptria,
+            cilindro: formData.SolicitacaoLio?.cilindro,
+            lenteReserva: formData.SolicitacaoLio?.lenteReserva,
+            dioptriaReserva: formData.SolicitacaoLio?.dioptriaReserva,
+            cilindroReserva: formData.SolicitacaoLio?.cilindroReserva,
+            medico: formData.SolicitacaoLio?.medico,
+            unidade: formData.SolicitacaoLio?.unidade,
+            solicitante: formData.SolicitacaoLio?.solicitante,
+            injetorCartucho: formData.SolicitacaoLio?.injetorCartucho,
+            dtPagamento: formData.SolicitacaoLio?.dtPagamento,
+            comprovante: formData.SolicitacaoLio?.comprovante,
+            formCirurgico: formData.SolicitacaoLio?.formCirurgico,
+            status: formData.SolicitacaoLio?.status,
+            resposta: formData.SolicitacaoLio?.resposta
         }
     })
 
@@ -154,9 +155,9 @@ export default function ModalLioEdit({ formData, cilindros, dioptrias, medicos, 
     useEffect(() => {
 
         reset({
-            ...formData,
-            dtCirurgia: moment(formData.dtCirurgia).format('YYYY-MM-DD'),
-            dtPagamento: moment(formData.dtPagamento).format('YYYY-MM-DD')
+            ...formData.SolicitacaoLio,
+            dtCirurgia: moment(formData.SolicitacaoLio?.dtCirurgia).format('YYYY-MM-DD'),
+            dtPagamento: moment(formData.SolicitacaoLio?.dtPagamento).format('YYYY-MM-DD')
         })
     }, [isOpen, reset])
 

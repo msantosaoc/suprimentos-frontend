@@ -79,6 +79,7 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
         }),
         status: z.string(),
         resposta: z.string(),
+        createdAt: z.string(),
         ProdutosSolicitados: z.array(z.object({
             id: z.string(),
             produtoId: z.string(),
@@ -103,7 +104,7 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
         }
     });
 
-    console.log(formData)
+    
 
     const { fields, append, remove } = useFieldArray({
         control,
@@ -114,12 +115,13 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
 
         reset({
             // ...formData,
-            name: formData.id,
-            categoria: formData.categoria,
-            unidade: formData.unidade,
-            usuario: formData.usuario,
-            ProdutosSolicitados: formData.ProdutosSolicitados,
-            status: formData.status
+            name: formData.Solicitacao?.id,
+            categoria: formData.Categoria,
+            unidade: formData.Unidade,
+            usuario: formData.User,
+            ProdutosSolicitados: formData.Solicitacao?.ProdutosSolicitados,
+            status: formData.status,
+            createdAt: moment(formData.createdAt).format('YYYY-MM-DD')
 
             // userId: user?.user?.name,
             // unidade: 'barra',
@@ -137,7 +139,6 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
     };
 
     console.log(errors)
-    console.log(formData.unidade)
 
     const arraySolicitaProdutos = fields.map((field, index) => {
         return (
@@ -158,8 +159,8 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
                     placeholder="Qtde" />
                 <div className="flex gap-1 items-center">
 
-                    <Plus size={20} className="bg-light-gray rounded-full text-gray-menu-icon hover:cursor-pointer hover:scale-105 " onClick={addNewProduto} />
-                    <Minus size={20} className={`bg-light-gray rounded-full text-gray-menu-icon ${fields.length === 1 ? 'hidden' : ''}`} onClick={() => remove(index)} />
+                    {/* <Plus size={20} className="bg-light-gray rounded-full text-gray-menu-icon hover:cursor-pointer hover:scale-105 " onClick={addNewProduto} /> */}
+                    {/* <Minus size={20} className={`bg-light-gray rounded-full text-gray-menu-icon ${fields.length === 1 ? 'hidden' : ''}`} onClick={() => remove(index)} /> */}
 
                 </div>
             </div>
@@ -179,7 +180,7 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
                             <div className="md:flex mb-2 ">
                                 <div className="md:w-3/4 w-full px-3 ">
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name" >
-                                        Descrição <span className={`text-red-500 ${!errors.name && 'hidden'}`}>*</span>
+                                        Id da Solicitação <span className={`text-red-500 ${!errors.name && 'hidden'}`}>*</span>
                                     </label>
                                     <input {...register("name")} disabled className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-1 " id="grid-name" placeholder="" />
 
@@ -188,7 +189,7 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
                                     <label className="block tracking-wide whitespace-nowrap text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
                                         Data da Solicitação
                                     </label>
-                                    <input type='date' disabled className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-1" id="grid-name" placeholder="Selecione" />
+                                    <input type='date' {...register("createdAt")} disabled className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-1" id="grid-name" placeholder="Selecione" />
 
                                 </div>
                             </div>

@@ -135,21 +135,21 @@ export default function Solicitacoes() {
 
     const [medicos, setMedicos] = useState<Medico[]>([{ name: '' }]);
 
-    const [solicitacao, setSolicitacao] = useState<BuscaSolicitacaoInicial>({ id: '', User: { name: '' }, Categoria: { id: '', name: '' }, solicitacaoId: '', solicitacaoLioId: '', status: '', Unidade: { name: '' }, createdAt: '', Solicitacao: { id: '', name: '', resposta: '', status: '', createdAt: '', updatedAt: '', categoriaId: '', unidadeId: '', userId: '' }, SolicitacaoLio: { id: '', paciente: '', dtCirurgia: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', medico: '', unidade: '', solicitante: '', injetorCartucho: '', dtPagamento: '', comprovante: '', formCirurgico: '', resposta: '', status: '', categoria: '', createdAt: '', updatedAt: '' } });
+    const [solicitacao, setSolicitacao] = useState<BuscaSolicitacaoInicial>({ id: '', User: { name: '' }, Categoria: { id: '', name: '' }, solicitacaoId: '', solicitacaoLioId: '', status: '', Unidade: { name: '' }, createdAt: '', Solicitacao: { id: '', name: '', resposta: '', status: '', createdAt: '', updatedAt: '', categoriaId: '', unidadeId: '', userId: '', ProdutosSolicitados: [{ id: '', produto: '', produtoId: '', SolicitacaoId: '', qtde: 0}] }, SolicitacaoLio: { id: '', paciente: '', dtCirurgia: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', medico: '', unidade: '', solicitante: '', injetorCartucho: '', dtPagamento: '', comprovante: '', formCirurgico: '', resposta: '', status: '', categoria: '', createdAt: '', updatedAt: '' } });
 
-    const [solicitacaoProdutos, setSolicitacaoProdutos] = useState<BuscaSolicitacaoInicial>({ id: '', User: { name: '' }, Categoria: { id: '', name: '' }, solicitacaoId: '', solicitacaoLioId: '', status: '', Unidade: { name: '' }, createdAt: '', Solicitacao: { id: '', name: '', resposta: '', status: '', createdAt: '', updatedAt: '', categoriaId: '', unidadeId: '', userId: '' }, SolicitacaoLio: { id: '', paciente: '', dtCirurgia: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', medico: '', unidade: '', solicitante: '', injetorCartucho: '', dtPagamento: '', comprovante: '', formCirurgico: '', resposta: '', status: '', categoria: '', createdAt: '', updatedAt: '' } });
+    const [solicitacaoProdutos, setSolicitacaoProdutos] = useState<BuscaSolicitacaoInicial>({ id: '', User: { name: '' }, Categoria: { id: '', name: '' }, solicitacaoId: '', solicitacaoLioId: '', status: '', Unidade: { name: '' }, createdAt: '', Solicitacao: { id: '', name: '', resposta: '', status: '', createdAt: '', updatedAt: '', categoriaId: '', unidadeId: '', userId: '', ProdutosSolicitados: [{ id: '', produto: '', produtoId: '', SolicitacaoId: '', qtde: 0}] }, SolicitacaoLio: { id: '', paciente: '', dtCirurgia: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', medico: '', unidade: '', solicitante: '', injetorCartucho: '', dtPagamento: '', comprovante: '', formCirurgico: '', resposta: '', status: '', categoria: '', createdAt: '', updatedAt: '' } });
 
     const [categorias, setCategorias] = useState<Categoria[]>([{ id: '', name: '' }])
 
     const [solicitacoes, setSolicitacoes] = useState<SolicitacaoProps[]>([{ id: '', paciente: '', categoria: '', cilindro: '', dioptria: '', dtCirurgia: '', dtPagamento: '', lentePrincipal: '', medico: '', solicitante: '', status: '', unidade: '', cilindroReserva: '', comprovante: '', dioptriaReserva: '', formCirurgico: '', injetorCartucho: '', lenteReserva: '', resposta: '', createdAt: '', updatedAt: '' }]);
 
-    const [solicitacoesProdutos, setSolicitacoesProdutos] = useState<ListarProdutosSolicitados[]>([{ id: '', name: '', resposta: '', status: '', usuario: { id: '', name: '' }, categoria: { id: '', name: '', }, unidade: { id: '', name: '' }, ProdutosSolicitados: [{ id: '', produtoId: '', solicitacaoId: '', produto: '', qtde: 0 }] }]);
+    const [solicitacoesProdutos, setSolicitacoesProdutos] = useState<ListarProdutosSolicitados[]>([{ id: '', name: '', resposta: '', status: '', usuario: { id: '', name: '' }, createdAt: '', categoria: { id: '', name: '', }, unidade: { id: '', name: '' }, ProdutosSolicitados: [{ id: '', produtoId: '', solicitacaoId: '', produto: '', qtde: 0 }] }]);
 
     const [selectedCategory, setSelectedCategory] = useState<Categoria>({ id: '', name: '' });
 
     const [categoria, setCategoria] = useState<Categoria>({ id: '', name: '' });
 
-    const [solicitacoesIniciais, setSolicitacoesIniciais] = useState<BuscaSolicitacaoInicial[]>([{ id: '', User: { name: '' }, Categoria: { id: '', name: '' }, solicitacaoId: '', solicitacaoLioId: '', status: '', Unidade: { name: '' }, createdAt: '', Solicitacao: { id: '', name: '', resposta: '', status: '', createdAt: '', updatedAt: '', categoriaId: '', unidadeId: '', userId: '' }, SolicitacaoLio: { id: '', paciente: '', dtCirurgia: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', medico: '', unidade: '', solicitante: '', injetorCartucho: '', dtPagamento: '', comprovante: '', formCirurgico: '', resposta: '', status: '', categoria: '', createdAt: '', updatedAt: '' } }])
+    const [solicitacoesIniciais, setSolicitacoesIniciais] = useState<BuscaSolicitacaoInicial[]>([{ id: '', User: { name: '' }, Categoria: { id: '', name: '' }, solicitacaoId: '', solicitacaoLioId: '', status: '', Unidade: { name: '' }, createdAt: '', Solicitacao: { id: '', name: '', resposta: '', status: '', createdAt: '', updatedAt: '', categoriaId: '', unidadeId: '', userId: '', ProdutosSolicitados: [{ id: '', produto: '', produtoId: '', SolicitacaoId: '', qtde: 0}] }, SolicitacaoLio: { id: '', paciente: '', dtCirurgia: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', medico: '', unidade: '', solicitante: '', injetorCartucho: '', dtPagamento: '', comprovante: '', formCirurgico: '', resposta: '', status: '', categoria: '', createdAt: '', updatedAt: '' } }])
 
     const handleCategoryChange = (category: Categoria) => {
         setSelectedCategory(category);
@@ -326,17 +326,18 @@ export default function Solicitacoes() {
                 createSolicitacaoProduto={createSolicitacaoProduto}
             />
 
-            {/* <ModalProdutoEdit 
+            <ModalProdutoEdit 
             isOpen={modalSolicitaProdutoEdit}
             toggle={toggleModalSolicitaProdutoEdit}
             categoria={categoria}
+            categorias={categorias}
             user={session}
             unidades={unidades}
             medicos={medicos}
             formData={solicitacaoProdutos}
             updateSolicitacaoProduto={updateSolicitacaoProduto}
             produtos={produtos}
-            /> */}
+            />
 
             <div className="h-screen w-screen flex flex-col bg-background pl-[4.3rem]">
                 <div className="absolute top-0 left-0 w-screen h-sreen overflow-hidden">
@@ -397,7 +398,7 @@ export default function Solicitacoes() {
                                 ?
                                 <Skeleton count={10} className="h-16 overflow-hidden" />
                                 :
-                                <Card solicitacoesList={filteredRequests} solicitacoesIniciais={filterSolicitacoesIniciais} solicitacaoesProdutosList={filteredRequestsProdutos} selectedSolicitacao={selectedSolicitacao} selectedSolicitacaoProdutos={selectedSolicitacaoProdutos} toggleModalSolicitacaoLioEdit={toggleModaLioEdit} toggleModalSolicitacaoProdutoEdit={toggleModaLioEditProdutos} selectedCategoria={selectedCategory} />
+                                <Card  solicitacoesIniciais={filterSolicitacoesIniciais} selectedSolicitacao={selectedSolicitacao} selectedSolicitacaoProdutos={selectedSolicitacaoProdutos} toggleModalSolicitacaoLioEdit={toggleModaLioEdit} toggleModalSolicitacaoProdutoEdit={toggleModaLioEditProdutos} selectedCategoria={selectedCategory} />
                         }
 
                     </div>

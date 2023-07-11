@@ -138,7 +138,7 @@ export default function ModalProduto({ isOpen, toggle, produtos, unidades, categ
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name" >
                                         Descrição <span className={`text-red-500 ${!errors.name && 'hidden'}`}>*</span>
                                     </label>
-                                    <input {...register("name")} value={'Número aleatório'} className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-1 " id="grid-name" placeholder="" />
+                                    <input {...register("name")} disabled value={'Número aleatório'} className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-1 " id="grid-name" placeholder="" />
 
                                 </div>
                                 <div className="md:w-1/4 w-full px-3 relative">
@@ -163,7 +163,7 @@ export default function ModalProduto({ isOpen, toggle, produtos, unidades, categ
                                         Categoria <span className={`text-red-500 ${!errors.categoria?.message && 'hidden'}`}>*</span>
                                     </label>
                                     {/* <input {...register("categoria")} disabled  className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-3" id="grid-name" placeholder="Usuário solicitante" /> */}
-                                    <SelectComponent name="categoria" control={control} options={categorias} placeholder="Selecione" />
+                                    <SelectComponent name="categoria" isDisabled={true} control={control} options={categorias} placeholder="Selecione" />
                                 </div>
 
                                 <div className="md:w-1/4 w-full px-3">
