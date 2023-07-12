@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { CreateProduto, Produtos } from "@/lib/types/global";
 
 interface RequestBody {
     id: string;
@@ -13,7 +14,7 @@ interface RequestBody {
 }
 
 export async function POST(request: Request) {
-    const body: RequestBody = await request.json();
+    const body: Produtos = await request.json();
 
     const findFirst = await prisma.produto.findFirst({
         where: {
@@ -21,27 +22,27 @@ export async function POST(request: Request) {
         }
     });
 
-    if (findFirst) {
-        const editProduto = await prisma.produto.update({
-            where: {
-                id: body.id
-            },
-            data: {
-                name: body.name,
-                categoriaId: body.categoriaId,
-                marcaId: body.marcaId,
-                dioptriaId: body.dioptriaId,
-                cilindroId: body.cilindroId,
-                unidMedida: body.unidMedida,
-                qtdeMin: body.qtdeMin,
-                qtdeMax: body.qtdeMax
-            }
-        });
+    // if (findFirst) {
+    //     const editProduto = await prisma.produto.update({
+    //         where: {
+    //             id: body.id
+    //         },
+    //         data: {
+    //             name: body.name,
+    //             categoriaId: body.categoriaId,
+    //             marcaId: body.marcaId,
+    //             dioptriaId: body.dioptriaId,
+    //             cilindroId: body.cilindroId,
+    //             unidMedida: body.unidMedida,
+    //             qtdeMin: body.qtdeMin,
+    //             qtdeMax: body.qtdeMax
+    //         }
+    //     });
 
-        return new Response(JSON.stringify(editProduto));
+    //     return new Response(JSON.stringify(editProduto));
 
-    } else {
-        return new Response(JSON.stringify({ error: 'Id não existe.' }))
-    };
+    // } else {
+    //     return new Response(JSON.stringify({ error: 'Id não existe.' }))
+    // };
 
 };
