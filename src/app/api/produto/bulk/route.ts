@@ -1,18 +1,10 @@
 import prisma from "@/lib/prisma";
+import { CreateProduto } from "@/lib/types/global";
 
-interface RequestBody {
-  name: string;
-  categoriaId?: string;
-  marcaId?: string;
-  dioptriaId?: string;
-  cilindroId?: string;
-  unidMedida?: string;
-  qtdeMin?: number;
-  qtdeMax?: number;
-};
+
 
 interface Dioptria {
-  data: RequestBody[];
+  data: CreateProduto[];
 }
 
 export async function POST(request: Request) {
