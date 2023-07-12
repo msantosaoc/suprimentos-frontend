@@ -20,7 +20,7 @@ export async function POST (request:Request) {
     const marca = await prisma.marca.create({
         data: {
             name: body.name,
-        }
+        },
     });
 
     return new Response(JSON.stringify(marca));

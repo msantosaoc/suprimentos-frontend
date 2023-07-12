@@ -27,7 +27,7 @@ const ViewFileButton: React.FC<UploadProps> = ({ children, Icon, loading, name, 
             const data = new FormData()
             data.append('file', e.target.files![0])
             
-            await axios.post('http://localhost:5000/file/aws', data, {
+            await axios.post('https://suprimentos-backend.vercel.app/file/aws', data, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }

@@ -9,18 +9,23 @@ export const MenuContext = createContext({
     globalMenu: false,
     setGlobalMenu: (data: any) => {},
     globalSubmenu: false,
-    setGlobalSubmenu: (data: any) => {}
+    setGlobalSubmenu: (data: any) => {},
+    globalSubmenuCadastrar: false,
+    setGlobalSubmenuCadastrar: (data: any) => {}
 });
 
 const MenuContextParent = (props: any) => {
     const [menuOpen, setMenuOpen] = useState(false);
-    const [submenu, setSubmenu] = useState(false)
+    const [submenu, setSubmenu] = useState(false);
+    const [submenuCadastrar, setSubmenuCadastrar] = useState(false);
 
     const value = {
         globalMenu: menuOpen,
         setGlobalMenu: setMenuOpen,
         globalSubmenu: submenu,
-        setGlobalSubmenu: setSubmenu
+        setGlobalSubmenu: setSubmenu,
+        globalSubmenuCadastrar: submenuCadastrar,
+        setGlobalSubmenuCadastrar: setSubmenuCadastrar
     }
 
     return(

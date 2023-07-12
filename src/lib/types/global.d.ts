@@ -136,6 +136,49 @@ interface BuscaSolicitacaoInicial {
         createdAt: string;
         updatedAt: string; 
     }
+};
+
+type Marcas = {
+    id: number;
+    name: string;
+    createdAt: string;
+    updatedAt?: string;
+};
+
+type Produtos = {
+    id: number;
+    name: string;
+    categoriaId: string;
+    Categoria: {
+        name: string;
+    },
+    marcaId: string;
+    Marca: {
+        name: string;
+    },
+    dioptriaId?: string;
+    cilindroId?: string;
+    qtdeMin?: string;
+	qtdeMax?: string;
+	unidMedida?: string;
+    qtdeMin?: string;
+    qtdeMax?: string;
+    createdAt: string;
+    updatedAt?: string;
+};
+
+type CreateProduto = {
+    name: string;
+    categoriaId: string;
+    marcaId: number;
+    dioptriaId?: string;
+    cilindroId?: string;
+    qtdeMin?: number;
+	qtdeMax?: number;
+	unidMedida?: string;
+    qtdeMin?: string;
+    qtdeMax?: string;
+    qtde: number;
 }
 
-export { FormSolicitacaoProduto, ListarProdutosSolicitados, BuscaSolicitacaoInicial }
+export { FormSolicitacaoProduto, ListarProdutosSolicitados, BuscaSolicitacaoInicial, Marcas, Produtos, CreateProduto }

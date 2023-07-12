@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { CreateProduto } from "@/lib/types/global";
 
 interface RequestBody {
     name: string;
@@ -13,7 +14,7 @@ interface RequestBody {
 }
 
 export async function POST (request:Request) {
-    const body:RequestBody = await request.json();
+    const body:CreateProduto = await request.json();
 
     const alreadyExists = await prisma.produto.findFirst({
         where: {
@@ -30,12 +31,12 @@ export async function POST (request:Request) {
             name: body.name,
             categoriaId: body.categoriaId,
             marcaId: body.marcaId,
-            dioptriaId: body.dioprtiaId,
+            dioptriaId: body.dioptriaId,
             cilindroId: body.cilindroId,
-            qtdeMin: body.qtdeMin,
             qtdeMax: body.qtdeMax,
-            unidMedida: body.unidMedida,
-            qtde: body.qtde
+            qtdeMin: body.qtdeMin,
+            qtde: body.qtde,
+            unidMedida: body.unidMedida
         }
     });
 
@@ -59,6 +60,11 @@ export async function GET (request:Request) {
                 }
             },
             marcaId: true,
+            Marca: {
+                select: {
+                    name: true
+                }
+            },
             dioptriaId: true,
             cilindroId: true,
             qtdeMin: true,

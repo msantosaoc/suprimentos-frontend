@@ -40,7 +40,7 @@ export default function Lobby() {
                 <div className="w-full h-1/3 flex ">
 
                     <div className="h-20 w-10/12 bg-white m-auto rounded-xl shadow-xl flex items-center justify-center">
-                        <h1 className="text-padrao text-3xl font-bold ">Selecione o módulo que Deseja Acessar</h1>
+                        <h1 className="text-padrao text-3xl font-bold ">Selecione o Módulo que Deseja Acessar</h1>
                     </div>
 
                 </div>

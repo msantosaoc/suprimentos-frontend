@@ -16,18 +16,19 @@ import { FiMenu } from 'react-icons/fi';
 import { AiOutlineRight } from 'react-icons/ai'
 import { NewThemeToggle } from "../ThemeToggle";
 import { useSession, signOut } from 'next-auth/react';
+import { FilePlus, FolderPlus, ListPlus, PlusSquare } from "lucide-react";
 
 
 export default function Sidebar() {
 
     const { globalTheme } = useContext(ThemeContext);
-    const { globalMenu, setGlobalMenu, globalSubmenu, setGlobalSubmenu } = useContext(MenuContext);
-    
-    const { data:session } = useSession();
+    const { globalMenu, setGlobalMenu, globalSubmenu, setGlobalSubmenu, globalSubmenuCadastrar, setGlobalSubmenuCadastrar } = useContext(MenuContext);
+
+    const { data: session } = useSession();
 
 
-   
-    
+
+
 
     const toggleCollapse = () => {
         if (globalSubmenu === false) {
@@ -36,12 +37,21 @@ export default function Sidebar() {
         } else {
             setGlobalSubmenu(false)
         }
-    }
-    
-    
-    const toggleMenu = () => { setGlobalMenu(!globalMenu); setGlobalSubmenu(false) }
+    };
 
-    const [darkMode, setDarkMode] = useState(false)
+    const toggleCollapseCadastrar = () => {
+        if (globalSubmenuCadastrar === false) {
+            setGlobalSubmenuCadastrar(true);
+            setGlobalMenu(true);
+        } else {
+            setGlobalSubmenuCadastrar(false);
+        }
+    }
+
+
+    const toggleMenu = () => { setGlobalMenu(!globalMenu); setGlobalSubmenu(false); setGlobalSubmenuCadastrar(false) }
+
+    const [darkMode, setDarkMode] = useState(false);
 
     useEffect(() => {
         const root = window.document.documentElement;
@@ -102,10 +112,10 @@ export default function Sidebar() {
                             </button>
 
                             <Collapse isOpen={globalSubmenu} >
-                                
+
                                 <ul className={` visible py-1 ml-8 mr-4 flex flex-col gap-2 `} >
                                     <li>
-                                        <Link href="#" className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:-translate-y-1 dark:hover:bg-[#363636] dark:text-gray-400 hover:bg-gray-300  `}>Solicitar</Link>
+                                        <Link href="/solicitar" className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:-translate-y-1 dark:hover:bg-[#363636] dark:text-gray-400 hover:bg-gray-300  `}>Solicitar</Link>
                                     </li>
                                     <li>
                                         <Link href="#" className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group  hover:-translate-y-1 dark:hover:bg-[#363636] hover:bg-gray-300 dark:text-gray-400  `}>Estoque</Link>
@@ -117,8 +127,35 @@ export default function Sidebar() {
                                         <Link href="#" className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:-translate-y-1 dark:hover:bg-[#363636] hover:bg-gray-300 dark:text-gray-400 `}>Diretoria</Link>
                                     </li>
                                 </ul>
-                                
+
                             </Collapse>
+                        </li>
+                        <li>
+                            <button type="button" onClick={toggleCollapseCadastrar} className=" flex items-center w-[calc(100%-0.45rem)] p-2  text-base font-normal duration-300 text-gray-900 transition transform hover:-translate-y-1 rounded-lg group dark:hover:bg-[#363636] hover:bg-gray-300 " aria-expanded="false">
+
+                                <FilePlus className="flex-shrink-0 w-8 h-8 ml-1 p-1 text-gray-500 group-hover:text-gray-900  " />
+                                <span className="flex-1 ml-5 text-left whitespace-nowrap dark:text-gray-400" sidebar-toggle-item='true'>Cadastrar</span>
+                                <svg sidebar-toggle-item='true' className="w-8 h-8 ml-1  dark:text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+                            </button>
+                            <Collapse isOpen={globalSubmenuCadastrar} >
+
+                                <ul className={` visible py-1 ml-8 mr-4 flex flex-col gap-2 `} >
+                                    <li>
+                                        <Link href="/cadastro/produtos" className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:-translate-y-1 dark:hover:bg-[#363636] dark:text-gray-400 hover:bg-gray-300  `}>Produtos</Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/cadastro/usuarios" className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group  hover:-translate-y-1 dark:hover:bg-[#363636] hover:bg-gray-300 dark:text-gray-400  `}>Usuários</Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/cadastro/autorizadores" className={`flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 hover:bg-gray-300  hover:-translate-y-1dark:hover:bg-[#363636] text-gray-900 dark:text-gray-400 `}>Autorizadores</Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/cadastro/marcas" className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:-translate-y-1 dark:hover:bg-[#363636] hover:bg-gray-300 dark:text-gray-400 `}>Marcas/Fornec.</Link>
+                                    </li>
+                                </ul>
+
+                            </Collapse>
+
                         </li>
                         <li>
                             <a href="#" className={`flex items-center mr-[0.45rem] p-2 text-base font-normal text-gray-900 rounded-lg duration-300 hover:bg-gray-300 transition transform hover:-translate-y-1 dark:hover:bg-[#363636] `}>
@@ -137,14 +174,6 @@ export default function Sidebar() {
                             </a>
                         </li>
                         {/* <li>
-                            <Link href="#" className={`flex items-center mr-[0.45rem] p-2 text-base font-normal text-gray-900 duration-300 rounded-lg transition transform hover:-translate-y-1 dark:hover:bg-[#363636]  hover:bg-gray-300 `}>
-
-
-                                <BsPersonPlusFill className={`flex-shrink-0 w-8 h-8 ml-2 text-gray-500 transition duration-75  group-hover:text-gray-900 dark:group-hover:text-white `} />
-                                <span className={`flex-1 ml-5 whitespace-nowrap `}>Telefonia</span>
-                            </Link>
-                        </li>
-                        <li>
                             <Link href="#" className={`flex items-center mr-[0.45rem] p-2 text-base font-normal text-gray-900 duration-300 rounded-lg transition transform hover:-translate-y-1 dark:hover:bg-[#363636]  hover:bg-gray-300 `}>
 
 
@@ -179,7 +208,7 @@ export default function Sidebar() {
                 </div>
             </aside>
             <div onClick={toggleMenu} className={`${globalMenu === true ? 'w-full h-full bg-transparent absolute z-10 transition-all ease-in-out duration-300 ' : ''} `}>
-            {/* <div className=" overflow-hidden">
+                {/* <div className=" overflow-hidden">
                 {children} */}
             </div>
         </>
