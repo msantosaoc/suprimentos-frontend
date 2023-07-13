@@ -96,7 +96,7 @@ export default function Sidebar() {
 
 
                         <li>
-                            <Link href="/lobby" className={`flex items-center mr-[0.45rem] p-2 text-base font-normal text-gray-900 rounded-lg transition transform hover:-translate-y-1 dark:hover:bg-[#363636]  hover:bg-gray-100 `}>
+                            <Link href="/lobby" shallow className={`flex items-center mr-[0.45rem] p-2 text-base font-normal text-gray-900 rounded-lg transition transform hover:-translate-y-1 dark:hover:bg-[#363636]  hover:bg-gray-100 `}>
 
                                 <IoHome className={`flex-shrink-0 w-8 h-8 ml-1 text-gray-500 transition duration-75  group-hover:text-gray-900 dark:group-hover:text-white `} />
 
@@ -115,16 +115,16 @@ export default function Sidebar() {
 
                                 <ul className={` visible py-1 ml-8 mr-4 flex flex-col gap-2 `} >
                                     <li>
-                                        <Link href="/solicitar" className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:-translate-y-1 dark:hover:bg-[#363636] dark:text-gray-400 hover:bg-gray-300  `}>Solicitar</Link>
+                                        <Link href="/solicitacoes" shallow className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:-translate-y-1 dark:hover:bg-[#363636] dark:text-gray-400 hover:bg-gray-300  `}>Solicitar</Link>
                                     </li>
                                     <li>
-                                        <Link href="#" className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group  hover:-translate-y-1 dark:hover:bg-[#363636] hover:bg-gray-300 dark:text-gray-400  `}>Estoque</Link>
+                                        <Link href="#" shallow className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group  hover:-translate-y-1 dark:hover:bg-[#363636] hover:bg-gray-300 dark:text-gray-400  `}>Estoque</Link>
                                     </li>
                                     <li>
-                                        <Link href="#" className={`flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 hover:bg-gray-300  hover:-translate-y-1dark:hover:bg-[#363636] text-gray-900 dark:text-gray-400 `}>Compras</Link>
+                                        <Link href="#" shallow className={`flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 hover:bg-gray-300  hover:-translate-y-1dark:hover:bg-[#363636] text-gray-900 dark:text-gray-400 `}>Compras</Link>
                                     </li>
                                     <li>
-                                        <Link href="#" className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:-translate-y-1 dark:hover:bg-[#363636] hover:bg-gray-300 dark:text-gray-400 `}>Diretoria</Link>
+                                        <Link href="#" shallow className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:-translate-y-1 dark:hover:bg-[#363636] hover:bg-gray-300 dark:text-gray-400 `}>Diretoria</Link>
                                     </li>
                                 </ul>
 
@@ -141,16 +141,16 @@ export default function Sidebar() {
 
                                 <ul className={` visible py-1 ml-8 mr-4 flex flex-col gap-2 `} >
                                     <li>
-                                        <Link href="/cadastro/produtos" className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:-translate-y-1 dark:hover:bg-[#363636] dark:text-gray-400 hover:bg-gray-300  `}>Produtos</Link>
+                                        <Link href="/cadastro/produtos" shallow className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:-translate-y-1 dark:hover:bg-[#363636] dark:text-gray-400 hover:bg-gray-300  `}>Produtos</Link>
                                     </li>
                                     <li>
-                                        <Link href="/cadastro/usuarios" className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group  hover:-translate-y-1 dark:hover:bg-[#363636] hover:bg-gray-300 dark:text-gray-400  `}>Usuários</Link>
+                                        <Link href="/cadastro/usuarios" shallow className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group  hover:-translate-y-1 dark:hover:bg-[#363636] hover:bg-gray-300 dark:text-gray-400  `}>Usuários</Link>
                                     </li>
                                     <li>
-                                        <Link href="/cadastro/autorizadores" className={`flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 hover:bg-gray-300  hover:-translate-y-1dark:hover:bg-[#363636] text-gray-900 dark:text-gray-400 `}>Autorizadores</Link>
+                                        <Link href="/cadastro/autorizadores" shallow className={`flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 hover:bg-gray-300  hover:-translate-y-1dark:hover:bg-[#363636] text-gray-900 dark:text-gray-400 `}>Autorizadores</Link>
                                     </li>
                                     <li>
-                                        <Link href="/cadastro/marcas" className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:-translate-y-1 dark:hover:bg-[#363636] hover:bg-gray-300 dark:text-gray-400 `}>Marcas/Fornec.</Link>
+                                        <Link href="/cadastro/marcas" shallow className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:-translate-y-1 dark:hover:bg-[#363636] hover:bg-gray-300 dark:text-gray-400 `}>Marcas/Fornec.</Link>
                                     </li>
                                 </ul>
 

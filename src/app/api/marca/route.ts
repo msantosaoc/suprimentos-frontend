@@ -1,12 +1,9 @@
 import prisma from "@/lib/prisma";
+import { CreateMarca } from "@/lib/types/global";
 
-interface RequestBody {
-    name: string;
-}
 
 export async function POST (request:Request) {
-    const body:RequestBody = await request.json();
-
+    const body:CreateMarca = await request.json();
     const alreadyExists = await prisma.marca.findFirst({
         where: {
             name: body.name

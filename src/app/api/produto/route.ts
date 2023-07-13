@@ -1,17 +1,7 @@
 import prisma from "@/lib/prisma";
 import { CreateProduto } from "@/lib/types/global";
 
-interface RequestBody {
-    name: string;
-    categoriaId: string;
-    marcaId: string;
-    dioprtiaId?: string;
-    cilindroId?: string;
-    qtdeMin: number;
-    qtdeMax?: number;
-    unidMedida?: string;
-    qtde: number;
-}
+
 
 export async function POST (request:Request) {
     const body:CreateProduto = await request.json();
@@ -36,7 +26,8 @@ export async function POST (request:Request) {
             qtdeMax: body.qtdeMax,
             qtdeMin: body.qtdeMin,
             qtde: body.qtde,
-            unidMedida: body.unidMedida
+            unidMedida: body.unidMedida,
+            subCategoriaId: body.subCategoriaId
         }
     });
 
@@ -56,12 +47,20 @@ export async function GET (request:Request) {
             categoriaId: true,
             Categoria: {
                 select: {
+                    id: true,
                     name: true
                 }
             },
             marcaId: true,
             Marca: {
                 select: {
+                    id: true,
+                    name: true
+                }
+            },
+            SubCategoria: {
+                select: {
+                    id: true,
                     name: true
                 }
             },

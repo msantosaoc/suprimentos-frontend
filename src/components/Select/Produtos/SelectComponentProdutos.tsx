@@ -6,7 +6,7 @@ import ValueType from 'react-select';
 
 
 interface ValuesProps {
-  id: string;
+  id: any;
   name: string;
 }
 

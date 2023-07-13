@@ -1,9 +1,6 @@
 export { default } from 'next-auth/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import { useSession} from 'next-auth/react';
-import { verifyJwt } from './lib/jwt';
-import { getServerSession } from "next-auth";
 
 export async function middleware(request:NextRequest) {
     const session = await getToken({
@@ -21,12 +18,12 @@ export async function middleware(request:NextRequest) {
     }
 
     
-        return NextResponse.redirect(url)
+        return NextResponse.redirect(url);
     
 
     
-}
+};
 
 export const config = {
-    matcher: ['/lobby/:path*', '/solicitacoes/:path*']
+    matcher: ['/lobby/:path*', '/solicitacoes/:path*', '/cadastro/:path*']
 }

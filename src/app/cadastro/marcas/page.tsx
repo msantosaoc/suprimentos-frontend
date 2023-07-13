@@ -1,29 +1,45 @@
 'use client';
 import ButtonCadastrar from "@/components/Button/ButtonCadastrar";
+import ModalCreateMarca from "@/components/Modal/Cadastro/ModalCreateMarca/page";
 import SelectComponentProdutos from "@/components/Select/Produtos/SelectComponentProdutos";
 import Sidebar from "@/components/Sidebar/Sidebar";
-import { Marcas } from "@/lib/types/global";
+import { CreateMarca, Marcas } from "@/lib/types/global";
 import { api } from "@/services/api";
 import { Pencil } from "lucide-react";
 import moment from "moment";
 import 'moment/locale/pt-br'
 import { useEffect, useState } from "react";
 import { BsPencilSquare } from "react-icons/bs";
+import Skeleton from "react-loading-skeleton";
 
 export default function Marcas() {
 
     moment.locale('pt-br');
     const [marcas, setMarcas] = useState<Marcas[]>([{ id: 0, name: '', createdAt: '', updatedAt: '' }]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [modal, setModal] = useState(false);
+    const toggle = () => setModal(!modal);
 
     async function buscarMarcas() {
+        setIsLoading(true);
         const marcas = await api.get('/api/marca').then(response => setMarcas(response.data)).catch(error => console.log(error));
-
+        setIsLoading(false);
         return marcas;
     };
 
     useEffect(() => {
         buscarMarcas();
-    }, [])
+    }, []);
+
+    async function createMarca(marca: CreateMarca) {
+        
+        const criar = await api.post('/api/marca', marca).then(response=> {
+            buscarMarcas();
+            toggle();
+        }).catch(error => console.log(error));
+
+        return criar;
+    };
 
     const arrayListMarcas = marcas.map((marca, index) => {
         return (
@@ -58,8 +74,9 @@ export default function Marcas() {
 
                     <h1 className="font-semibold text-3xl">Marcas</h1>
                     <div className="w-full sm:h-2/6 sm:px-2 max-sm:py-1 grid grid-cols-[1fr_4fr_1fr] max-md:gap-2 max-sm:grid-cols-1  rounded-xl shadow-xl bg-white">
+                        <ModalCreateMarca isOpen={modal} toggle={toggle} createMarca={createMarca} />
                         <div className="flex items-center justify-center ">
-                            <ButtonCadastrar>Cadastrar</ButtonCadastrar>
+                            <ButtonCadastrar onClick={toggle}>Cadastrar</ButtonCadastrar>
                         </div>
                         <div className="flex items-center justify-center ">
                         </div>
@@ -70,6 +87,13 @@ export default function Marcas() {
                     <div className="w-full h-full rounded-xl shadow-xl my-4 bg-white">
 
                         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+
+                        {
+                            isLoading
+                                ?
+                                <Skeleton count={10} className="h-16 overflow-hidden" />
+                                :
+
                             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead className="text-sm text-gray-700  dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
@@ -100,6 +124,8 @@ export default function Marcas() {
                                     {arrayListMarcas}
                                 </tbody>
                             </table>
+
+                        }
                         </div>
                     </div>
                 </div>

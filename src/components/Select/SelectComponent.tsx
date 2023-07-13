@@ -47,6 +47,7 @@ const SelectComponent: React.FC<SelectComponentProps> = ({ name, control, option
           <Select
             placeholder={rest.placeholder}
             options={newArray}
+            isClearable={value && true}
             isDisabled={isDisabled}
             onChange={(e) => {
               // onChange's arg will send value into hook form

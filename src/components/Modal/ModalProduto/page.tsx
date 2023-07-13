@@ -91,7 +91,7 @@ export default function ModalProduto({ isOpen, toggle, produtos, unidades, categ
 
     const submitData = (data: FormSolicitacaoProduto) => {
         console.log(data);
-        createSolicitacaoProduto(data);
+        // createSolicitacaoProduto(data);
     };
 
     function addNewProduto() {

@@ -124,7 +124,7 @@ export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias
 
     
 
-    const { register, handleSubmit, formState: { errors }, control } = useForm<FormData>({
+    const { register, handleSubmit, formState: { errors }, control, watch } = useForm<FormData>({
         resolver: zodResolver(schema), defaultValues: {
             paciente: '',
             dtCirurgia: '',
@@ -198,7 +198,7 @@ export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
                                         Cilindro <span className={`text-red-500 ${!errors.cilindro?.message && 'hidden'}`}>*</span>
                                     </label>
-                                    <SelectComponent name="cilindro" control={control} options={cilindros} />
+                                    <SelectComponent name="cilindro" control={control} isDisabled={!watch('lentePrincipal')?.includes("Tórica")} options={cilindros} />
 
                                 </div>
 
@@ -223,7 +223,7 @@ export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
                                         Cilindro <span className={`text-red-500 ${!errors.cilindroReserva?.message && 'hidden'}`}>*</span>
                                     </label>
-                                    <SelectComponent name="cilindroReserva" control={control} options={cilindros} />
+                                    <SelectComponent name="cilindroReserva" control={control} isDisabled={!watch('lenteReserva')?.includes("Tórica")} options={cilindros} />
 
                                 </div>
 

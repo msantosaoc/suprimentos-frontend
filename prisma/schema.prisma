@@ -66,12 +66,13 @@ model Unidade {
 }
 
 model Categoria {
-  id                 String               @id @default(cuid())
-  name               String
-  produto            Produto[]
-  Solicitacao        Solicitacao[]
-  SolicitacaoInicial SolicitacaoInicial[]
-  SolicitacaoLio     SolicitacaoLio[]
+  id                      Int                       @id @default(autoincrement())
+  name                    String
+  produto                 Produto[]
+  Solicitacao             Solicitacao[]
+  SolicitacaoInicial      SolicitacaoInicial[]
+  SolicitacaoLio          SolicitacaoLio[]
+  categoriaOnSubCategoria CategoriaOnSubCategoria[]
 }
 
 model Marca {
@@ -83,15 +84,13 @@ model Marca {
 }
 
 model Dioptria {
-  id      String    @id @default(cuid())
-  name    String
-  produto Produto[]
+  id   String @id @default(cuid())
+  name String
 }
 
 model Cilindro {
-  id      String    @id @default(cuid())
-  name    String
-  produto Produto[]
+  id   String @id @default(cuid())
+  name String
 }
 
 model Medico {
@@ -100,9 +99,9 @@ model Medico {
 }
 
 model Produto {
-  id                  Int                @id @default(autoincrement())
+  id                  Int                   @id @default(autoincrement())
   name                String?
-  categoriaId         String?
+  categoriaId         Int?
   marcaId             Int?
   dioptriaId          String?
   cilindroId          String?
@@ -112,15 +111,32 @@ model Produto {
   qtde                Int
   Categoria           Categoria?            @relation(fields: [categoriaId], references: [id], onUpdate: Cascade)
   Marca               Marca?                @relation(fields: [marcaId], references: [id], onUpdate: Cascade)
-  Dioptria            Dioptria?             @relation(fields: [dioptriaId], references: [id], onUpdate: Cascade)
-  Cilindro            Cilindro?             @relation(fields: [cilindroId], references: [id], onUpdate: Cascade)
   Solicitacao         Solicitacao?          @relation(fields: [solicitacaoId], references: [id], onUpdate: Cascade)
-  solicitacaoId       String?
+  solicitacaoId       Int?
   ProdutosSolicitados ProdutosSolicitados[]
+  SubCategoria        SubCategoria?         @relation(fields: [subCategoriaId], references: [id])
+  subCategoriaId      Int?
+}
+
+model SubCategoria {
+  id                      Int                       @id @default(autoincrement())
+  name                    String
+  createdAt               DateTime?                 @default(now())
+  updatedAt               DateTime?                 @updatedAt
+  categoriaOnSubCategoria CategoriaOnSubCategoria[]
+  produtos                Produto[]
+}
+
+model CategoriaOnSubCategoria {
+  id             Int           @id @default(autoincrement())
+  SubCategoria   SubCategoria? @relation(fields: [subCategoriaId], references: [id])
+  subCategoriaId Int?
+  Categoria      Categoria?    @relation(fields: [categoriaId], references: [id])
+  categoriaId    Int?
 }
 
 model Solicitacao {
-  id                  String                @id @default(cuid())
+  id                  Int                   @id @default(autoincrement())
   name                String
   produtos            Produto[]
   categoria           Categoria             @relation(fields: [categoriaId], references: [id], onUpdate: Cascade)
@@ -130,7 +146,7 @@ model Solicitacao {
   status              String
   createdAt           DateTime?             @default(now())
   updatedAt           DateTime?             @updatedAt
-  categoriaId         String
+  categoriaId         Int
   unidadeId           String
   userId              String
   ProdutosSolicitados ProdutosSolicitados[]
@@ -143,7 +159,7 @@ model ProdutosSolicitados {
   produtoId     Int
   produto       String?
   solicitaco    Solicitacao @relation(fields: [solicitacaoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  solicitacaoId String
+  solicitacaoId Int
   qtde          Int
 }
 
@@ -153,7 +169,7 @@ model SolicitacaoInicial {
   User             User?           @relation(fields: [userId], references: [id], onUpdate: Cascade)
   userId           String?
   Solicitacao      Solicitacao?    @relation(fields: [solicitacaoId], references: [id], onUpdate: Cascade)
-  solicitacaoId    String?
+  solicitacaoId    Int?
   SolicitacaoLio   SolicitacaoLio? @relation(fields: [solicitacaoLioId], references: [id], onUpdate: Cascade)
   solicitacaoLioId String?
   createdAt        DateTime?       @default(now())
@@ -162,7 +178,7 @@ model SolicitacaoInicial {
   Unidade          Unidade?        @relation(fields: [unidadeId], references: [id], onUpdate: Cascade)
   unidadeId        String?
   Categoria        Categoria?      @relation(fields: [categoriaId], references: [id], onUpdate: Cascade)
-  categoriaId      String?
+  categoriaId      Int?
 }
 
 model SolicitacaoLio {
@@ -188,6 +204,6 @@ model SolicitacaoLio {
 
   createdAt   DateTime?  @default(now())
   updatedAt   DateTime?  @updatedAt
-  Categoria   Categoria? @relation(fields: [categoriaId], references: [id], onUpdate: Cascade)
-  categoriaId String?
+  Categoria   Categoria? @relation(fields: [categoriaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  categoriaId Int?
 }
