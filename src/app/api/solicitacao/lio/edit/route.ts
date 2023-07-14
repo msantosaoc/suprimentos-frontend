@@ -8,7 +8,7 @@ interface RequestBody {
 
 export async function PUT(req:Request) {
     const body:RequestBody = await req.json();
-console.log(body)
+
     const exists = await prisma.solicitacaoLio.findFirst({
         where: {
             id: body.id

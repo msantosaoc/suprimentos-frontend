@@ -70,7 +70,7 @@ type FormData = {
     dtCirurgia: string;
     lentePrincipal: string;
     dioptria: string;
-    cilindro: string;
+    cilindro?: string;
     lenteReserva?: string;
     dioptriaReserva?: string;
     cilindroReserva?: string;
@@ -98,10 +98,10 @@ export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias
         dtCirurgia: z.string(),
         lentePrincipal: z.string().nonempty('Este campo é obrigatório'),
         dioptria: z.string().nonempty('Este campo é obrigatório'),
-        cilindro: z.string().nonempty('Este campo é obrigatório'),
+        cilindro: z.string().optional(),
         lenteReserva: z.string(),
         dioptriaReserva: z.string(),
-        cilindroReserva: z.string(),
+        cilindroReserva: z.string().optional(),
         medico: z.string().nonempty('Este campo é obrigatório'),
         unidade: z.string().nonempty('Este campo é obrigatório'),
         solicitante: z.string().nonempty('Este campo é obrigatório'),
@@ -114,13 +114,23 @@ export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias
             name: z.string()
         }),
         status: z.string()
-    });
-    // .transform((fields) => ({
-    //     ...fields,
-    //     paciente: fields.paciente.trim().split(' ').map(palavra => palavra[0].toLocaleUpperCase().concat(palavra.substring(1))).join(' ')
-    //     // solicitante: fields.solicitante,
-    //     // injetorCartucho: fields.injetorCartucho
-    // }))
+    }).refine(data=> {
+        if(data.lentePrincipal.includes("Tóric")) {
+            return data.cilindro !== undefined && data.cilindro !== '';
+        }
+        return true;
+    }, {
+        message: 'Cilindro é obrigatório quando lente é preenchido',
+        path: ['cilindro']
+    }).refine(data=> {
+        if(data.lenteReserva.includes("Tóric")) {
+            return data.cilindroReserva !== undefined && data.cilindroReserva !== '';
+        }
+        return true;
+    }, {
+        message: 'Cilindro é obrigatório quando lente é preenchido',
+        path: ['cilindroReserva']
+    })
 
     
 
@@ -148,7 +158,8 @@ export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias
     });
 
     const submitData = (data: FormData) => {
-        createSolicitacao(data);
+        // createSolicitacao(data);
+        console.log('lio',data)
     };
     
     return (

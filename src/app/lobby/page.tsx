@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 export default function Lobby() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
+    
 
     function LoadingSolicitar(link: string) {
         setIsLoading(true);
@@ -28,6 +29,7 @@ export default function Lobby() {
         router.push('/diretoria')
     }
 
+    
 
     return (
         <div>
