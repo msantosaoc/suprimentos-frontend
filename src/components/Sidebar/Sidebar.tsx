@@ -108,7 +108,7 @@ export default function Sidebar() {
 
                                 <FaList className="flex-shrink-0 w-8 h-8 ml-1 p-1 text-gray-500   group-hover:text-gray-900  " />
                                 <span className="flex-1 ml-5 text-left whitespace-nowrap dark:text-gray-400" sidebar-toggle-item='true'>Módulos</span>
-                                <svg sidebar-toggle-item='true' className="w-8 h-8 ml-1 dark:text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+                                <svg sidebar-toggle-item='true' className={`w-8 h-8 ml-1 ${globalSubmenu && 'rotate-180'} dark:text-gray-500`} fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
                             </button>
 
                             <Collapse isOpen={globalSubmenu} >
@@ -134,8 +134,8 @@ export default function Sidebar() {
                             <button type="button" onClick={toggleCollapseCadastrar} className=" flex items-center w-[calc(100%-0.45rem)] p-2  text-base font-normal duration-300 text-gray-900 transition transform hover:-translate-y-1 rounded-lg group dark:hover:bg-[#363636] hover:bg-gray-300 " aria-expanded="false">
 
                                 <FilePlus className="flex-shrink-0 w-8 h-8 ml-1 p-1 text-gray-500 group-hover:text-gray-900  " />
-                                <span className="flex-1 ml-5 text-left whitespace-nowrap dark:text-gray-400" sidebar-toggle-item='true'>Cadastrar</span>
-                                <svg sidebar-toggle-item='true' className="w-8 h-8 ml-1  dark:text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+                                <span className="flex-1 ml-5 text-left whitespace-nowrap dark:text-gray-400" sidebar-toggle-item='true'>Cadastro</span>
+                                <svg sidebar-toggle-item='true' className={`w-8 h-8 ml-1 ${globalSubmenuCadastrar && 'rotate-180'} dark:text-gray-500`} fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
                             </button>
                             <Collapse isOpen={globalSubmenuCadastrar} >
 
