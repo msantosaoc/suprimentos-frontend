@@ -150,6 +150,7 @@ type Produtos = {
     name: string;
     categoriaId: number;
     Categoria: {
+        id: number;
         name: string;
     },
     marcaId: number;
@@ -157,17 +158,15 @@ type Produtos = {
         id: number;
         name: string;
     },
-    SubCategoria: {
+    SubCategoria?: {
         id: number;
         name: string;
     },
     dioptriaId?: string;
     cilindroId?: string;
-    qtdeMin?: string;
-    qtdeMax?: string;
+    qtdeMin?: number;
+    qtdeMax?: number;
     unidMedida?: string;
-    qtdeMin?: string;
-    qtdeMax?: string;
     createdAt: string;
     updatedAt?: string;
 };

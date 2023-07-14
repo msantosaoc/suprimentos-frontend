@@ -60,21 +60,16 @@ export default function Produtos() {
         return create;
     };
 
-    async function editarProduto(produto: Produtos) {
+    async function EditarProduto(produto: Produtos) {
         console.log(produto)
-        const update = await api.put('/api/produto/edit', produto).then(response=> {
-            buscarProdutos();
-            toggleEdit()
-        }).catch(error => console.log(error));
-
-        return update;
     };
-
 
     function handleSelectedProduto(produto: Produtos) {
         setSelectedProduto(produto);
         toggleEdit()
     }
+
+
 
     const arrayListProdutos = produtos.map((produto, index) => {
         return (
@@ -116,12 +111,12 @@ export default function Produtos() {
             <div className="grid grid-rows-[1fr_5fr] w-2/3 max-w-[1200px] h-screen mx-auto ">
                 <div className="flex flex-col justify-end ">
 
-                    <h1 className="font-semibold text-3xl">Produtos</h1>
+                    <h1 className="font-semibold text-3xl">Sugestões de novos itens</h1>
                     <div className="w-full sm:h-2/6 sm:px-2 max-sm:py-1 grid grid-cols-[1fr_4fr_1fr] max-md:gap-2 max-sm:grid-cols-1  rounded-xl shadow-xl bg-white">
                         <ModalCreateProduto isOpen={modal} toggle={toggle} createProduto={CreateProduto} categorias={categorias} marcas={marcas}/>
-                        <ModalCreateProdutoEdit formData={selectedProduto} isOpen={modalEdit} toggle={toggleEdit} categorias={categorias} marcas={marcas} editarProduto={editarProduto}/>
+                        <ModalCreateProdutoEdit formData={selectedProduto} isOpen={modalEdit} toggle={toggleEdit} categorias={categorias} marcas={marcas} editarProduto={EditarProduto}/>
                         <div className="flex items-center justify-center">
-                            <ButtonCadastrar onClick={toggle}>Cadastrar</ButtonCadastrar>
+                            <ButtonCadastrar onClick={toggle}>Sugerir item</ButtonCadastrar>
                         </div>
                         <div className="flex items-center justify-center">
 
@@ -148,27 +143,27 @@ export default function Produtos() {
                                         </th>
                                         <th scope="col" className="px-6 py-3">
                                             <div className="flex items-center justify-center">
-                                                Produto
+                                                Descrição
                                             </div>
                                         </th>
                                         <th scope="col" className="px-6 py-3">
                                             <div className="flex items-center justify-center">
-                                                Categoria
+                                                Solicitante
                                             </div>
                                         </th>
                                         <th scope="col" className="px-6 py-3">
                                             <div className="flex items-center justify-center">
-                                                Marca
+                                                Valor
                                             </div>
                                         </th>
                                         <th scope="col" className="px-6 py-3">
                                             <div className="flex items-center justify-center">
-                                                Última Compra
+                                                Unidade
                                             </div>
                                         </th>
                                         <th scope="col" className="px-6 py-3">
                                             <div className="flex items-center justify-center">
-                                                Unid. Medida
+                                                Centro de Custo
                                             </div>
                                         </th>
                                         <th scope="col" className="px-6 py-3">
@@ -182,7 +177,33 @@ export default function Produtos() {
                                     </tr>
                                 </thead>
                                 <tbody >
-                                    { arrayListProdutos}
+                                    {/* { arrayListProdutos} */}
+                                    <tr  className="bg-white border-b text-center text-subTitle dark:bg-gray-800 dark:border-gray-700 hover:cursor-pointer hover:bg-light-blue/20 duration-300" >
+                <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    1
+                </td>
+                <td className="px-6 py-4">
+                    Controladora com detecção facial para CSC
+                </td>
+                <td className="px-6 py-4">
+                    Felipe Santos
+                </td>
+                <td className="px-6 py-4">
+                    R$ 3000
+                </td>
+                <td className="px-6 py-4">
+                    CSC
+                </td>
+                <td className="px-6 py-4">
+                    T.I
+                </td>
+                <td className="px-6 py-4">
+                    Hoje
+                </td>
+                <td className="px-6 py-4 text-center">
+                    <BsPencilSquare size={15} className="hover:cursor-pointer" />
+                </td>
+            </tr>
                                 </tbody>
                             </table>
 }

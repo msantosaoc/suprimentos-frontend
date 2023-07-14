@@ -19,11 +19,11 @@ interface Props {
     marcas: Marcas[];
 };
 
-export default function ModalCreateProdutoEdit({toggle, isOpen, marcas, categorias, editarProduto, formData}: Props) {
+export default function ModalCreateProdutoEdit({ toggle, isOpen, marcas, categorias, editarProduto, formData }: Props) {
 
     const subCategorias = categorias.filter(item => item.name === 'Lio').map(item => item.categoriaOnSubCategoria.map(subCategoria => ({ id: subCategoria.SubCategoria.id, name: subCategoria.SubCategoria.name })));
 
-    const schema: ZodType<Produtos> = z.object({
+    const schema: ZodType<any> = z.object({
         id: z.number(),
         name: z.string().nonempty(),
         categoriaId: z.number(),
@@ -31,33 +31,39 @@ export default function ModalCreateProdutoEdit({toggle, isOpen, marcas, categori
             id: z.number(),
             name: z.string()
         }),
-        marcaId: z.number(),
         Marca: z.object({
             id: z.number(),
             name: z.string()
         }),
         SubCategoria: z.object({
-            id: z.number(),
-            name: z.string()
-        }),
-        dioptria: z.string(),
-        cilindro: z.string(),
-        createdAt: z.string(),
-        updatedAt: z.string()
+            id: z.number().optional(),
+            name: z.string().nullable()
+        }).nullable(),
+        unidMedida: z.string().optional(),
+        dioptria: z.string().optional(),
+        cilindro: z.string().optional(),
+        createdAt: z.string().optional(),
+        updatedAt: z.string().optional()
     })
-    
-    const { register, handleSubmit, formState: { errors }, control, reset, watch } = useForm<Produtos>({
-        resolver: zodResolver(schema), defaultValues: {}
+    // .transform((fields)=> ({
+    //     ...fields
+    // }))
+
+    const { register, handleSubmit, formState: { errors }, control, reset, watch } = useForm<any>({
+        resolver: zodResolver(schema), defaultValues: {
+            // ...formData
+        }
     });
-    
-    
+
+
     useEffect(() => {
-        if(isOpen) {
+        if (isOpen) {
 
             reset({
                 id: formData.id,
                 name: formData.name,
                 Categoria: formData.Categoria,
+                categoriaId: formData.Categoria.id,
                 Marca: formData.Marca,
                 unidMedida: formData.unidMedida,
                 SubCategoria: formData.SubCategoria
@@ -66,11 +72,12 @@ export default function ModalCreateProdutoEdit({toggle, isOpen, marcas, categori
     }, [isOpen, reset]);
 
     const submitData = (data: Produtos) => {
-        // editarProduto(data);
-        console.log(data)
+        editarProduto(data);
+        // console.log('esse',data)
     };
 
-console.log(formData)
+    console.log(watch())
+    console.log(errors)
     return (
         <Modal size='lg' isOpen={isOpen} toggle={toggle} className="">
             <div className="md:w-full flex-col justify-between pb-2 pt-8 px-8 bg-white rounded-xl border-none shadow-xl">
@@ -108,9 +115,9 @@ console.log(formData)
                             <div className="md:flex mb-2 ">
                                 <div className="md:w-1/3 w-full px-3 ">
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name" >
-                                        Marca <span className={`text-red-500 ${!errors.marcaId?.message && 'hidden'}`}>*</span>
+                                        Marca <span className={`text-red-500 ${!errors.Marca?.message && 'hidden'}`}>*</span>
                                     </label>
-                                    <SelectComponent name="Marca.name" control={control}  options={marcas} placeholder="Selecione" />
+                                    <SelectComponent name="Marca.name" control={control} options={marcas} placeholder="Selecione" />
 
                                 </div>
                                 <div className="md:w-1/3 w-full px-3 ">

@@ -6,9 +6,11 @@ import { Modal } from "reactstrap";
 import moment from "moment";
 import SelectComponent from "@/components/Select/SelectComponent";
 import SaveButton from "@/components/Button/SaveButton";
-import { useEffect } from "react";
-import { Minus, Plus } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Minus, Plus, PlusCircle } from "lucide-react";
 import SelectComponentProdutos from "@/components/Select/Produtos/SelectComponentProdutos";
+import ModalCreateProduto from "../Cadastro/ModalCreateProduto/page";
+import SelectComponentTI from "@/components/Select/Produtos/SelectComponentTI";
 
 interface Props {
     isOpen: boolean;
@@ -100,12 +102,15 @@ export default function ModalProduto({ isOpen, toggle, produtos, unidades, categ
 
     console.log(errors)
 
+    const [cadastrar, setCadastrar] = useState(false);
+    const toggleCadastrar = () => setCadastrar(!cadastrar);
 
     const arraySolicitaProdutos = fields.map((field, index) => {
         return (
             <div key={field.id} className="flex w-full gap-2">
                 <div className="w-3/4">
                     <SelectComponentProdutos name={`produto.${index}.id` as any} control={control} options={produtos} />
+                    {/* <SelectComponentTI name={`produto.${index}.id` as any} control={control} options={produtos} cadastrar={cadastrar} toggleCadastrar={toggleCadastrar}/> */}
                 </div>
                 <input
                     type='number'
@@ -178,7 +183,7 @@ export default function ModalProduto({ isOpen, toggle, produtos, unidades, categ
 
                             <div className="md:flex mb-4 ">
                                 <div className="md:w-4/4 w-full px-3">
-                                    <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 border-t border-l border-r rounded-t-lg p-2 " htmlFor="grid-name">
+                                    <label className="flex justify-between items-center px-2 tracking-wide text-subTitle text-xs font-semibold mb-2 border-t border-l border-r rounded-t-lg " htmlFor="grid-name">
                                         Produtos <span className={`text-red-500 ${!errors.produto && 'hidden'}`}>*</span>
                                     </label>
                                     <div className="border rounded-b-lg p-2 -mt-2">
@@ -190,9 +195,8 @@ export default function ModalProduto({ isOpen, toggle, produtos, unidades, categ
 
                             </div>
                             <div className="md:flex mb-2">
-
                                 <div className="md:w-3/4 w-full px-3">
-
+asdas
                                 </div>
                                 <div className="md:w-1/4 w-full px-3 flex  items-end">
 

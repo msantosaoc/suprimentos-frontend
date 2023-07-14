@@ -3,6 +3,8 @@ import { useController, Controller, UseFormRegister, FieldValues } from 'react-h
 import { Props as SelectProps } from 'react-select';
 import Select from 'react-select';
 import ValueType from 'react-select';
+import Link from "next/link";
+import { PlusCircle } from 'lucide-react';
 
 
 interface ValuesProps {
@@ -66,10 +68,11 @@ const SelectComponentProdutos: React.FC<SelectComponentProps> = ({ name, control
             options={newArray}
             isDisabled={isDisabled}
             onChange={handleSelectChange}
+            
             value={values}
             defaultValue={{value: 'asd', label: 'asd', id: 'id'}}
             isSearchable
-            noOptionsMessage={() => "Não encontrado"}
+            noOptionsMessage={() => <Link href={'/sugestoes'} target='_blank' className=''>Sugerir item</Link>}
             styles={{
               placeholder: (baseStyles, state) => ({
                 ...baseStyles,

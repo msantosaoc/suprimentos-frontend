@@ -2,7 +2,7 @@
 
 import Card from "@/components/Card/Card";
 import Sidebar from "@/components/Sidebar/Sidebar";
-import { Eye, Printer, Shirt, ShoppingCart, Stethoscope } from 'lucide-react'
+import { Eye, PlusCircle, Printer, Shirt, ShoppingCart, Stethoscope } from 'lucide-react'
 import Categorias from "@/components/Categorias/page";
 import ModalLIO from "@/components/Modal/ModalLIO/page";
 import { Suspense, useEffect, useState } from "react";
@@ -14,6 +14,7 @@ import { BuscaSolicitacaoInicial, ListarProdutosSolicitados } from "@/lib/types/
 import ModalProdutoEdit from "@/components/Modal/ModalProdutoEdit/page";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import Link from "next/link";
 
 
 interface SolicitacaoProps {
@@ -344,8 +345,8 @@ export default function Solicitacoes() {
                     <Sidebar />
 
                 </div>
-                <div className="w-full h-[8%] flex  items-end pl-20 ">
-                    <h1 className="font-semibold text-3xl">Dashboard - Solicitações</h1>
+                <div className="w-full h-[8%] flex  items-end pl-20 relative ">
+                    <h1 className="font-semibold text-3xl">Solicitações | </h1><Link href='/sugestoes' shallow className="flex absolute left-72 top-1/2 mr-2">Sugerir item<PlusCircle  /></Link>
                 </div>
 
                 <div className="w-full h-[10%] px-10 flex  ">
