@@ -1,5 +1,5 @@
-import ThemeContextParent from '@/contexts/theme'
 import './globals.css'
+import ThemeContextParent from '@/contexts/theme'
 import MenuContextParent from '@/contexts/menu';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Providers from '@/components/Providers';
@@ -17,17 +17,17 @@ export default function RootLayout({
 
   
   return (
-          <html lang="pt-br">
     <Providers>
       <ThemeContextParent>
         <MenuContextParent>
+      <html lang="pt-br">
             
             <body >
               {children}
             </body>
+          </html>
         </MenuContextParent>
       </ThemeContextParent>
     </Providers>
-          </html>
   )
 }
