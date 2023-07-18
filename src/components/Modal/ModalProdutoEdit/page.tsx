@@ -129,7 +129,7 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
         reset({
             // ...formData,
             name: formData.Solicitacao?.name,
-            categoria: formData.Categoria,
+            categoria: formData?.Categoria,
             unidade: formData.Unidade,
             usuario: formData.User,
             ProdutosSolicitados: produtosComNomes as any,

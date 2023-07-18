@@ -78,7 +78,7 @@ export default function ModalProduto({ isOpen, toggle, produtos, unidades, categ
     useEffect(() => {
 
         reset({
-            categoriaId: categoria.id,
+            categoriaId: categoria?.id,
             userId: user?.user ? user.user.name : 'Teste',
             resposta: ''
         });
@@ -93,8 +93,7 @@ export default function ModalProduto({ isOpen, toggle, produtos, unidades, categ
         append({ id: 0,  qtde: 0 })
     };
 
-    console.log(errors)
-    console.log(watch('produto'))
+    
 
     const [cadastrar, setCadastrar] = useState(false);
     const toggleCadastrar = () => setCadastrar(!cadastrar);

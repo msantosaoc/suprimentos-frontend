@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 
 interface RequestBody {
-    id: string;
+    id: number;
     name: string;
 }
 
