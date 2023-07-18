@@ -1,6 +1,7 @@
 import NextAuth, { getServerSession } from "next-auth/next";
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from "next-auth/providers/credentials";
+import { api } from "@/services/api";
 
 export const authOptions:NextAuthOptions = {
     providers: [
@@ -17,22 +18,24 @@ export const authOptions:NextAuthOptions = {
             },
             async authorize(credentials, req) {
               // Add logic here to look up the user from the credentials supplied
-              const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/login`, {
-                method: 'POST',
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  username: credentials?.username,
-                  password: credentials?.password
-                })
+              // const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/login`, {
+              //   method: 'POST',
+              //   headers: {
+              //     "Content-Type": "application/json",
+              //   },
+              //   body: JSON.stringify({
+              //     username: credentials?.username,
+              //     password: credentials?.password
+              //   })
+              // })
+              const login = await api.post('/api/login', credentials).then(response=> {
+                return response.data;
               })
-
-              const user = await res.json();
+              // const user = await res.json();
         
-              if (user) {
+              if (login) {
                 // Any object returned will be saved in `user` property of the JWT
-                return user
+                return login
               } else {
                 // If you return null then an error will be displayed advising the user to check their details.
                 return null
