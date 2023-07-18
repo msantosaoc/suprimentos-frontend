@@ -8,8 +8,8 @@ export async function POST(req:Request) {
                     name: body.name,
                     status: 'Não visto',
                     userId: body.userId,
-                    unidadeId: body.unidade,
-                    categoriaId: body.categoria,
+                    unidadeId: body.unidadeId,
+                    categoriaId: body.categoriaId,
                     resposta: '',
                 },
                 select: {
@@ -31,9 +31,9 @@ export async function POST(req:Request) {
                 data: {
                     solicitacaoId: solicita.id,
                     userId: body.userId,
-                    unidadeId: body.unidade,
+                    unidadeId: body.unidadeId,
                     status: 'Não visto',
-                    categoriaId: body.categoria
+                    categoriaId: body.categoriaId
                 }
             });
             

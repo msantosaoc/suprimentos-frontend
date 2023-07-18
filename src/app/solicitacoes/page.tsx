@@ -10,7 +10,7 @@ import { api } from "@/services/api";
 import { useSession } from 'next-auth/react';
 import ModalLioEdit from "@/components/Modal/ModalLioEdit/page";
 import ModalProduto from "@/components/Modal/ModalProduto/page";
-import { BuscaSolicitacaoInicial, FormData, ListarProdutosSolicitados, Medico, Unidades } from "@/lib/types/global";
+import { BuscaSolicitacaoInicial, Categoria, FormData, ListarProdutosSolicitados, Medico, Unidades } from "@/lib/types/global";
 import ModalProdutoEdit from "@/components/Modal/ModalProdutoEdit/page";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
@@ -90,10 +90,7 @@ interface Cilindro {
 };
 
 
-interface Categoria {
-    id: string;
-    name: string;
-}
+
 
 
 
@@ -126,15 +123,15 @@ export default function Solicitacoes() {
 
     const [solicitacaoProdutos, setSolicitacaoProdutos] = useState<BuscaSolicitacaoInicial>({ id: 0, User: { name: '' }, Categoria: { id: '', name: '' }, solicitacaoId: '', solicitacaoLioId: '', status: '', Unidade: { name: '' }, createdAt: '', Solicitacao: { id: '', name: '', resposta: '', status: '', createdAt: '', updatedAt: '', categoriaId: '', unidadeId: '', userId: '', ProdutosSolicitados: [{ id: '', produto: '', produtoId: '', SolicitacaoId: '', qtde: 0}] }, SolicitacaoLio: { id: '', paciente: '', dtCirurgia: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', medico: '', unidade: '', solicitante: '', injetorCartucho: '', dtPagamento: '', comprovante: '', formCirurgico: '', resposta: '', status: '', categoria: '', createdAt: '', updatedAt: '' } });
 
-    const [categorias, setCategorias] = useState<Categoria[]>([{ id: '', name: '' }])
+    const [categorias, setCategorias] = useState<Categoria[]>([{ id: 0, name: '', categoriaOnSubCategoria: [{SubCategoria: {id: 0, name: '', createdAt: '', updatedAt: ''}}] }]);
 
     const [solicitacoes, setSolicitacoes] = useState<SolicitacaoProps[]>([{ id: '', paciente: '', categoria: '', cilindro: '', dioptria: '', dtCirurgia: '', dtPagamento: '', lentePrincipal: '', medico: '', solicitante: '', status: '', unidade: '', cilindroReserva: '', comprovante: '', dioptriaReserva: '', formCirurgico: '', injetorCartucho: '', lenteReserva: '', resposta: '', createdAt: '', updatedAt: '' }]);
 
     const [solicitacoesProdutos, setSolicitacoesProdutos] = useState<ListarProdutosSolicitados[]>([{ id: '', name: '', resposta: '', status: '', usuario: { id: '', name: '' }, createdAt: '', categoria: { id: '', name: '', }, unidade: { id: '', name: '' }, ProdutosSolicitados: [{ id: '', produtoId: '', solicitacaoId: '', produto: '', qtde: 0 }] }]);
 
-    const [selectedCategory, setSelectedCategory] = useState<Categoria>({ id: '', name: '' });
+    const [selectedCategory, setSelectedCategory] = useState<Categoria>({ id: 0, name: '', categoriaOnSubCategoria: [{SubCategoria: {id: 0, name: '', createdAt: '', updatedAt: ''}}] });
 
-    const [categoria, setCategoria] = useState<Categoria>({ id: '', name: '' });
+    const [categoria, setCategoria] = useState<Categoria>({ id: 0, name: '', categoriaOnSubCategoria: [{SubCategoria: {id: 0, name: '', createdAt: '', updatedAt: ''}}] });
 
     const [solicitacoesIniciais, setSolicitacoesIniciais] = useState<BuscaSolicitacaoInicial[]>([{ id: 0, User: { name: '' }, Categoria: { id: '', name: '' }, solicitacaoId: '', solicitacaoLioId: '', status: '', Unidade: { name: '' }, createdAt: '', Solicitacao: { id: '', name: '', resposta: '', status: '', createdAt: '', updatedAt: '', categoriaId: '', unidadeId: '', userId: '', ProdutosSolicitados: [{ id: '', produto: '', produtoId: '', SolicitacaoId: '', qtde: 0}] }, SolicitacaoLio: { id: '', paciente: '', dtCirurgia: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', medico: '', unidade: '', solicitante: '', injetorCartucho: '', dtPagamento: '', comprovante: '', formCirurgico: '', resposta: '', status: '', categoria: '', createdAt: '', updatedAt: '' } }])
 
@@ -146,7 +143,13 @@ export default function Solicitacoes() {
     const filteredRequests = solicitacoes?.filter((request, index) => request.categoria?.includes(selectedCategory.name));
     const filteredRequestsProdutos = solicitacoesProdutos?.filter((request) => request.categoria?.name?.includes(selectedCategory.name));
 
-    const filterSolicitacoesIniciais = solicitacoesIniciais.filter((item, index) => item.Categoria.name.includes(selectedCategory.name))
+    const filterSolicitacoesIniciais = solicitacoesIniciais.filter((item, index) => item.Categoria.name.includes(selectedCategory.name));
+
+    const categoriaLio = categorias.find(categoria=> categoria.name.includes("Lio"));
+    const categoriaUniforme = categorias.find(categoria=> categoria.name.includes("Uniforme"));
+    const categoriaEscritorio = categorias.find(categoria=> categoria.name.includes("Escritório"));
+    const categoriaInsumo = categorias.find(categoria=> categoria.name.includes("Insumo"));
+    const categoriaCirurgico = categorias.find(categoria=> categoria.name.includes("Cirúrgico"));
 
     async function buscarSolicitacoes() {
         const solicitacoes = await api.get('/api/solicitacao/lio').then(response => setSolicitacoes(response.data)).catch(error => console.log(error));
@@ -357,13 +360,13 @@ export default function Solicitacoes() {
 
                                 <div className={` flex  bg-transparent absolute -bottom-14 -translate-x-4 group-hover:visible invisible transition-all `} >
                                     <div className="flex mt-4 rounded-lg shadow-lg p-2 bg-white gap-1">
-                                        <Eye size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={() => { setCategoria({ id: 'cljhn5we20002vvmcpxedty2c', name: 'Lio' }); toggleModalSolicitaLio(); }} />
+                                        <Eye size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={() => { setCategoria(categoriaLio!); toggleModalSolicitaLio(); }} />
                                         <div className="h-full border border-gray-menu-icon" />
-                                        <Shirt size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={() => { setCategoria({ id: 'cljszugu1000svvgkyw4lxze1', name: 'Uniforme' }); toggleModalSolicitaProduto(); }} />
+                                        <Shirt size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={() => { setCategoria(categoriaUniforme!); toggleModalSolicitaProduto(); }} />
                                         <div className="h-full border border-gray-menu-icon" />
-                                        <Stethoscope size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={() => { setCategoria({ id: 'cljszujtz000uvvgk46gobtav', name: 'Cirúrgico' }); toggleModalSolicitaProduto(); }} />
+                                        <Stethoscope size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={() => { setCategoria(categoriaCirurgico!); toggleModalSolicitaProduto(); }} />
                                         <div className="h-full border border-gray-menu-icon" />
-                                        <Printer size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={() => { setCategoria({ id: 'cljhn61rz0004vvmcmqo4qmbt', name: 'Escritório' }); toggleModalSolicitaProduto(); }} />
+                                        <Printer size={34} className="text-gray-menu-icon  rounded-md p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer" onClick={() => { setCategoria(categoriaEscritorio!); toggleModalSolicitaProduto(); }} />
                                     </div>
                                 </div>
                             </div>
@@ -375,8 +378,9 @@ export default function Solicitacoes() {
                 </div>
                 <div className="w-full h-[82%] px-10 py-3  ">
                     <div className="w-full h-full m-auto rounded-xl shadow-xl flex flex-col bg-white px-3 pt-2 overflow-auto">
-                        <div className="grid grid-cols-9 py-2 ">
+                        <div className="grid grid-cols-10 py-2 ">
                             <label className="text-base font-semibold flex items-center justify-center  ">Item</label>
+                            <label className="text-base font-semibold flex items-center justify-center  ">Solicitação</label>
                             <label className="text-base font-semibold flex items-center justify-center col-span-2 ">Solicitante</label>
                             <label className="text-base font-semibold flex items-center justify-center col-span-2">Detalhes</label>
                             <label className="text-base font-semibold flex items-center justify-center ">Unidade</label>

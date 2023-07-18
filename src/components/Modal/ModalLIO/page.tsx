@@ -7,7 +7,7 @@ import { ZodType, z } from "zod";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod'
 import SelectComponent from "@/components/Select/SelectComponent";
-import { FormData, Medico } from "@/lib/types/global";
+import { Categoria, FormData, Medico } from "@/lib/types/global";
 import SelectComponentProdutos from "@/components/Select/Produtos/SelectComponentProdutos";
 import { useEffect } from "react";
 import { useSession } from 'next-auth/react';
@@ -39,10 +39,6 @@ interface Unidades {
     name: string;
 };
 
-interface Categoria {
-    id: string;
-    name: string;
-}
 
 interface Produto {
     name: string;
@@ -60,8 +56,7 @@ interface Produto {
 
 export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias, cilindros, medicos, user, categorias, createSolicitacao }: Props) {
 
-    
-    
+   
 
     const schema: ZodType<FormData> = z.object({
         paciente: z.string().nonempty('Nome do paciente é obrigatório'),

@@ -9,7 +9,7 @@ import SaveButton from "@/components/Button/SaveButton";
 import { useEffect } from "react";
 import { Minus, Plus } from "lucide-react";
 import SelectComponentProdutos from "@/components/Select/Produtos/SelectComponentProdutos";
-import { BuscaSolicitacaoInicial, ListarProdutosSolicitados, Unidades } from "@/lib/types/global";
+import { BuscaSolicitacaoInicial, Categoria, ListarProdutosSolicitados, Unidades } from "@/lib/types/global";
 import DropdownStatus from "@/components/Dropdown/DropdownStatus";
 
 interface Props {
@@ -30,12 +30,6 @@ interface Medicos {
 };
 
 
-interface Categoria {
-    id: string;
-    name: string;
-};
-
-
 interface Produto {
     id: string;
     name: string;
@@ -49,14 +43,37 @@ interface Produto {
 };
 
 export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, user, formData, produtos, categorias, medicos, updateSolicitacaoProduto }: Props) {
-    
+
     const status = [
-        {value: 'Em análise', label: 'Em análise'},
-        {value: 'Recusado', label: 'Recusado'},
-        {value: 'Em compra', label: 'Em compra'},
-        {value: 'Disponível', label: 'Disponível'},
-        {value: 'Finalizado', label: 'Finalizado'},
-    ]
+        { value: 'Em análise', label: 'Em análise' },
+        { value: 'Recusado', label: 'Recusado' },
+        { value: 'Em compra', label: 'Em compra' },
+        { value: 'Disponível', label: 'Disponível' },
+        { value: 'Finalizado', label: 'Finalizado' },
+    ];
+
+    console.log(produtos)
+
+    // Verificar se os produtos do campo "ProdutosSolicitados" estão no array
+    const produtosSolicitados = formData.Solicitacao?.ProdutosSolicitados;
+    const produtosEncontrados = produtosSolicitados?.filter(
+        produtoSolicitado => produtos?.some(produto => produto.id === produtoSolicitado.produtoId)
+    );
+
+    // Criar um novo array com os produtos encontrados e seus nomes correspondentes
+    const produtosComNomes = produtosEncontrados?.map(produtoSolicitado => {
+        const produtoEncontrado = produtos?.find(produto => produto.id === produtoSolicitado.produtoId);
+        return {
+            id: produtoSolicitado.id,
+            produtoId: produtoSolicitado.produtoId,
+            produto: produtoEncontrado?.name,
+            SolicitacaoId: formData.Solicitacao?.id,
+            qtde: produtoSolicitado.qtde
+        };
+    });
+
+    console.log(produtosEncontrados);
+    console.log(produtosComNomes)
 
     const schema: ZodType<any> = z.object({
         id: z.string(),
@@ -78,9 +95,9 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
         createdAt: z.string(),
         ProdutosSolicitados: z.array(z.object({
             id: z.string(),
-            produtoId: z.string(),
-            produto: z.string(),
-            SolicitacaoId: z.string(),
+            produtoId: z.number(),
+            produto: z.string().optional(),
+            SolicitacaoId: z.number().optional(),
             qtde: z.coerce.number().min(1)
         })).nonempty()
 
@@ -100,7 +117,7 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
         }
     });
 
-    
+    console.log(formData)
 
     const { fields, append, remove } = useFieldArray({
         control,
@@ -111,11 +128,11 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
 
         reset({
             // ...formData,
-            name: formData.Solicitacao?.id,
+            name: formData.Solicitacao?.name,
             categoria: formData.Categoria,
             unidade: formData.Unidade,
             usuario: formData.User,
-            ProdutosSolicitados: formData.Solicitacao?.ProdutosSolicitados,
+            ProdutosSolicitados: produtosComNomes as any,
             status: formData.status,
             createdAt: moment(formData.createdAt).format('YYYY-MM-DD')
 
@@ -144,7 +161,7 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
                     className="appearance-none w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-1 "
                     /> */}
                     {/* <SelectComponentProdutos name={`ProdutosSolicitados.${index}.produto` as any}  control={control} options={produtos} /> */}
-                    <SelectComponent name={`ProdutosSolicitados.${index}.id` as any} isDisabled={true} control={control} options={produtos} />
+                    <SelectComponent name={`ProdutosSolicitados.${index}.produto` as any} isDisabled={true} control={control} options={produtos} />
                 </div>
                 <input
                     type='number'
@@ -176,7 +193,7 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
                             <div className="md:flex mb-2 ">
                                 <div className="md:w-3/4 w-full px-3 ">
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name" >
-                                        Id da Solicitação <span className={`text-red-500 ${!errors.name && 'hidden'}`}>*</span>
+                                        Descrição do pedido <span className={`text-red-500 ${!errors.name && 'hidden'}`}>*</span>
                                     </label>
                                     <input {...register("name")} disabled className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-1 " id="grid-name" placeholder="" />
 
@@ -229,7 +246,7 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
 
 
                             </div>
-                            
+
 
                             <div className="md:flex mb-2">
 

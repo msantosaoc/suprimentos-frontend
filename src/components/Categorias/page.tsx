@@ -1,4 +1,5 @@
 'use client';
+import { Categoria } from '@/lib/types/global';
 import { Clipboard, Eye, Shirt, Stethoscope, Package, Printer, Paintbrush, Coffee, ShoppingCart, LucideIcon } from 'lucide-react'
 import React, { Component, useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton'
@@ -17,30 +18,27 @@ interface CategoriasProps extends LucideIcon {
     className?: React.HTMLAttributes<HTMLDivElement>
 };
 
-interface SelectedCategoria {
-    id: string;
-    name: string;
+
+
+interface CategoriaProps {
+    selectedCategory: Categoria;
+  onCategoryChange: (category: Categoria) => void;
 }
 
-interface Categoria {
-    selectedCategory: SelectedCategoria;
-  onCategoryChange: (category: SelectedCategoria) => void;
-}
-
-export default function Categorias({ selectedCategory, onCategoryChange }: Categoria) {
+export default function Categorias({ selectedCategory, onCategoryChange }: CategoriaProps) {
     
     const mock:any = [
-        {id: '1', name: 'Todos', Icon: <Clipboard  size={48}/>},
-        {id: '2', name: 'Lio', Icon: <Eye size={48}/>},
-        {id: '3', name: 'Uniforme', Icon: <Shirt  size={48}/>},
-        {id: '4', name: 'Cirúrgico', Icon: <Stethoscope  size={48}/>},
-        {id: '5', name: 'Limpeza', Icon: <Paintbrush  size={48}/>},
-        {id: '6', name: 'Insumo', Icon: <Coffee  size={48}/>},
-        {id: '7', name: 'Escritório', Icon: <Printer  size={48}/>},
+        {id: 1, name: 'Todos', Icon: <Clipboard  size={48}/>},
+        {id: 2, name: 'Lio', Icon: <Eye size={48}/>},
+        {id: 3, name: 'Uniforme', Icon: <Shirt  size={48}/>},
+        {id: 4, name: 'Cirúrgico', Icon: <Stethoscope  size={48}/>},
+        {id: 5, name: 'Limpeza', Icon: <Paintbrush  size={48}/>},
+        {id: 6, name: 'Insumo', Icon: <Coffee  size={48}/>},
+        {id: 7, name: 'Escritório', Icon: <Printer  size={48}/>},
     ]
 
-    const [categories, setCategories] = useState<CategoriasProps[]>(mock);
-    const [filtroCategoria, setFiltroCategoria] = useState<SelectedCategoria>(selectedCategory);
+    const [categories, setCategories] = useState<any[]>(mock);
+    const [filtroCategoria, setFiltroCategoria] = useState<Categoria>(selectedCategory);
 
     async function Teste() {
         await new Promise((resolve) => setTimeout(resolve, 5000))
@@ -48,11 +46,11 @@ export default function Categorias({ selectedCategory, onCategoryChange }: Categ
 
     useEffect(()=> {
         Teste()
-        setFiltroCategoria({id: '', name:"Todos"})
+        setFiltroCategoria({id: 0, name:"Todos", categoriaOnSubCategoria: [{SubCategoria: {id: 0, name: '', createdAt: '', updatedAt: ''}}]})
     }, [])
 
-    const handleFilter = (category: SelectedCategoria) => {
-        let all = {id: '', name: ''}
+    const handleFilter = (category: Categoria) => {
+        let all = {id: 0, name: '', categoriaOnSubCategoria: [{SubCategoria: {id: 0, name: '', createdAt: '', updatedAt: ''}}]} as Categoria;
         let categoria  = category.name === "Todos" ? all : category 
         console.log(categoria)
         onCategoryChange(categoria);

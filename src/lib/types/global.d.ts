@@ -26,12 +26,12 @@ declare global {
     type FormSolicitacaoProduto = {
         name: string;
         userId: string;
-        unidade: string;
-        categoria: string;
-        resposta: string;
+        unidadeId: number;
+        categoriaId: number;
+        resposta?: string;
         produto: [
             {
-                id: string;
+                id: number;
                 qtde: number;
             }
         ],

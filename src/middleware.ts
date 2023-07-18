@@ -13,7 +13,6 @@ export async function middleware(request:NextRequest) {
         req: request,
         secret: process.env.NEXT_SECRET
     });
-    console.log(session)
     // const { data:session } = useSession();
     const url = request.nextUrl.clone();
     url.pathname = "/";
