@@ -45,7 +45,7 @@ export default function Card({ selectedSolicitacao, selectedSolicitacaoProdutos,
     };
     
     
-
+    console.log(solicitacoesIniciais)
 
     // const arraySolicitacoes: any = solicitacoesList?.map((solicitacao, index) => {
     //     return (

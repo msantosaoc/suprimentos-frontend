@@ -140,8 +140,7 @@ export default function Solicitacoes() {
     };
 
 
-    const filteredRequests = solicitacoes?.filter((request, index) => request.categoria?.includes(selectedCategory.name));
-    const filteredRequestsProdutos = solicitacoesProdutos?.filter((request) => request.categoria?.name?.includes(selectedCategory.name));
+    
 
     const filterSolicitacoesIniciais = solicitacoesIniciais.filter((item, index) => item.Categoria.name.includes(selectedCategory.name));
 

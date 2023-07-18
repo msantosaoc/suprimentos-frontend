@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 export async function GET(req:Request) {
     // const body = await req.json();
 
-    const create = await prisma.solicitacaoInicial.findMany({
+    const buscar = await prisma.solicitacaoInicial.findMany({
         orderBy: {
             createdAt: 'desc'
         },
@@ -12,7 +12,7 @@ export async function GET(req:Request) {
             User: {
                 select: {
                     name: true,
-                }
+                } 
             },
             Categoria: {
                 select: {
@@ -49,5 +49,5 @@ export async function GET(req:Request) {
         
     });
 
-    return new Response(JSON.stringify(create))
+    return new Response(JSON.stringify(buscar))
 }
