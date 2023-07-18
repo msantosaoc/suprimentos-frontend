@@ -23,29 +23,7 @@ interface Categoria {
     name: string;
 }
 
-interface SolicitacaoProps {
-    id: string;
-    paciente: string;
-    dtCirurgia: string;
-    lentePrincipal: string;
-    dioptria: string;
-    cilindro: string;
-    lenteReserva?: string;
-    dioptriaReserva?: string;
-    cilindroReserva?: string;
-    medico: string;
-    unidade: string;
-    solicitante: string;
-    injetorCartucho?: string;
-    dtPagamento: string;
-    comprovante?: string;
-    formCirurgico?: string;
-    status: string;
-    categoria: string;
-    createdAt: string;
-    updatedAt: string;
-    resposta?: string;
-}
+
 
 export default function Card({ selectedSolicitacao, selectedSolicitacaoProdutos, toggleModalSolicitacaoLioEdit,toggleModalSolicitacaoProdutoEdit, selectedCategoria, solicitacoesIniciais}: CardProps) {
   

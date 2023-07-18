@@ -99,7 +99,7 @@ export default function ModalCreateProduto({ toggle, isOpen, createProduto, cate
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
                                         Subcategoria <span className={`text-red-500 ${!errors.subCategoriaId?.message && 'hidden'}`}>*</span>
                                     </label>
-                                    <SelectComponentProdutos name="subCategoriaId" isDisabled={watch('categoriaId') !== 3} control={control} options={subCategorias[0]} placeholder="Selecione" />
+                                    <SelectComponentProdutos name="subCategoriaId" isDisabled={watch('categoriaId') !== 6} control={control} options={subCategorias[0]} placeholder="Selecione" />
 
                                 </div>
                             </div>

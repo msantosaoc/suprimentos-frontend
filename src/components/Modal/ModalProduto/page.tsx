@@ -11,6 +11,7 @@ import { Minus, Plus, PlusCircle } from "lucide-react";
 import SelectComponentProdutos from "@/components/Select/Produtos/SelectComponentProdutos";
 import ModalCreateProduto from "../Cadastro/ModalCreateProduto/page";
 import SelectComponentTI from "@/components/Select/Produtos/SelectComponentTI";
+import { Unidades } from "@/lib/types/global";
 
 interface Props {
     isOpen: boolean;
@@ -23,10 +24,6 @@ interface Props {
     createSolicitacaoProduto: (solicitacao: FormSolicitacaoProduto) => void;
 };
 
-interface Unidades {
-    id: string;
-    name: string;
-};
 
 interface Categoria {
     id: string;
@@ -48,6 +45,7 @@ interface Produto {
 
 export default function ModalProduto({ isOpen, toggle, produtos, unidades, categorias, categoria, user, createSolicitacaoProduto }: Props) {
 
+    
 
     const schema: ZodType<any> = z.object({
         name: z.string().nonempty(),
@@ -66,7 +64,7 @@ export default function ModalProduto({ isOpen, toggle, produtos, unidades, categ
         categoria: categoria.id,
     }))
 
-    const { register, handleSubmit, formState: { errors }, control, reset } = useForm<FormSolicitacaoProduto>({
+    const { register, handleSubmit, formState: { errors }, control, reset, watch } = useForm<FormSolicitacaoProduto>({
         resolver: zodResolver(schema), defaultValues: {
             name: '',
             userId: user?.user?.id ? user.user.name : 'Teste',
@@ -101,6 +99,7 @@ export default function ModalProduto({ isOpen, toggle, produtos, unidades, categ
     };
 
     console.log(errors)
+    console.log(watch('userId'))
 
     const [cadastrar, setCadastrar] = useState(false);
     const toggleCadastrar = () => setCadastrar(!cadastrar);

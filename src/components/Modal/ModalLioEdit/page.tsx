@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import moment from 'moment';
 import ViewFileButton from "@/components/Button/ViewFileButton";
 import DropdownStatus from "@/components/Dropdown/DropdownStatus";
-import { BuscaSolicitacaoInicial } from "@/lib/types/global";
+import { BuscaSolicitacaoInicial, Unidades } from "@/lib/types/global";
 
 interface Props {
     formData: BuscaSolicitacaoInicial;
@@ -66,9 +66,7 @@ interface Cilindros {
     name: string;
 }
 
-interface Unidades {
-    name: string;
-};
+
 
 interface Produto {
     name: string;
@@ -86,13 +84,13 @@ interface Medicos {
 };
 
 export default function ModalLioEdit({ formData, cilindros, dioptrias, medicos, produtos, unidades, isOpen, toggle, updateSolicitacao }: Props) {
-console.log(formData)
+    console.log(formData)
     const status = [
-        {value: 'Em análise', label: 'Em análise'},
-        {value: 'Recusado', label: 'Recusado'},
-        {value: 'Em compra', label: 'Em compra'},
-        {value: 'Disponível', label: 'Disponível'},
-        {value: 'Finalizado', label: 'Finalizado'},
+        { value: 'Em análise', label: 'Em análise' },
+        { value: 'Recusado', label: 'Recusado' },
+        { value: 'Em compra', label: 'Em compra' },
+        { value: 'Disponível', label: 'Disponível' },
+        { value: 'Finalizado', label: 'Finalizado' },
     ]
 
     const schema: ZodType<FormData> = z.object({
@@ -129,8 +127,8 @@ console.log(formData)
             dioptriaReserva: formData.SolicitacaoLio?.dioptriaReserva,
             cilindroReserva: formData.SolicitacaoLio?.cilindroReserva,
             medico: formData.SolicitacaoLio?.medico,
-            unidade: formData.SolicitacaoLio?.unidade,
-            solicitante: formData.SolicitacaoLio?.solicitante,
+            unidade: formData.Unidade.name,
+            solicitante: '',
             injetorCartucho: formData.SolicitacaoLio?.injetorCartucho,
             dtPagamento: formData.SolicitacaoLio?.dtPagamento,
             comprovante: formData.SolicitacaoLio?.comprovante,
@@ -141,10 +139,10 @@ console.log(formData)
     })
 
 
-    
+    console.log(formData)
 
     const submitData = (data: FormData) => {
-        let {id, resposta, status } = data;
+        let { id, resposta, status } = data;
         let values = {
             id,
             resposta,
@@ -156,6 +154,8 @@ console.log(formData)
 
         reset({
             ...formData.SolicitacaoLio,
+            unidade: formData.Unidade.name,
+            solicitante: formData.User.name,
             dtCirurgia: moment(formData.SolicitacaoLio?.dtCirurgia).format('YYYY-MM-DD'),
             dtPagamento: moment(formData.SolicitacaoLio?.dtPagamento).format('YYYY-MM-DD')
         })
@@ -164,8 +164,12 @@ console.log(formData)
     return (
         <Modal size='lg' isOpen={isOpen} toggle={toggle} className="">
             <div className="md:w-full flex-col justify-between p-8 bg-white rounded-xl border-none shadow-xl">
-                <div className="border-b w-full ">
-                    <h1 className="text-2xl text-title font-semibold pb-4">Formulário de Solicitação de LIO</h1>
+                <div className="border-b w-full flex justify-between">
+                    <h1 className="text-2xl text-title font-semibold ">Formulário de Solicitação de LIO</h1>
+                    <div className=" w-1/4 flex flex-col px-3 mb-2">
+                        <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="solicitacao-id">Número da Solicitação</label>
+                        <input value={`Nº: ${formData.id}`} disabled className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-1 font-semibold" />
+                    </div>
                 </div>
                 <div>
                     <form onSubmit={handleSubmit(submitData)}>
@@ -174,7 +178,7 @@ console.log(formData)
                             <div className="md:flex mb-2 ">
                                 <div className="md:w-3/4 w-full px-3 ">
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name" >
-                                        Nome do Paciente 
+                                        Nome do Paciente
                                     </label>
                                     <input {...register("paciente", { required: true })} disabled className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-1 " id="grid-name" placeholder="Nome completo do paciente" />
 
@@ -182,7 +186,7 @@ console.log(formData)
 
                                 <div className="md:w-1/4 w-full px-3 relative">
                                     <label className="block tracking-wide whitespace-nowrap text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
-                                        Data da Cirurgia 
+                                        Data da Cirurgia
                                     </label>
                                     <input {...register("dtCirurgia")} type="date" disabled className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-1" id="grid-name" placeholder="Selecione" />
 
@@ -192,20 +196,20 @@ console.log(formData)
                             <div className="md:flex mb-2 ">
                                 <div className="md:w-2/4 w-full px-3 ">
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="lentePrincipal">
-                                        Lente Principal 
+                                        Lente Principal
                                     </label>
                                     <SelectComponent name="lentePrincipal" isDisabled={true} control={control} options={produtos} />
                                 </div>
                                 <div className="md:w-1/4 w-full px-3">
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
-                                        Dioptria 
+                                        Dioptria
                                     </label>
                                     <SelectComponent name="dioptria" isDisabled={true} control={control} options={dioptrias} />
 
                                 </div>
                                 <div className="md:w-1/4 w-full px-3">
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
-                                        Cilindro 
+                                        Cilindro
                                     </label>
                                     <SelectComponent name="cilindro" isDisabled={true} control={control} options={cilindros} />
 
@@ -216,21 +220,21 @@ console.log(formData)
                             <div className="md:flex mb-2 ">
                                 <div className="md:w-2/4 w-full px-3">
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
-                                        Lente Reserva 
+                                        Lente Reserva
                                     </label>
                                     <SelectComponent name="lenteReserva" isDisabled={true} control={control} options={produtos} />
 
                                 </div>
                                 <div className="md:w-1/4 w-full px-3">
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
-                                        Dioptria 
+                                        Dioptria
                                     </label>
                                     <SelectComponent name="dioptriaReserva" isDisabled={true} control={control} options={dioptrias} />
 
                                 </div>
                                 <div className="md:w-1/4 w-full px-3">
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
-                                        Cilindro 
+                                        Cilindro
                                     </label>
                                     <SelectComponent name="cilindroReserva" isDisabled={true} control={control} options={cilindros} />
 
@@ -241,14 +245,14 @@ console.log(formData)
                             <div className="md:flex mb-2">
                                 <div className="md:w-3/4 w-full px-3">
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
-                                        Médico(a) 
+                                        Médico(a)
                                     </label>
                                     <SelectComponent name="medico" isDisabled={true} control={control} options={medicos} />
 
                                 </div>
                                 <div className="md:w-1/4 w-full px-3">
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
-                                        Unidade 
+                                        Unidade
                                     </label>
                                     <SelectComponent name="unidade" isDisabled={true} control={control} options={unidades} placeholder="Selecione" />
                                 </div>
@@ -267,12 +271,12 @@ console.log(formData)
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
                                         Injetor / Cartucho
                                     </label>
-                                    <input {...register("injetorCartucho")} disabled className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-3" id="grid-name" placeholder="Escreva" />
+                                    <input {...register("injetorCartucho")} disabled className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-3" id="grid-name" />
 
                                 </div>
                                 <div className="md:w-1/4 w-full px-3">
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
-                                        Dt. Pagamento 
+                                        Dt. Pagamento
                                     </label>
                                     <input {...register("dtPagamento")} type="date" disabled className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-3" id="grid-name" placeholder="Selecione" />
 
@@ -284,14 +288,15 @@ console.log(formData)
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
                                         Resposta
                                     </label>
-                                    <textarea {...register("resposta")} disabled rows={4} className="appearance-none block min-h-[105px]  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-1 " id="grid-name" placeholder="Insira uma resposta para o solicitante" />                                </div>
+                                    <textarea {...register("resposta")} disabled rows={4} className="appearance-none block min-h-[105px]  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-1 " id="grid-name" />
+                                </div>
 
                                 <div className="md:w-1/4 w-full px-3 flex-col ">
                                     <div className=" w-full">
                                         <label className="block tracking-wide text-subTitle text-center text-xs font-semibold mb-2 " >
-                                            Comprovante 
+                                            Comprovante
                                         </label>
-                                        
+
                                         <ViewFileButton name="comprovante" control={control} />
 
 
@@ -299,9 +304,9 @@ console.log(formData)
                                     </div>
                                     <div className=" w-full">
                                         <label className="block tracking-wide text-subTitle text-center text-xs font-semibold mb-2 " >
-                                            Form. Cirúrgico 
+                                            Form. Cirúrgico
                                         </label>
-                                        <ViewFileButton name="formCirurgico" control={control}  />
+                                        <ViewFileButton name="formCirurgico" control={control} />
 
 
                                     </div>

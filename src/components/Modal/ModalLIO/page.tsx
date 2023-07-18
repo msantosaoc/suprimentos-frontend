@@ -7,7 +7,10 @@ import { ZodType, z } from "zod";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod'
 import SelectComponent from "@/components/Select/SelectComponent";
-        
+import { FormData, Medico } from "@/lib/types/global";
+import SelectComponentProdutos from "@/components/Select/Produtos/SelectComponentProdutos";
+import { useEffect } from "react";
+import { useSession } from 'next-auth/react';
 
 
 interface Props {
@@ -17,7 +20,7 @@ interface Props {
     produtos: Produto[] | undefined;
     dioptrias: Dioptrias[] | undefined;
     cilindros: Cilindros[] | undefined;
-    medicos: Medicos[] | undefined;
+    medicos: Medico[] | undefined;
     user: User | null;
     categorias: Categoria[] | undefined;
     createSolicitacao: (solicitcao: FormData) => void;
@@ -32,6 +35,7 @@ interface Cilindros {
 }
 
 interface Unidades {
+    id: number;
     name: string;
 };
 
@@ -51,46 +55,12 @@ interface Produto {
     unidMedida: string | null;
 };
 
-interface Medicos {
-    name: string;
-};
 
-interface User {
-    expires?: string;
-    user?: {
-        id: string;
-        name: string;
-        email: string;
-        accessToken: string;
-    }
-};
 
-type FormData = {
-    paciente: string;
-    dtCirurgia: string;
-    lentePrincipal: string;
-    dioptria: string;
-    cilindro?: string;
-    lenteReserva?: string;
-    dioptriaReserva?: string;
-    cilindroReserva?: string;
-    medico: string;
-    unidade: string;
-    categoria: {
-        id: string;
-        name: string;
-    };
-    solicitante: string;
-    injetorCartucho?: string;
-    dtPagamento: string;
-    comprovante: string;
-    formCirurgico: string;
-    status?: string;
-    resposta?: string;
-}
 
 export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias, cilindros, medicos, user, categorias, createSolicitacao }: Props) {
 
+    
     
 
     const schema: ZodType<FormData> = z.object({
@@ -99,21 +69,22 @@ export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias
         lentePrincipal: z.string().nonempty('Este campo é obrigatório'),
         dioptria: z.string().nonempty('Este campo é obrigatório'),
         cilindro: z.string().optional(),
-        lenteReserva: z.string(),
-        dioptriaReserva: z.string(),
+        lenteReserva: z.string().optional(),
+        dioptriaReserva: z.string().optional(),
         cilindroReserva: z.string().optional(),
         medico: z.string().nonempty('Este campo é obrigatório'),
-        unidade: z.string().nonempty('Este campo é obrigatório'),
-        solicitante: z.string().nonempty('Este campo é obrigatório'),
-        injetorCartucho: z.string(),
-        dtPagamento: z.string().nonempty(),
+        unidade: z.number(),
+        solicitante: z.string(),
+        injetorCartucho: z.string().optional(),
+        dtPagamento: z.string().nonempty(), 
         comprovante: z.string().nonempty(),
         formCirurgico: z.string().nonempty(),
         categoria: z.object({
-            id: z.string(),
+            id: z.coerce.number(),
             name: z.string()
         }),
-        status: z.string()
+        status: z.string().optional(),
+        resposta: z.string().optional()
     }).refine(data=> {
         if(data.lentePrincipal.includes("Tóric")) {
             return data.cilindro !== undefined && data.cilindro !== '';
@@ -123,18 +94,23 @@ export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias
         message: 'Cilindro é obrigatório quando lente é preenchido',
         path: ['cilindro']
     }).refine(data=> {
-        if(data.lenteReserva.includes("Tóric")) {
+        if(data.lenteReserva?.includes("Tóric")) {
             return data.cilindroReserva !== undefined && data.cilindroReserva !== '';
         }
         return true;
     }, {
         message: 'Cilindro é obrigatório quando lente é preenchido',
         path: ['cilindroReserva']
-    })
+    }).transform((fields) => ({
+        ...fields,
+        solicitante: user?.user?.id ? user.user.id : "Teste",
+        // unidade: {id: fields.unidade.id, name: fields.unidade.name}
+        categoria: {id: 6, name: 'Lio'}
+    }))
 
     
 
-    const { register, handleSubmit, formState: { errors }, control, watch } = useForm<FormData>({
+    const { register, handleSubmit, formState: { errors }, control, watch, reset } = useForm<FormData>({
         resolver: zodResolver(schema), defaultValues: {
             paciente: '',
             dtCirurgia: '',
@@ -145,22 +121,34 @@ export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias
             dioptriaReserva: '',
             cilindroReserva: '',
             medico: '',
-            unidade: '',
-            solicitante: user?.user?.id ? user.user.id : 'Teste',
+            solicitante: user?.user?.id ? user.user.name : "Teste",
             injetorCartucho: '',
             dtPagamento: '',
             comprovante: '',
             formCirurgico: '',
             status: 'Não visto',
             resposta: '',
-            categoria: {id: 'cljhn5we20002vvmcpxedty2c', name: 'Lio'}
         }
     });
 
+    const arrayMedicos = medicos?.map(item=> ({name: item.name}));
+   
+console.log(errors)
+useEffect(() => {
+
+    reset({
+        solicitante: user?.user?.id ? user.user.name : "Teste",
+        categoria: {id: 2, name: 'Lio'},
+        status: 'Não visto'
+    });
+}, [isOpen, reset]);
+
     const submitData = (data: FormData) => {
-        // createSolicitacao(data);
+        createSolicitacao(data);
         console.log('lio',data)
     };
+
+    console.log(watch('unidade'))
     
     return (
         <Modal size='lg' isOpen={isOpen} toggle={toggle} className="">
@@ -245,14 +233,14 @@ export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
                                         Médico(a) <span className={`text-red-500 ${!errors.medico?.message && 'hidden'}`}>*</span>
                                     </label>
-                                    <SelectComponent name="medico" control={control} options={medicos} />
+                                    <SelectComponent name="medico" control={control} options={arrayMedicos} />
 
                                 </div>
                                 <div className="md:w-1/4 w-full px-3">
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
                                         Unidade <span className={`text-red-500 ${!errors.unidade?.message && 'hidden'}`}>*</span>
                                     </label>
-                                    <SelectComponent name="unidade" control={control} options={unidades} placeholder="Selecione" />
+                                    <SelectComponentProdutos name="unidade" control={control} options={unidades} placeholder="Selecione" />
                                 </div>
 
                             </div>
@@ -262,7 +250,7 @@ export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
                                         Solicitante
                                     </label>
-                                        <input {...register("solicitante")} value={user?.user?.name} disabled className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-3" id="grid-name" placeholder="Usuário solicitante" />
+                                        <input {...register("solicitante")}  disabled className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-3" id="grid-name" placeholder="Usuário solicitante" />
                                 </div>
 
                                 <div className="md:w-1/4 w-full px-3">

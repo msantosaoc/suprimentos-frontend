@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { FormData } from "@/lib/types/global";
 
 interface RequestBody {
     paciente: string;
@@ -27,9 +28,9 @@ interface RequestBody {
 
 
 export async function POST (request:Request) {
-    const body:RequestBody = await request.json();
+    const body:FormData = await request.json();
    
-
+    
         const solicitacaoLio = await prisma.solicitacaoLio.create({
             data: {
                 paciente: body.paciente,
@@ -41,7 +42,7 @@ export async function POST (request:Request) {
                 dioptriaReserva: body.dioptriaReserva,
                 cilindroReserva: body.cilindroReserva,
                 medico: body.medico,
-                unidade: body.unidade,
+                unidadeId: body.unidade,
                 solicitante: body.solicitante,
                 injetorCartucho: body.injetorCartucho,
                 dtPagamento: body.dtPagamento,
@@ -59,7 +60,7 @@ export async function POST (request:Request) {
             data: {
                 solicitacaoLioId: solicitacaoLio.id,
                 userId: body.solicitante,
-                unidadeId: "cljhnk9bj003pvvmccqos7kmk",
+                unidadeId: body.unidade,
                 status: 'Não visto',
                 categoriaId: body.categoria.id
             }

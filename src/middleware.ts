@@ -6,6 +6,8 @@ import { authOptions } from "@/utils/authOptions";
 
 export async function middleware(request:NextRequest) {
     
+    // const token = request.cookies.get('next-auth.session-token')?.value
+ 
     
     const session = await getToken({
         req: request,

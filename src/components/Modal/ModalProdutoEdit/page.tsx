@@ -9,7 +9,7 @@ import SaveButton from "@/components/Button/SaveButton";
 import { useEffect } from "react";
 import { Minus, Plus } from "lucide-react";
 import SelectComponentProdutos from "@/components/Select/Produtos/SelectComponentProdutos";
-import { BuscaSolicitacaoInicial, ListarProdutosSolicitados } from "@/lib/types/global";
+import { BuscaSolicitacaoInicial, ListarProdutosSolicitados, Unidades } from "@/lib/types/global";
 import DropdownStatus from "@/components/Dropdown/DropdownStatus";
 
 interface Props {
@@ -29,10 +29,6 @@ interface Medicos {
     name: string;
 };
 
-interface Unidades {
-    id: string;
-    name: string;
-};
 
 interface Categoria {
     id: string;

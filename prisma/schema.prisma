@@ -66,10 +66,11 @@ model VerificationToken {
 }
 
 model Unidade {
-  id                 String               @id @default(cuid())
+  id                 Int               @id @default(autoincrement())
   name               String
   Solicitacao        Solicitacao[]
   SolicitacaoInicial SolicitacaoInicial[]
+  SolicitacaoLio     SolicitacaoLio[]
 }
 
 model Categoria {
@@ -154,7 +155,7 @@ model Solicitacao {
   createdAt           DateTime?             @default(now())
   updatedAt           DateTime?             @updatedAt
   categoriaId         Int
-  unidadeId           String
+  unidadeId           Int
   userId              String
   ProdutosSolicitados ProdutosSolicitados[]
   SolicitacaoInicial  SolicitacaoInicial[]
@@ -171,7 +172,7 @@ model ProdutosSolicitados {
 }
 
 model SolicitacaoInicial {
-  id String @id @default(cuid())
+  id Int @id @default(autoincrement())
 
   User             User?           @relation(fields: [userId], references: [id], onUpdate: Cascade)
   userId           String?
@@ -183,7 +184,7 @@ model SolicitacaoInicial {
   updatedAt        DateTime?       @updatedAt
   status           String          @default("Lio")
   Unidade          Unidade?        @relation(fields: [unidadeId], references: [id], onUpdate: Cascade)
-  unidadeId        String?
+  unidadeId        Int?
   Categoria        Categoria?      @relation(fields: [categoriaId], references: [id], onUpdate: Cascade)
   categoriaId      Int?
 }
@@ -194,12 +195,12 @@ model SolicitacaoLio {
   dtCirurgia         String
   lentePrincipal     String
   dioptria           String
-  cilindro           String
+  cilindro           String?
   lenteReserva       String?
   dioptriaReserva    String?
   cilindroReserva    String?
   medico             String
-  unidade            String
+  unidade            Unidade              @relation(fields: [unidadeId], references: [id])
   solicitante        String
   injetorCartucho    String?
   dtPagamento        String
@@ -213,4 +214,5 @@ model SolicitacaoLio {
   updatedAt   DateTime?  @updatedAt
   Categoria   Categoria? @relation(fields: [categoriaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   categoriaId Int?
+  unidadeId   Int
 }

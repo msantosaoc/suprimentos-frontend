@@ -44,6 +44,7 @@ declare global {
             id: string;
             name: string;
             email: string;
+            role: string;
             accessToken: string;
         }
     };
@@ -80,7 +81,7 @@ interface ListarProdutosSolicitados {
 };
 
 interface BuscaSolicitacaoInicial {
-    id: string;
+    id: number;
     User: {
         name: string;
     },
@@ -233,6 +234,67 @@ type CreateCategoria = {
     subCategorias?: [{
         id?: number;
     }]
+};
+
+type Medico = {
+    id: string;
+    name: string;
+    email: string;
+    crm: string;
+    rqe: string;
+    image: string;
+    created_at: string;
+    updated_at: string;
+    especialidadeonmedico?: [
+        {
+            id: string;
+            medicoId: string;
+            especialidadeId: string;
+            created_at: string;
+            updated_at: string;
+            especialidades?: {
+                especialidade: string;
+            }
+        },
+    ],
+    formacoes?: [
+        {
+            id: string;
+            curso: string;
+            unidade_ensino: string;
+            medicoId: string;
+        }
+    ],
+    trabalhos: string;
 }
 
-export { FormSolicitacaoProduto, ListarProdutosSolicitados, BuscaSolicitacaoInicial, Marcas, Produtos, CreateProduto, CreateMarca, CreateSubCategoria, SubCategoria, CreateCategoria, Categoria, EditarProduto }
+type FormData = {
+    paciente: string;
+    dtCirurgia: string;
+    lentePrincipal: string;
+    dioptria: string;
+    cilindro?: string;
+    lenteReserva?: string;
+    dioptriaReserva?: string;
+    cilindroReserva?: string;
+    medico: string;
+    unidade: number,
+    categoria: {
+        id: number;
+        name: string;
+    };
+    solicitante: string;
+    injetorCartucho?: string;
+    dtPagamento: string;
+    comprovante: string;
+    formCirurgico: string;
+    status?: string;
+    resposta?: string;
+}
+
+interface Unidades {
+    id: number;
+    name: string;
+};
+
+export { FormSolicitacaoProduto, ListarProdutosSolicitados, BuscaSolicitacaoInicial, Marcas, Produtos, CreateProduto, CreateMarca, CreateSubCategoria, SubCategoria, CreateCategoria, Categoria, EditarProduto, Medico, FormData, Unidades}
