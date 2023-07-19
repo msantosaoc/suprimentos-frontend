@@ -216,9 +216,9 @@ export default function Solicitacoes() {
 
     async function createSolicitacao(solicitacao: FormData) {
         const solicitar = await api.post('/api/solicitacao/lio', solicitacao).then(response => {
+            buscarSolicitacoesIniciais()
             buscarSolicitacoes();
             toggleModalSolicitaLio();
-            buscarSolicitacoesIniciais()
         }).catch(error => console.log(error));
 
         return solicitar;
@@ -226,8 +226,8 @@ export default function Solicitacoes() {
 
     async function createSolicitacaoProduto(solicitacao: FormSolicitacaoProduto) {
         const solicitar = await api.post('/api/solicitacao/produto', solicitacao).then(response => {
-            // buscarSolicitacoes();
             buscarSolicitacoesIniciais()
+            buscarSolicitacoes();
             toggleModalSolicitaProduto();
         }).catch(error => console.log(error));
 
