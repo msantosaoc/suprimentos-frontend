@@ -202,7 +202,7 @@ export default function Solicitacoes() {
         setSolicitacoesIniciais(responseArray)
         setIsLoading(false);
         return solicitacoesIniciais;
-    };
+    }; 
     
     console.log(solicitacoesIniciais);
 
