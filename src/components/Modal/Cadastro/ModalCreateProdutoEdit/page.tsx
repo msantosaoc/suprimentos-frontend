@@ -60,13 +60,13 @@ export default function ModalCreateProdutoEdit({ toggle, isOpen, marcas, categor
         if (isOpen) {
 
             reset({
-                id: formData.id,
-                name: formData.name,
-                Categoria: formData.Categoria,
-                categoriaId: formData.Categoria.id,
-                Marca: formData.Marca,
-                unidMedida: formData.unidMedida,
-                SubCategoria: formData.SubCategoria
+                id: formData?.id,
+                name: formData?.name,
+                Categoria: formData?.Categoria,
+                categoriaId: formData?.Categoria.id,
+                Marca: formData?.Marca,
+                unidMedida: formData?.unidMedida,
+                SubCategoria: formData?.SubCategoria
             });
         }
     }, [isOpen, reset]);

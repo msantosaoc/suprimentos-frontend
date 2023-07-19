@@ -119,9 +119,9 @@ export default function Solicitacoes() {
 
     const [medicos, setMedicos] = useState<Medico[]>([{id: '', name: '', crm: '', created_at: '', email: '', image: '', rqe: '', trabalhos: '', updated_at: '', especialidadeonmedico: [{created_at: '', especialidadeId: '', id: '', medicoId: '', updated_at: '', especialidades: {especialidade: ''}}]}]);
 
-    const [solicitacao, setSolicitacao] = useState<BuscaSolicitacaoInicial>({ id: 0, User: { name: '' }, Categoria: { id: '', name: '' }, solicitacaoId: '', solicitacaoLioId: '', status: '', Unidade: { name: '' }, createdAt: '', Solicitacao: { id: '', name: '', resposta: '', status: '', createdAt: '', updatedAt: '', categoriaId: '', unidadeId: '', userId: '', ProdutosSolicitados: [{ id: '', produto: '', produtoId: '', SolicitacaoId: '', qtde: 0}] }, SolicitacaoLio: { id: '', paciente: '', dtCirurgia: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', medico: '', unidade: '', solicitante: '', injetorCartucho: '', dtPagamento: '', comprovante: '', formCirurgico: '', resposta: '', status: '', categoria: '', createdAt: '', updatedAt: '' } });
+    const [solicitacao, setSolicitacao] = useState<BuscaSolicitacaoInicial>({ id: 0, User: { name: '' }, Categoria: { id: 0, name: '' }, solicitacaoId: 0, solicitacaoLioId: '', status: '', Unidade: { name: '' }, createdAt: '', Solicitacao: { id: 0, name: '', resposta: '', status: '', createdAt: '', updatedAt: '', categoriaId: 0, unidadeId: 0, userId: '', ProdutosSolicitados: [{ id: '', produto: '', produtoId: 0, solicitacaoId: 0, qtde: 0}] }, SolicitacaoLio: { id: '', paciente: '', dtCirurgia: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', medico: '', unidade: '', solicitante: '', injetorCartucho: '', dtPagamento: '', comprovante: '', formCirurgico: '', resposta: '', status: '', categoriaId: 0, createdAt: '', updatedAt: '', unidadeId: 0 } });
 
-    const [solicitacaoProdutos, setSolicitacaoProdutos] = useState<BuscaSolicitacaoInicial>({ id: 0, User: { name: '' }, Categoria: { id: '', name: '' }, solicitacaoId: '', solicitacaoLioId: '', status: '', Unidade: { name: '' }, createdAt: '', Solicitacao: { id: '', name: '', resposta: '', status: '', createdAt: '', updatedAt: '', categoriaId: '', unidadeId: '', userId: '', ProdutosSolicitados: [{ id: '', produto: '', produtoId: '', SolicitacaoId: '', qtde: 0}] }, SolicitacaoLio: { id: '', paciente: '', dtCirurgia: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', medico: '', unidade: '', solicitante: '', injetorCartucho: '', dtPagamento: '', comprovante: '', formCirurgico: '', resposta: '', status: '', categoria: '', createdAt: '', updatedAt: '' } });
+    const [solicitacaoProdutos, setSolicitacaoProdutos] = useState<BuscaSolicitacaoInicial>({ id: 0, User: { name: '' }, Categoria: { id: 0, name: '' }, solicitacaoId: 0, solicitacaoLioId: '', status: '', Unidade: { name: '' }, createdAt: '', Solicitacao: { id: 0, name: '', resposta: '', status: '', createdAt: '', updatedAt: '', categoriaId: 0, unidadeId: 0, userId: '', ProdutosSolicitados: [{ id: '', produto: '', produtoId: 0, solicitacaoId: 0, qtde: 0}] }, SolicitacaoLio: { id: '', paciente: '', dtCirurgia: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', medico: '', unidade: '', solicitante: '', injetorCartucho: '', dtPagamento: '', comprovante: '', formCirurgico: '', resposta: '', status: '', categoriaId: 0, createdAt: '', updatedAt: '', unidadeId: 0 } });
 
     const [categorias, setCategorias] = useState<Categoria[]>([{ id: 0, name: '', categoriaOnSubCategoria: [{SubCategoria: {id: 0, name: '', createdAt: '', updatedAt: ''}}] }]);
 
@@ -133,7 +133,7 @@ export default function Solicitacoes() {
 
     const [categoria, setCategoria] = useState<Categoria>({ id: 0, name: '', categoriaOnSubCategoria: [{SubCategoria: {id: 0, name: '', createdAt: '', updatedAt: ''}}] });
 
-    const [solicitacoesIniciais, setSolicitacoesIniciais] = useState<BuscaSolicitacaoInicial[]>([{ id: 0, User: { name: '' }, Categoria: { id: '', name: '' }, solicitacaoId: '', solicitacaoLioId: '', status: '', Unidade: { name: '' }, createdAt: '', Solicitacao: { id: '', name: '', resposta: '', status: '', createdAt: '', updatedAt: '', categoriaId: '', unidadeId: '', userId: '', ProdutosSolicitados: [{ id: '', produto: '', produtoId: '', SolicitacaoId: '', qtde: 0}] }, SolicitacaoLio: { id: '', paciente: '', dtCirurgia: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', medico: '', unidade: '', solicitante: '', injetorCartucho: '', dtPagamento: '', comprovante: '', formCirurgico: '', resposta: '', status: '', categoria: '', createdAt: '', updatedAt: '' } }])
+    const [solicitacoesIniciais, setSolicitacoesIniciais] = useState<BuscaSolicitacaoInicial[]>([{ id: 0, User: { name: '' }, Categoria: { id: 0, name: '' }, solicitacaoId: 0, solicitacaoLioId: '', status: '', Unidade: { name: '' }, createdAt: '', Solicitacao: { id: 0, name: '', resposta: '', status: '', createdAt: '', updatedAt: '', categoriaId: 0, unidadeId: 0, userId: '', ProdutosSolicitados: [{ id: '', produto: '', produtoId: 0, solicitacaoId: 0, qtde: 0}] }, SolicitacaoLio: { id: '', paciente: '', dtCirurgia: '', lentePrincipal: '', dioptria: '', cilindro: '', lenteReserva: '', dioptriaReserva: '', cilindroReserva: '', medico: '', unidade: '', solicitante: '', injetorCartucho: '', dtPagamento: '', comprovante: '', formCirurgico: '', resposta: '', status: '', categoriaId: 0, createdAt: '', updatedAt: '', unidadeId: 0 } }])
 
     const handleCategoryChange = (category: Categoria) => {
         setSelectedCategory(category);
@@ -193,7 +193,7 @@ export default function Solicitacoes() {
         const medicosResponse = await response.json();
         setMedicos(medicosResponse);
 
-        return medicos;
+        return response;
     };
 
     async function buscarCartegorias() {
@@ -206,7 +206,7 @@ export default function Solicitacoes() {
         setIsLoading(true);
         const solicitacoesIniciais = await api.get('/api/solicitacao').then(response => {
             setSolicitacoesIniciais(response.data);
-            console.log(response.data)
+            
         }).catch(error => console.log(error));
         setIsLoading(false);
         return solicitacoesIniciais;

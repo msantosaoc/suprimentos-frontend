@@ -86,10 +86,10 @@ interface BuscaSolicitacaoInicial {
         name: string;
     },
     Categoria: {
-        id: string;
+        id: number;
         name: string;
     },
-    solicitacaoId?: string;
+    solicitacaoId: number;
     solicitacaoLioId?: string;
     status: string;
     Unidade: {
@@ -97,20 +97,20 @@ interface BuscaSolicitacaoInicial {
     },
     createdAt: string;
     Solicitacao?: {
-        id: string;
+        id: number;
         name: string;
         resposta?: string;
         status: string;
         createdAt: string;
         updatedAt: string;
-        categoriaId: string;
-        unidadeId: string;
+        categoriaId: number;
+        unidadeId: number;
         userId: string;
         ProdutosSolicitados: [{
             id: string;
-            produtoId: string;
-            produto: string;
-            SolicitacaoId: string;
+            produtoId: number;
+            produto?: string;
+            solicitacaoId: number;
             qtde: number;
         }]
     },
@@ -120,10 +120,10 @@ interface BuscaSolicitacaoInicial {
         dtCirurgia: string;
         lentePrincipal: string;
         dioptria: string;
-        cilindro: string;
+        cilindro?: string;
         lenteReserva?: string;
-        dioptriaReserva: string;
-        cilindroReserva: string;
+        dioptriaReserva?: string;
+        cilindroReserva?: string;
         medico: string;
         unidade: string;
         solicitante: string;
@@ -133,9 +133,10 @@ interface BuscaSolicitacaoInicial {
         formCirurgico: string;
         resposta?: string;
         status: string;
-        categoria: string;
+        categoriaId: number;
         createdAt: string;
         updatedAt: string;
+        unidadeId: number;
     }
 };
 
