@@ -42,8 +42,7 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
         { value: 'Finalizado', label: 'Finalizado' },
     ];
 
-    console.log(produtos)
-    console.log(formData)
+    
 
     // Verificar se os produtos do campo "ProdutosSolicitados" estão no array
     const produtosSolicitados = formData.Solicitacao?.ProdutosSolicitados;
@@ -63,8 +62,7 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
         };
     });
 
-    console.log(produtosEncontrados);
-    console.log(produtosComNomes)
+    
 
     const schema: ZodType<any> = z.object({
         id: z.string(),
@@ -108,7 +106,7 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
         }
     });
 
-    console.log(formData)
+    
 
     const { fields, append, remove } = useFieldArray({
         control,
@@ -134,7 +132,7 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
     }, [isOpen, reset]);
 
     const submitData = (data: ListarProdutosSolicitados) => {
-        console.log(data);
+        
         updateSolicitacaoProduto(data);
     };
 
@@ -142,7 +140,7 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
         append({ id: '', produtoId: '', produto: '', solicitacaoId: '', qtde: 0 })
     };
 
-    console.log(errors)
+   
 
     const arraySolicitaProdutos = fields.map((field, index) => {
         return (

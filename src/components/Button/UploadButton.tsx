@@ -31,7 +31,7 @@ const UploadButton: React.FC<UploadProps> = ({ children, Icon, loading, name, co
                     "Content-Type": "multipart/form-data"
                 }
             }).then(response => {
-                console.log(response.data)
+                
                 setFileName(response.data.originalname);
                 onChange(response.data.location)
             }).catch(error => console.log(error));

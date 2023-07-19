@@ -76,8 +76,7 @@ export default function ModalCreateProdutoEdit({ toggle, isOpen, marcas, categor
         // console.log('esse',data)
     };
 
-    console.log(watch())
-    console.log(errors)
+    
     return (
         <Modal size='lg' isOpen={isOpen} toggle={toggle} className="">
             <div className="md:w-full flex-col justify-between pb-2 pt-8 px-8 bg-white rounded-xl border-none shadow-xl">

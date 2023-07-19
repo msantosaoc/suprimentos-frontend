@@ -32,7 +32,7 @@ const ViewFileButton: React.FC<UploadProps> = ({ children, Icon, loading, name, 
                     "Content-Type": "multipart/form-data"
                 }
             }).then(response => {
-                console.log(response.data)
+                
                 setFileName(response.data.originalname);
                 onChange(response.data.location)
             }).catch(error => console.log(error));

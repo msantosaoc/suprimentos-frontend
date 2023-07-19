@@ -47,7 +47,7 @@ const SelectComponentProdutos: React.FC<SelectComponentProps> = ({ name, control
       const { id } = selectedOption;
       setValues(selectedOption);
       onChange(id); // Passa o ID do item selecionado
-      console.log(id);
+      
     } else {
       setValues({ value: '', id: '', label: '' });
       onChange(''); // Define como vazio caso nenhum item seja selecionado

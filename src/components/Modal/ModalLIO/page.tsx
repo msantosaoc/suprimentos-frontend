@@ -117,7 +117,7 @@ export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias
 
     const arrayMedicos = medicos?.map(item=> ({name: item.name}));
    
-console.log(errors)
+
 useEffect(() => {
 
     reset({
@@ -129,10 +129,10 @@ useEffect(() => {
 
     const submitData = (data: FormData) => {
         createSolicitacao(data);
-        console.log('lio',data)
+        
     };
 
-    console.log(watch('unidade'))
+    
     
     return (
         <Modal size='lg' isOpen={isOpen} toggle={toggle} className="">

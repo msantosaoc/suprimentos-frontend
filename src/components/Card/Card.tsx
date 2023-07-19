@@ -40,12 +40,12 @@ export default function Card({ selectedSolicitacao, selectedSolicitacaoProdutos,
     
     function handleSelectSolicitacaoProdutos(solicitacao: BuscaSolicitacaoInicial) {
         selectedSolicitacaoProdutos(solicitacao);
-        console.log(solicitacao)
+      
         toggleModalSolicitacaoProdutoEdit();
     };
     
     
-    console.log(solicitacoesIniciais)
+  
 
     // const arraySolicitacoes: any = solicitacoesList?.map((solicitacao, index) => {
     //     return (

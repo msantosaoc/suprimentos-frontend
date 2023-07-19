@@ -52,7 +52,7 @@ export default function Categorias({ selectedCategory, onCategoryChange }: Categ
     const handleFilter = (category: Categoria) => {
         let all = {id: 0, name: '', categoriaOnSubCategoria: [{SubCategoria: {id: 0, name: '', createdAt: '', updatedAt: ''}}]} as Categoria;
         let categoria  = category.name === "Todos" ? all : category 
-        console.log(categoria)
+     
         onCategoryChange(categoria);
         setFiltroCategoria(category);
       };

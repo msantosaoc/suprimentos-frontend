@@ -61,7 +61,7 @@ export default function Produtos() {
     };
 
     async function editarProduto(produto: Produtos) {
-        console.log(produto)
+        
         const update = await api.put('/api/produto/edit', produto).then(response=> {
             buscarProdutos();
             toggleEdit()

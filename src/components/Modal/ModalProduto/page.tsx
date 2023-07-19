@@ -29,7 +29,7 @@ interface Props {
 
 export default function ModalProduto({ isOpen, toggle, produtos, unidades, categorias, categoria, user, createSolicitacaoProduto }: Props) {
 
-    console.log(categoria)
+    
 
     const schema: ZodType<any> = z.object({
         name: z.string().nonempty(),
@@ -74,7 +74,7 @@ export default function ModalProduto({ isOpen, toggle, produtos, unidades, categ
     }, [isOpen, reset]);
 
     const submitData = (data: FormSolicitacaoProduto) => {
-        console.log(data);
+       
         createSolicitacaoProduto(data);
     };
 

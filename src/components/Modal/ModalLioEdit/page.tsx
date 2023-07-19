@@ -75,7 +75,7 @@ interface Medicos {
 };
 
 export default function ModalLioEdit({ formData, cilindros, dioptrias, medicos, produtos, unidades, isOpen, toggle, updateSolicitacao }: Props) {
-    console.log(formData)
+  
     const status = [
         { value: 'Em análise', label: 'Em análise' },
         { value: 'Recusado', label: 'Recusado' },
@@ -130,7 +130,7 @@ export default function ModalLioEdit({ formData, cilindros, dioptrias, medicos, 
     })
 
 
-    console.log(formData)
+    
 
     const submitData = (data: FormData) => {
         let { id, resposta, status } = data;

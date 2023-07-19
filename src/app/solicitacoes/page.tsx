@@ -192,12 +192,15 @@ export default function Solicitacoes() {
     };
 
     async function buscarSolicitacoesInciais() {
-        const buscar = await api.get('/api/solicitacao').then(response => setSolicitacoesIniciais(response.data));
-
+        setIsLoading(true)
+        const buscar = await api.get('/api/solicitacao').then(response => {
+            setSolicitacoesIniciais(response.data);
+            setIsLoading(false)
+        });
         return buscar;
     }
     
-    console.log(solicitacoesIniciais);
+    
 
 
     useEffect(() => {
@@ -214,7 +217,7 @@ export default function Solicitacoes() {
 
     async function createSolicitacao(solicitacao: FormData) {
         const solicitar = await api.post('/api/solicitacao/lio', solicitacao).then(response => {
-            // buscarSolicitacoesIniciais()
+            buscarSolicitacoesInciais()
             buscarSolicitacoes();
             toggleModalSolicitaLio();
         }).catch(error => console.log(error));
@@ -224,7 +227,7 @@ export default function Solicitacoes() {
 
     async function createSolicitacaoProduto(solicitacao: FormSolicitacaoProduto) {
         const solicitar = await api.post('/api/solicitacao/produto', solicitacao).then(response => {
-            // buscarSolicitacoesIniciais()
+            buscarSolicitacoesInciais()
             buscarSolicitacoes();
             toggleModalSolicitaProduto();
         }).catch(error => console.log(error));
@@ -235,7 +238,7 @@ export default function Solicitacoes() {
     };
 
     async function updateSolicitacao(solicitacao: UpdateSolicitacao) {
-        console.log(solicitacao);
+        
         const update = await api.put('/api/solicitacao/lio/edit', solicitacao).then(response => {
             buscarSolicitacoes();
             toggleModalSolicitaLioEdit();
@@ -245,7 +248,7 @@ export default function Solicitacoes() {
     };
 
     async function updateSolicitacaoProduto(solicitacao: ListarProdutosSolicitados) {
-        console.log(solicitacao);
+        
         const update = await api.put('', solicitacao).then(response => {
             // buscarSolicitacoes();
             // toggleModalSolicitaLioEdit();
@@ -256,12 +259,12 @@ export default function Solicitacoes() {
 
 
     function selectedSolicitacao(solicitacao: BuscaSolicitacaoInicial) {
-        console.log(solicitacao);
+        
         setSolicitacao(solicitacao);
     };
 
     function selectedSolicitacaoProdutos(solicitacao: BuscaSolicitacaoInicial) {
-        console.log(solicitacao);
+        
         setSolicitacaoProdutos(solicitacao);
     };
 
