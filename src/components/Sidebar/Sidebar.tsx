@@ -51,7 +51,7 @@ export default function Sidebar() {
 
     const toggleMenu = () => { setGlobalMenu(!globalMenu); setGlobalSubmenu(false); setGlobalSubmenuCadastrar(false) }
 
-    const [darkMode, setDarkMode] = useState(false);
+
 
     useEffect(() => {
         const root = window.document.documentElement;
@@ -67,11 +67,11 @@ export default function Sidebar() {
     }, [globalTheme])
 
     return (
-        <>
+        <div className="w-screen h-screen flex">
             <aside
-                className={`relative top-0 left-0 z-40  drop-shadow-lg dark:drop-shadow-3xl ${globalMenu ? 'w-64' : 'w-[4.3rem]'} h-screen duration-500  -translate-x-0
+                className={`relative top-0 left-0 z-50  drop-shadow-lg dark:drop-shadow-3xl ${globalMenu ? 'w-64' : 'w-[4.3rem]'} h-screen duration-500  -translate-x-0
             max-sm:absolute max-sm:w-full max-sm:h-6`} aria-label="Sidebar">
-
+                
 
                 <button type="button" onClick={toggleMenu} data-drawer-hide="drawer-navigation" aria-controls="drawer-navigation"
                     className={`text-base p-0 absolute top-10 -right-3 z-10 text-white dark:text-black dark:bg-gray-50  
@@ -206,11 +206,12 @@ export default function Sidebar() {
                         </button>
                     </div>
                 </div>
+
             </aside>
-            <div onClick={toggleMenu} className={`${globalMenu === true ? 'w-full h-full bg-transparent absolute z-10 transition-all ease-in-out duration-300 ' : ''} `}>
-                {/* <div className=" overflow-hidden">
-                {children} */}
-            </div>
-        </>
+            <div className={`${globalMenu === true ? 'w-full h-full bg-black/20 absolute z-10 transition-all ease-in-out duration-300 ' : ''} `} onClick={toggleMenu}>
+                    
+                </div>
+            
+        </div>
     )
 }
