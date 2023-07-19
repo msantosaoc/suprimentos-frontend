@@ -172,8 +172,12 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
     return (
         <Modal size='lg' isOpen={isOpen} toggle={toggle} className="">
             <div className="md:w-full flex-col justify-between pb-2 pt-8 px-8 bg-white rounded-xl border-none shadow-xl">
-                <div className="border-b w-full ">
+                <div className="border-b w-full flex justify-between">
                     <h1 className="text-2xl text-title font-semibold">Formulário de Solicitação de Produtos</h1>
+                    <div className=" w-1/4 flex flex-col px-3 mb-2">
+                        <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="solicitacao-id">Número da Solicitação</label>
+                        <input value={`Nº: ${formData.id}`} disabled className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-1 font-semibold" />
+                    </div>
                 </div>
                 <div>
                     <form onSubmit={handleSubmit(submitData)}>

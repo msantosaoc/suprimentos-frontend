@@ -24,6 +24,7 @@ interface Props {
     user: User | null;
     categorias: Categoria[] | undefined;
     createSolicitacao: (solicitcao: FormData) => void;
+    btnLoadingLio: boolean;
 };
 
 interface Dioptrias {
@@ -43,7 +44,7 @@ interface Unidades {
 
 
 
-export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias, cilindros, medicos, user, categorias, createSolicitacao }: Props) {
+export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias, cilindros, medicos, user, categorias, createSolicitacao, btnLoadingLio }: Props) {
 
    
 
@@ -277,7 +278,7 @@ useEffect(() => {
                                 </div>
                                 <div className="md:w-1/4 w-full px-3 flex mb-1 items-end">
 
-                                    <SaveButton type="submit">Enviar</SaveButton>
+                                    <SaveButton type="submit" loading={btnLoadingLio}>Enviar</SaveButton>
 
                                 </div>
 

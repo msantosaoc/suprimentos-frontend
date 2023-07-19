@@ -12,9 +12,10 @@ interface Props {
     isOpen: boolean;
     toggle: () => void;
     createMarca: (marca: CreateMarca) => void;
+    btnLoading: boolean;
 }
 
-export default function ModalCreateMarca({ toggle, isOpen, createMarca }: Props) {
+export default function ModalCreateMarca({ toggle, isOpen, createMarca, btnLoading }: Props) {
 
     const schema: ZodType<CreateMarca> = z.object({
         name: z.string().nonempty('Este campo é obrigatório'),
@@ -66,7 +67,7 @@ export default function ModalCreateMarca({ toggle, isOpen, createMarca }: Props)
                                 </div>
                                 <div className="md:w-2/4 w-full px-3 flex  items-end">
 
-                                    <SaveButton type="submit">Enviar</SaveButton>
+                                    <SaveButton type="submit" loading={btnLoading}>Enviar</SaveButton>
 
                                 </div>
                             </div>

@@ -24,6 +24,8 @@ export default function Produtos() {
     const toggle = () => setModal(!modal);
     const toggleEdit = () => setModalEdit(!modalEdit);
 
+    const [btnLoading, setBtnLoading] = useState(false);
+
     const [selectedProduto, setSelectedProduto] = useState<Produtos>({ id: 0, name: '', createdAt: '', updatedAt: '', Categoria: {id:0, name: '' }, categoriaId: 0, Marca: {id: 0, name: '' }, marcaId: 0, cilindroId: '', dioptriaId: '', qtdeMax: 0, qtdeMin: 0, unidMedida: '', SubCategoria: {id: 0, name: ''} })
 
     async function buscarProdutos() {
@@ -52,9 +54,11 @@ export default function Produtos() {
     }, []);
 
     async function CreateProduto(produto: CreateProduto) {
+        setBtnLoading(true);
         const create = await api.post('/api/produto', produto).then(response => {
             buscarProdutos();
             toggle();
+            setBtnLoading(false);
         }).catch(error=> console.log(error));
 
         return create;
@@ -118,7 +122,7 @@ export default function Produtos() {
 
                     <h1 className="font-semibold text-3xl">Produtos</h1>
                     <div className="w-full sm:h-2/6 sm:px-2 max-sm:py-1 grid grid-cols-[1fr_4fr_1fr] max-md:gap-2 max-sm:grid-cols-1  rounded-xl shadow-xl bg-white">
-                        <ModalCreateProduto isOpen={modal} toggle={toggle} createProduto={CreateProduto} categorias={categorias} marcas={marcas}/>
+                        <ModalCreateProduto isOpen={modal} toggle={toggle} createProduto={CreateProduto} categorias={categorias} marcas={marcas} btnLoading={btnLoading}/>
                         <ModalCreateProdutoEdit formData={selectedProduto} isOpen={modalEdit} toggle={toggleEdit} categorias={categorias} marcas={marcas} editarProduto={editarProduto}/>
                         <div className="flex items-center justify-center">
                             <ButtonCadastrar onClick={toggle}>Cadastrar</ButtonCadastrar>

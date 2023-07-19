@@ -16,9 +16,10 @@ interface Props {
     createProduto: (marca: CreateProduto) => void;
     categorias: Categoria[];
     marcas: Marcas[];
+    btnLoading: boolean;
 };
 
-export default function ModalCreateProduto({ toggle, isOpen, createProduto, categorias, marcas }: Props) {
+export default function ModalCreateProduto({ toggle, isOpen, createProduto, categorias, marcas, btnLoading }: Props) {
 
     
     const subCategorias = categorias.filter(item => item.name === 'Lio').map(item => item.categoriaOnSubCategoria.map(subCategoria => ({ id: subCategoria.SubCategoria.id, name: subCategoria.SubCategoria.name })));
@@ -135,7 +136,7 @@ export default function ModalCreateProduto({ toggle, isOpen, createProduto, cate
                                 </div>
                                 <div className="md:w-1/4 w-full px-3 flex  items-end">
 
-                                    <SaveButton type="submit">Enviar</SaveButton>
+                                    <SaveButton type="submit" loading={btnLoading}>Enviar</SaveButton>
 
                                 </div>
                             </div>

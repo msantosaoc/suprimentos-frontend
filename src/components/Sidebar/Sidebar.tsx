@@ -208,7 +208,7 @@ export default function Sidebar() {
                 </div>
 
             </aside>
-            <div className={`${globalMenu === true ? 'w-full h-full bg-black/20 absolute z-10 transition-all ease-in-out duration-300 ' : ''} `} onClick={toggleMenu}>
+            <div className={`${globalMenu === true ? 'w-full h-full bg-black/20 absolute z-40 transition-all ease-in-out duration-300 ' : ''} `} onClick={toggleMenu}>
                     
                 </div>
             

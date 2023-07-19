@@ -165,13 +165,12 @@ export default function Card({ selectedSolicitacao, selectedSolicitacaoProdutos,
 
     const arraySolicitacoesIniciais: any = solicitacoesIniciais?.map((solicitacao, index) => {
         return (
-            <div key={solicitacao.id} className="w-full h-16 rounded-lg shadow-md border border-[#d3d3d3] flex my-1 relative hover:scale-[101%] duration-200 hover:cursor-pointer" onClick={() => handleSelectSolicitacao(solicitacao)}><label className={`${ solicitacao.status === "Não visto" ? "visible px-2 rounded-xl absolute left-4 -top-2 bg-light-blue text-white text-xs" : "invisilbe"}  `} >{ solicitacao.status === "Não visto" ? "Novo" : undefined}</label>
+            <div key={solicitacao.id} className="w-full  rounded-lg shadow-md border border-[#d3d3d3] flex my-1 relative hover:scale-[101%] duration-200 hover:cursor-pointer" onClick={() => handleSelectSolicitacao(solicitacao)}><label className={`${ solicitacao.status === "Não visto" ? "visible px-2 rounded-xl absolute left-4 -top-2 bg-light-blue text-white text-xs" : "invisilbe"}  `} >{ solicitacao.status === "Não visto" ? "Novo" : undefined}</label>
                 
                 
                 <div className="w-full h-full grid grid-cols-10 group ">
-                    <label className="text-base flex items-center justify-center group-hover:cursor-pointer group-hover relative text-gray-menu-icon  "><div className="h-full w-1.5  bg-light-blue absolute top-0 left-0 invisible group-hover:visible rounded-s-lg" /><div className="relative">
+                    <label className="text-base flex items-center justify-center group-hover:cursor-pointer group-hover relative text-gray-menu-icon  "><div className="h-full w-1.5  bg-light-blue absolute top-0 left-0 invisible group-hover:visible rounded-s-lg" /><div className="relative py-2">
                         {
-                            
                             solicitacao.Categoria.name === 'Escritório'
                             ?
                             <Printer size={48} />

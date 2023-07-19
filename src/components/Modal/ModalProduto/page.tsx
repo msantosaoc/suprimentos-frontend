@@ -22,12 +22,13 @@ interface Props {
     categoria: Categoria;
     user: User | null;
     createSolicitacaoProduto: (solicitacao: FormSolicitacaoProduto) => void;
+    btnLoadingProduto: boolean;
 };
 
 
 
 
-export default function ModalProduto({ isOpen, toggle, produtos, unidades, categorias, categoria, user, createSolicitacaoProduto }: Props) {
+export default function ModalProduto({ isOpen, toggle, produtos, unidades, categorias, categoria, user, createSolicitacaoProduto, btnLoadingProduto }: Props) {
 
     
 
@@ -182,7 +183,7 @@ export default function ModalProduto({ isOpen, toggle, produtos, unidades, categ
                                 </div>
                                 <div className="md:w-1/4 w-full px-3 flex  items-end">
 
-                                    <SaveButton type="submit">Enviar</SaveButton>
+                                    <SaveButton type="submit" loading={btnLoadingProduto}>Enviar</SaveButton>
 
                                 </div>
                             </div>

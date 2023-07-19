@@ -98,6 +98,10 @@ export default function Solicitacoes() {
 
     const [isLoading, setIsLoading] = useState(false);
 
+    const [btnLoadingLio, setBtnLoadingLio] = useState(false);
+    
+    const [btnLoadingProduto, setBtnLoadingProduto] = useState(false);
+
     const [unidades, setUnidades] = useState<Unidades[]>([{ id: 0, name: "" }]);
 
     const [produtos, setProdutos] = useState<Produtos[]>([{ id: 0, name: "", categoriaId: 0, dioptriaId: "", cilindroId: "", marcaId: 0, qtdeMax: 0, qtdeMin: 0, unidMedida: '', Categoria: {id: 0, name: ''}, createdAt: '', Marca: {id: 0, name: ''}, SubCategoria: {id: 0, name: ''}, updatedAt: ''}]);
@@ -216,20 +220,24 @@ export default function Solicitacoes() {
     }, []);
 
     async function createSolicitacao(solicitacao: FormData) {
+        setBtnLoadingLio(true);
         const solicitar = await api.post('/api/solicitacao/lio', solicitacao).then(response => {
             buscarSolicitacoesInciais()
             buscarSolicitacoes();
             toggleModalSolicitaLio();
+            setBtnLoadingLio(false);
         }).catch(error => console.log(error));
 
         return solicitar;
     };
 
     async function createSolicitacaoProduto(solicitacao: FormSolicitacaoProduto) {
+        setBtnLoadingProduto(true);
         const solicitar = await api.post('/api/solicitacao/produto', solicitacao).then(response => {
             buscarSolicitacoesInciais()
             buscarSolicitacoes();
             toggleModalSolicitaProduto();
+            setBtnLoadingProduto(false);
         }).catch(error => console.log(error));
 
         await api.get('/api/solicitacao').then(response=> setSolicitacoesIniciais(response.data));
@@ -289,6 +297,7 @@ export default function Solicitacoes() {
                 user={session}
                 createSolicitacao={createSolicitacao}
                 categorias={categorias}
+                btnLoadingLio={btnLoadingLio}
             />
             <ModalLioEdit
                 isOpen={modalSolicitaLioEdit}
@@ -311,6 +320,7 @@ export default function Solicitacoes() {
                 categoria={categoria}
                 user={session}
                 createSolicitacaoProduto={createSolicitacaoProduto}
+                btnLoadingProduto={btnLoadingProduto}
             />
 
             <ModalProdutoEdit 

@@ -20,6 +20,9 @@ export default function Marcas() {
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
 
+
+    const [btnLoading, setBtnLoading] = useState(false);
+
     async function buscarMarcas() {
         setIsLoading(true);
         const marcas = await api.get('/api/marca').then(response => setMarcas(response.data)).catch(error => console.log(error));
@@ -32,10 +35,11 @@ export default function Marcas() {
     }, []);
 
     async function createMarca(marca: CreateMarca) {
-        
+        setBtnLoading(true);
         const criar = await api.post('/api/marca', marca).then(response=> {
             buscarMarcas();
             toggle();
+            setBtnLoading(false);
         }).catch(error => console.log(error));
 
         return criar;
@@ -74,7 +78,7 @@ export default function Marcas() {
 
                     <h1 className="font-semibold text-3xl">Marcas</h1>
                     <div className="w-full sm:h-2/6 sm:px-2 max-sm:py-1 grid grid-cols-[1fr_4fr_1fr] max-md:gap-2 max-sm:grid-cols-1  rounded-xl shadow-xl bg-white">
-                        <ModalCreateMarca isOpen={modal} toggle={toggle} createMarca={createMarca} />
+                        <ModalCreateMarca isOpen={modal} toggle={toggle} createMarca={createMarca} btnLoading={btnLoading}/>
                         <div className="flex items-center justify-center ">
                             <ButtonCadastrar onClick={toggle}>Cadastrar</ButtonCadastrar>
                         </div>

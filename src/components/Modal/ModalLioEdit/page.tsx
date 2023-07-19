@@ -147,7 +147,7 @@ export default function ModalLioEdit({ formData, cilindros, dioptrias, medicos, 
             ...formData.SolicitacaoLio,
             unidade: formData.Unidade.name,
             solicitante: formData.User.name,
-            dtCirurgia: moment(formData.SolicitacaoLio?.dtCirurgia).format('YYYY-MM-DD'),
+            dtCirurgia: moment(formData.SolicitacaoLio?.dtCirurgia).format('YYYY-MM-DD'), 
             dtPagamento: moment(formData.SolicitacaoLio?.dtPagamento).format('YYYY-MM-DD')
         })
     }, [isOpen, reset])
