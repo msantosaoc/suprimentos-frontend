@@ -193,10 +193,13 @@ export default function Solicitacoes() {
 
     async function buscarSolicitacoesIniciais() {
         setIsLoading(true);
-        const solicitacoesIniciais = await api.get('/api/solicitacao').then(response => {
-            setSolicitacoesIniciais(response.data);
+        // const solicitacoesIniciais = await api.get('/api/solicitacao', {}).then(response => {
+        //     setSolicitacoesIniciais(response.data);
             
-        }).catch(error => console.log(error));
+        // }).catch(error => console.log(error));
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/solicitacao`, { cache: 'no-store'});
+        const responseArray = await response.json()
+        setSolicitacoesIniciais(responseArray)
         setIsLoading(false);
         return solicitacoesIniciais;
     };
