@@ -54,7 +54,7 @@ interface ListarProdutosSolicitados {
     id: string;
     name: string;
     categoria: {
-        id: string;
+        id: number;
         name: string;
     };
     status: string;

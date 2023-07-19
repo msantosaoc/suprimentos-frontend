@@ -9,7 +9,7 @@ import SaveButton from "@/components/Button/SaveButton";
 import { useEffect } from "react";
 import { Minus, Plus } from "lucide-react";
 import SelectComponentProdutos from "@/components/Select/Produtos/SelectComponentProdutos";
-import { BuscaSolicitacaoInicial, Categoria, ListarProdutosSolicitados, Unidades } from "@/lib/types/global";
+import { BuscaSolicitacaoInicial, Categoria, ListarProdutosSolicitados, Produtos, Unidades } from "@/lib/types/global";
 import DropdownStatus from "@/components/Dropdown/DropdownStatus";
 
 interface Props {
@@ -18,7 +18,7 @@ interface Props {
     unidades: Unidades[] | undefined;
     formData: BuscaSolicitacaoInicial;
     medicos: Medicos[] | undefined;
-    produtos: Produto[] | undefined;
+    produtos: Produtos[] | undefined;
     categoria: Categoria;
     user: User | null;
     categorias: Categoria[] | undefined;
@@ -30,17 +30,7 @@ interface Medicos {
 };
 
 
-interface Produto {
-    id: string;
-    name: string;
-    categoriaId: string | null;
-    marcaId: string | null;
-    dioprtiaId: string | null;
-    cilindroId: string | null;
-    qtdeMin: number | null;
-    qtdeMax: number | null;
-    unidMedida: string | null;
-};
+
 
 export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, user, formData, produtos, categorias, medicos, updateSolicitacaoProduto }: Props) {
 
@@ -53,6 +43,7 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
     ];
 
     console.log(produtos)
+    console.log(formData)
 
     // Verificar se os produtos do campo "ProdutosSolicitados" estão no array
     const produtosSolicitados = formData.Solicitacao?.ProdutosSolicitados;
@@ -87,7 +78,7 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
             name: z.string()
         }),
         categoria: z.object({
-            id: z.string(),
+            id: z.number(),
             name: z.string()
         }),
         status: z.string(),

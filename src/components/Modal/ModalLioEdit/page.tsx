@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import moment from 'moment';
 import ViewFileButton from "@/components/Button/ViewFileButton";
 import DropdownStatus from "@/components/Dropdown/DropdownStatus";
-import { BuscaSolicitacaoInicial, Unidades } from "@/lib/types/global";
+import { BuscaSolicitacaoInicial, Produtos, Unidades } from "@/lib/types/global";
 
 interface Props {
     formData: BuscaSolicitacaoInicial;
@@ -20,7 +20,7 @@ interface Props {
     toggle: () => void;
     updateSolicitacao: (solicitacao: UpdateSolicitacao) => void;
     unidades: Unidades[] | undefined;
-    produtos: Produto[] | undefined;
+    produtos: Produtos[] | undefined;
     dioptrias: Dioptrias[] | undefined;
     cilindros: Cilindros[] | undefined;
     medicos: Medicos[] | undefined;
@@ -68,16 +68,7 @@ interface Cilindros {
 
 
 
-interface Produto {
-    name: string;
-    categoriaId: string | null;
-    marcaId: string | null;
-    dioprtiaId: string | null;
-    cilindroId: string | null;
-    qtdeMin: number | null;
-    qtdeMax: number | null;
-    unidMedida: string | null;
-};
+
 
 interface Medicos {
     name: string;

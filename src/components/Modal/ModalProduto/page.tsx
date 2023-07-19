@@ -11,13 +11,13 @@ import { Minus, Plus, PlusCircle } from "lucide-react";
 import SelectComponentProdutos from "@/components/Select/Produtos/SelectComponentProdutos";
 import ModalCreateProduto from "../Cadastro/ModalCreateProduto/page";
 import SelectComponentTI from "@/components/Select/Produtos/SelectComponentTI";
-import { Categoria, Unidades } from "@/lib/types/global";
+import { Categoria, Produtos, Unidades } from "@/lib/types/global";
 
 interface Props {
     isOpen: boolean;
     toggle: () => void;
     unidades: Unidades[] | undefined;
-    produtos: Produto[] | undefined;
+    produtos: Produtos[] | undefined;
     categorias: Categoria[] | undefined;
     categoria: Categoria;
     user: User | null;
@@ -26,17 +26,6 @@ interface Props {
 
 
 
-interface Produto {
-    id: string;
-    name: string;
-    categoriaId: string | null;
-    marcaId: string | null;
-    dioprtiaId: string | null;
-    cilindroId: string | null;
-    qtdeMin: number | null;
-    qtdeMax: number | null;
-    unidMedida: string | null;
-};
 
 export default function ModalProduto({ isOpen, toggle, produtos, unidades, categorias, categoria, user, createSolicitacaoProduto }: Props) {
 

@@ -7,7 +7,7 @@ import { ZodType, z } from "zod";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod'
 import SelectComponent from "@/components/Select/SelectComponent";
-import { Categoria, FormData, Medico } from "@/lib/types/global";
+import { Categoria, FormData, Medico, Produtos } from "@/lib/types/global";
 import SelectComponentProdutos from "@/components/Select/Produtos/SelectComponentProdutos";
 import { useEffect } from "react";
 import { useSession } from 'next-auth/react';
@@ -17,7 +17,7 @@ interface Props {
     isOpen: boolean;
     toggle: () => void;
     unidades: Unidades[] | undefined;
-    produtos: Produto[] | undefined;
+    produtos: Produtos[] | undefined;
     dioptrias: Dioptrias[] | undefined;
     cilindros: Cilindros[] | undefined;
     medicos: Medico[] | undefined;
@@ -39,17 +39,6 @@ interface Unidades {
     name: string;
 };
 
-
-interface Produto {
-    name: string;
-    categoriaId: string | null;
-    marcaId: string | null;
-    dioprtiaId: string | null;
-    cilindroId: string | null;
-    qtdeMin: number | null;
-    qtdeMax: number | null;
-    unidMedida: string | null;
-};
 
 
 

@@ -10,7 +10,7 @@ import { api } from "@/services/api";
 import { useSession } from 'next-auth/react';
 import ModalLioEdit from "@/components/Modal/ModalLioEdit/page";
 import ModalProduto from "@/components/Modal/ModalProduto/page";
-import { BuscaSolicitacaoInicial, Categoria, FormData, ListarProdutosSolicitados, Medico, Unidades } from "@/lib/types/global";
+import { BuscaSolicitacaoInicial, Categoria, FormData, ListarProdutosSolicitados, Medico, Produtos, Unidades } from "@/lib/types/global";
 import ModalProdutoEdit from "@/components/Modal/ModalProdutoEdit/page";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
@@ -67,17 +67,6 @@ interface UpdateSolicitacao {
     status?: string;
 };
 
-interface Produto {
-    id: string;
-    name: string;
-    categoriaId: string | null;
-    marcaId: string | null;
-    dioprtiaId: string | null;
-    cilindroId: string | null;
-    qtdeMin: number | null;
-    qtdeMax: number | null;
-    unidMedida: string | null;
-};
 
 
 
@@ -111,7 +100,7 @@ export default function Solicitacoes() {
 
     const [unidades, setUnidades] = useState<Unidades[]>([{ id: 0, name: "" }]);
 
-    const [produtos, setProdutos] = useState<Produto[]>([{ id: '', name: "", categoriaId: "", dioprtiaId: "", cilindroId: "", marcaId: '', qtdeMax: 0, qtdeMin: 0, unidMedida: '' }]);
+    const [produtos, setProdutos] = useState<Produtos[]>([{ id: 0, name: "", categoriaId: 0, dioptriaId: "", cilindroId: "", marcaId: 0, qtdeMax: 0, qtdeMin: 0, unidMedida: '', Categoria: {id: 0, name: ''}, createdAt: '', Marca: {id: 0, name: ''}, SubCategoria: {id: 0, name: ''}, updatedAt: ''}]);
 
     const [dioptrias, setDioprias] = useState<Dioptria[]>([{ name: "" }]);
 
@@ -127,7 +116,7 @@ export default function Solicitacoes() {
 
     const [solicitacoes, setSolicitacoes] = useState<SolicitacaoProps[]>([{ id: '', paciente: '', categoria: '', cilindro: '', dioptria: '', dtCirurgia: '', dtPagamento: '', lentePrincipal: '', medico: '', solicitante: '', status: '', unidade: '', cilindroReserva: '', comprovante: '', dioptriaReserva: '', formCirurgico: '', injetorCartucho: '', lenteReserva: '', resposta: '', createdAt: '', updatedAt: '' }]);
 
-    const [solicitacoesProdutos, setSolicitacoesProdutos] = useState<ListarProdutosSolicitados[]>([{ id: '', name: '', resposta: '', status: '', usuario: { id: '', name: '' }, createdAt: '', categoria: { id: '', name: '', }, unidade: { id: '', name: '' }, ProdutosSolicitados: [{ id: '', produtoId: '', solicitacaoId: '', produto: '', qtde: 0 }] }]);
+    const [solicitacoesProdutos, setSolicitacoesProdutos] = useState<ListarProdutosSolicitados[]>([{ id: '', name: '', resposta: '', status: '', usuario: { id: '', name: '' }, createdAt: '', categoria: { id: 0, name: '', }, unidade: { id: '', name: '' }, ProdutosSolicitados: [{ id: '', produtoId: '', solicitacaoId: '', produto: '', qtde: 0 }] }]);
 
     const [selectedCategory, setSelectedCategory] = useState<Categoria>({ id: 0, name: '', categoriaOnSubCategoria: [{SubCategoria: {id: 0, name: '', createdAt: '', updatedAt: ''}}] });
 
