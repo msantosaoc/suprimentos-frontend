@@ -204,11 +204,15 @@ export default function Solicitacoes() {
 
     async function buscarSolicitacoesIniciais() {
         setIsLoading(true);
-        const solicitacoesIniciais = await api.get('/api/solicitacao').then(response => setSolicitacoesIniciais(response.data)).catch(error => console.log(error));
+        const solicitacoesIniciais = await api.get('/api/solicitacao').then(response => {
+            setSolicitacoesIniciais(response.data);
+            console.log(response.data)
+        }).catch(error => console.log(error));
         setIsLoading(false);
         return solicitacoesIniciais;
     };
-
+    
+    console.log(solicitacoesIniciais);
 
 
     useEffect(() => {
