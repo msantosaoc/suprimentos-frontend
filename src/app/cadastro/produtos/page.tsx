@@ -46,7 +46,7 @@ export default function Produtos() {
     };
 
     useEffect(() => {
-        buscarProdutos()
+        buscarProdutos() 
         buscarCartegorias()
         buscarMarcas()
     }, []);

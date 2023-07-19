@@ -193,13 +193,8 @@ export default function Solicitacoes() {
 
     async function buscarSolicitacoesIniciais() {
         setIsLoading(true);
-        // const solicitacoesIniciais = await api.get('/api/solicitacao').then(response => {
-        //     setSolicitacoesIniciais(response.data);
-            
-        // }).catch(error => console.log(error));
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/solicitacao`, { next: {revalidate: 5}});
-        const responseArray = await response.json()
-        setSolicitacoesIniciais(responseArray)
+        const solicitacoesIniciais = await api.get('/api/solicitacao').then(response => setSolicitacoesIniciais(response.data)).catch(error => console.log(error));
+        
         setIsLoading(false);
         return solicitacoesIniciais;
     }; 
@@ -231,9 +226,9 @@ export default function Solicitacoes() {
 
     async function createSolicitacaoProduto(solicitacao: FormSolicitacaoProduto) {
         const solicitar = await api.post('/api/solicitacao/produto', solicitacao).then(response => {
-            buscarSolicitacoes();
-            toggleModalSolicitaProduto();
+            // buscarSolicitacoes();
             buscarSolicitacoesIniciais()
+            toggleModalSolicitaProduto();
         }).catch(error => console.log(error));
 
         await api.get('/api/solicitacao').then(response=> setSolicitacoesIniciais(response.data));
