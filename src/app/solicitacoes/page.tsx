@@ -199,7 +199,7 @@ export default function Solicitacoes() {
         // }).catch(error => console.log(error));
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/solicitacao`, { cache: 'force-cache'});
         const responseArray = await response.json()
-        setSolicitacoesIniciais(responseArray.json())
+        setSolicitacoesIniciais(responseArray)
         setIsLoading(false);
         return solicitacoesIniciais;
     };
