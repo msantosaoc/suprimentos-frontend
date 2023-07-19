@@ -197,7 +197,7 @@ export default function Solicitacoes() {
         //     setSolicitacoesIniciais(response.data);
             
         // }).catch(error => console.log(error));
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/solicitacao`, { cache: 'force-cache'});
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/solicitacao`, { next: {revalidate: 5}});
         const responseArray = await response.json()
         setSolicitacoesIniciais(responseArray)
         setIsLoading(false);
