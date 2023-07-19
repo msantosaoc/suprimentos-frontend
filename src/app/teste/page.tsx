@@ -36,3 +36,5 @@ export default function Teste() {
         </div>
     )
 }
+
+export const revalidate = 0
