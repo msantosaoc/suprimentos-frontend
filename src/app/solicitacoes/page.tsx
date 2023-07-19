@@ -191,13 +191,11 @@ export default function Solicitacoes() {
         return categorias;
     };
 
-    async function buscarSolicitacoesIniciais() {
-        setIsLoading(true);
-        const solicitacoesIniciais = await api.get('/api/solicitacao').then(response => setSolicitacoesIniciais(response.data)).catch(error => console.log(error));
-        
-        setIsLoading(false);
-        return solicitacoesIniciais;
-    }; 
+    async function buscarSolicitacoesInciais() {
+        const buscar = await api.get('/api/solicitacao').then(response => setSolicitacoesIniciais(response.data));
+
+        return buscar;
+    }
     
     console.log(solicitacoesIniciais);
 
@@ -211,12 +209,12 @@ export default function Solicitacoes() {
         buscarMedicos();
         buscarCartegorias();
         buscarSolicitacoesProdutos();
-        buscarSolicitacoesIniciais();
+        buscarSolicitacoesInciais();
     }, []);
 
     async function createSolicitacao(solicitacao: FormData) {
         const solicitar = await api.post('/api/solicitacao/lio', solicitacao).then(response => {
-            buscarSolicitacoesIniciais()
+            // buscarSolicitacoesIniciais()
             buscarSolicitacoes();
             toggleModalSolicitaLio();
         }).catch(error => console.log(error));
@@ -226,7 +224,7 @@ export default function Solicitacoes() {
 
     async function createSolicitacaoProduto(solicitacao: FormSolicitacaoProduto) {
         const solicitar = await api.post('/api/solicitacao/produto', solicitacao).then(response => {
-            buscarSolicitacoesIniciais()
+            // buscarSolicitacoesIniciais()
             buscarSolicitacoes();
             toggleModalSolicitaProduto();
         }).catch(error => console.log(error));
