@@ -236,6 +236,8 @@ export default function Solicitacoes() {
             buscarSolicitacoesIniciais()
         }).catch(error => console.log(error));
 
+        await api.get('/api/solicitacao').then(response=> setSolicitacoesIniciais(response.data));
+
         return solicitar;
     };
 
