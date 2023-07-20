@@ -298,4 +298,38 @@ interface Unidades {
     name: string;
 };
 
-export { FormSolicitacaoProduto, ListarProdutosSolicitados, BuscaSolicitacaoInicial, Marcas, Produtos, CreateProduto, CreateMarca, CreateSubCategoria, SubCategoria, CreateCategoria, Categoria, EditarProduto, Medico, FormData, Unidades}
+interface Dioptria {
+    id: string;
+    name: string;
+};
+
+interface Cilindro {
+    id: string;
+    name: string;
+};
+
+type SolicitacaoProps = {
+    id: string;
+    paciente: string;
+    dtCirurgia: string;
+    lentePrincipal: string;
+    dioptria: string;
+    cilindro: string;
+    lenteReserva?: string;
+    dioptriaReserva?: string;
+    cilindroReserva?: string;
+    medico: string;
+    unidade: string;
+    solicitante: string;
+    injetorCartucho?: string;
+    dtPagamento: string;
+    comprovante?: string;
+    formCirurgico?: string;
+    status: string;
+    categoria: string;
+    createdAt: string;
+    updatedAt: string;
+    resposta?: string;
+};
+
+export { FormSolicitacaoProduto, ListarProdutosSolicitados, BuscaSolicitacaoInicial, Marcas, Produtos, CreateProduto, CreateMarca, CreateSubCategoria, SubCategoria, CreateCategoria, Categoria, EditarProduto, Medico, FormData, Unidades, Dioptria, Cilindro, SolicitacaoProps}

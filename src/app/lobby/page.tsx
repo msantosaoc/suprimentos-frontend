@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 export default function Lobby() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingEstoque, setIsLoadingEstoque] = useState(false);
     
 
     function LoadingSolicitar(link: string) {
@@ -17,7 +18,7 @@ export default function Lobby() {
         router.push('/solicitacoes')
     }
     function LoadingEstoque(link: string) {
-        setIsLoading(true);
+        setIsLoadingEstoque(true);
         router.push('/estoque')
     }
     function LoadingCompras(link: string) {
@@ -66,9 +67,19 @@ export default function Lobby() {
                                 <Image alt='logo diretoria' src='/iconSolicita.svg' className=" " fill loading="lazy" />
                             </div>
                         </div>
-                        <div className="w-80 h-full bg-white rounded-xl shadow-xl p-4 hover:bg-light-blue hover:cursor-pointer duration-300">
+                        <div onClick={() => LoadingEstoque('/estoque')}  className={`w-80 h-full backdrop-blur-sm  bg-white rounded-xl shadow-xl  hover:bg-light-blue hover:cursor-pointer duration-300 ${!isLoadingEstoque && 'p-4'}`}>
                             <div className="flex flex-col relative w-full h-full">
+                            {
+                                    isLoadingEstoque
+                                    &&
+                                    <div className=" w-full h-full backdrop-blur-sm  flex z-50">
+                                        <svg className="animate-spin m-auto h-8 w-8  text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
 
+                                    </div>
+                                }
                                 <Image alt='logo diretoria' src='/iconEstoque.svg' className=" " fill loading="lazy" />
                             </div>
                         </div>
