@@ -37,9 +37,18 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-enum UserRole {
-  ADMIN
-  USER
+enum UserPerfil {
+  NO
+  SUPERVISAO
+  ESTOQUE
+  COMPRAS
+  CONSULTORIA
+}
+
+model UserRole {
+  id     Int        @id @default(autoincrement())
+  name   String
+  perfil UserPerfil
 }
 
 model User {
@@ -54,7 +63,7 @@ model User {
   Solicitacao        Solicitacao[]
   SolicitacaoInicial SolicitacaoInicial[]
 
-  role UserRole @default(USER)
+  role UserPerfil @default(NO)
 }
 
 model VerificationToken {
@@ -66,7 +75,7 @@ model VerificationToken {
 }
 
 model Unidade {
-  id                 Int               @id @default(autoincrement())
+  id                 Int                  @id @default(autoincrement())
   name               String
   Solicitacao        Solicitacao[]
   SolicitacaoInicial SolicitacaoInicial[]
