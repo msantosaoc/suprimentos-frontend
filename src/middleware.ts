@@ -58,5 +58,5 @@ export default withAuth(
 // };
 
 export const config = {
-    matcher: ['/lobby/:path*', '/solicitacoes/:path*', '/cadastro/:path*', '/estoque/:path*']
+    matcher: ['/lobby/:path*', '/solicitacoes/:path*', '/cadastro/:path*', '/estoque/:path*', '/compras/:path*', '/diretoria/:path*']
 }

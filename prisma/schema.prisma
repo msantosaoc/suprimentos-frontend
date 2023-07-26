@@ -43,6 +43,7 @@ enum UserPerfil {
   ESTOQUE
   COMPRAS
   CONSULTORIA
+  DIRETORIA
 }
 
 model UserRole {

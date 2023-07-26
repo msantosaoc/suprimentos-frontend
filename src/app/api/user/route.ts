@@ -20,4 +20,17 @@ export async function POST (request:Request) {
 
     const { password, ...result} = user;
     return new Response(JSON.stringify(result));
+};
+
+export async function GET() {
+    const usuarios = await prisma.user.findMany({
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+        }
+    });
+
+    return new Response(JSON.stringify(usuarios));
 }

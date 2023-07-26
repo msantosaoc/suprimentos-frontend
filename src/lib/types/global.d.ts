@@ -332,4 +332,11 @@ type SolicitacaoProps = {
     resposta?: string;
 };
 
-export { FormSolicitacaoProduto, ListarProdutosSolicitados, BuscaSolicitacaoInicial, Marcas, Produtos, CreateProduto, CreateMarca, CreateSubCategoria, SubCategoria, CreateCategoria, Categoria, EditarProduto, Medico, FormData, Unidades, Dioptria, Cilindro, SolicitacaoProps}
+type Usuarios = {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+}
+
+export { Usuarios, FormSolicitacaoProduto, ListarProdutosSolicitados, BuscaSolicitacaoInicial, Marcas, Produtos, CreateProduto, CreateMarca, CreateSubCategoria, SubCategoria, CreateCategoria, Categoria, EditarProduto, Medico, FormData, Unidades, Dioptria, Cilindro, SolicitacaoProps}

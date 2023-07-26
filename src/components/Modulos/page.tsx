@@ -37,11 +37,11 @@ export default function Modulos({userRole}: Props) {
         router.push(link)
     }
     function LoadingCompras(link: string) {
-        setIsLoading(true);
+        setIsLoadingCompras(true);
         router.push(link)
     }
     function LoadingDiretoria(link: string) {
-        setIsLoading(true);
+        setIsLoadingDiretoria(true);
         router.push(link)
     }
 
@@ -51,9 +51,9 @@ export default function Modulos({userRole}: Props) {
         {name: 'Compras', Image: <Image alt='logo compras' src='/iconCompras.svg'  className=" " fill loading="lazy" />, DisabledImage: <Image alt='logo solicitações' src='/iconComprasDisabled.svg'  className=" " fill loading="lazy" />, link: '/#', route: LoadingCompras},
         {name: 'Diretoria', Image: <Image alt='logo diretoria' src='/iconDiretoria.svg'  className=" " fill loading="lazy" />, DisabledImage: <Image alt='logo solicitações' src='/iconDiretoriaDisabled.svg'  className=" " fill loading="lazy" />,link: '/#', route: LoadingDiretoria},
     ];
-    const hasPermissionSupervisao = role === 'SUPERVISAO' || role === 'ESTOQUE' || role === 'COMPRAS' || role === 'DIRETORIA' ? true : false;
-    const hasPermissionEstoque = role === 'ESTOQUE' || role === 'DIRETORIA' ? true : false;
-    const hasPermissionCompras = role === 'COMPRAS' || role === 'ESTOQUE' || role === 'DIRETORIA' ? true : false;
+    const hasPermissionSupervisao = role === 'SUPERVISAO' || role === 'ESTOQUE' || role === 'COMPRAS' || role === 'DIRETORIA' || role === 'CONSULTORIA' ? true : false; //esses perfis podem acessar as solicitacoes
+    const hasPermissionEstoque = role === 'ESTOQUE' || role === 'DIRETORIA' ? true : false; //esses perfis podem acessar as solicitacoes
+    const hasPermissionCompras = role === 'COMPRAS' || role === 'ESTOQUE' || role === 'DIRETORIA' ? true : false; //esses perfis podem acessar as solicitacoes
     const hasPermissionDiretoria = role === 'DIRETORIA' ? true : false;
 
     
@@ -90,7 +90,7 @@ export default function Modulos({userRole}: Props) {
                 <div onClick={() => !hasPermissionEstoque ? '' : LoadingEstoque('/estoque')} className={`w-80 h-full  ${!hasPermissionEstoque ? `bg-[#f2f2f2] backdrop-blur-xl  ${!isLoadingEstoque && ''}` : `bg-white backdrop-blur-sm hover:bg-light-blue hover:cursor-pointer duration-300 ${!isLoadingEstoque && 'p-4'}`}  rounded-xl shadow-xl  `}>
                     <div className="flex flex-col relative w-full h-full ">
                         {
-                            isLoading
+                            isLoadingEstoque
                             &&
                             <div className=" w-full h-full backdrop-blur-sm flex z-50">
                                 <svg className="animate-spin m-auto h-8 w-8  text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -114,7 +114,7 @@ export default function Modulos({userRole}: Props) {
                 <div onClick={() => !hasPermissionCompras ? '' : LoadingCompras('/compras')} className={`w-80 h-full  ${!hasPermissionCompras ? `bg-[#f2f2f2] backdrop-blur-xl  ${!isLoadingCompras && ''}` : `bg-white backdrop-blur-sm hover:bg-light-blue hover:cursor-pointer duration-300 ${!isLoadingCompras && 'p-4'}`}  rounded-xl shadow-xl  `}>
                     <div className="flex flex-col relative w-full h-full ">
                         {
-                            isLoading
+                            isLoadingCompras
                             &&
                             <div className=" w-full h-full backdrop-blur-sm flex z-50">
                                 <svg className="animate-spin m-auto h-8 w-8  text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -138,7 +138,7 @@ export default function Modulos({userRole}: Props) {
                 <div onClick={() => !hasPermissionDiretoria ? '' : LoadingDiretoria('/diretoria')} className={`w-80 h-full  ${!hasPermissionDiretoria ? `bg-[#f2f2f2] backdrop-blur-xl  ${!isLoadingDiretoria && ''}` : `bg-white backdrop-blur-sm hover:bg-light-blue hover:cursor-pointer duration-300 ${!isLoadingDiretoria && 'p-4'}`}  rounded-xl shadow-xl  `}>
                     <div className="flex flex-col relative w-full h-full ">
                         {
-                            isLoading
+                            isLoadingDiretoria
                             &&
                             <div className=" w-full h-full backdrop-blur-sm flex z-50">
                                 <svg className="animate-spin m-auto h-8 w-8  text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
