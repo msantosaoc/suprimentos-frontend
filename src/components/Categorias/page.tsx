@@ -94,51 +94,51 @@ export default function Categorias({ selectedCategory, onCategoryChange }: Categ
             </div>
             
 
-            <div className={`h-20 w-20 flex flex-col justify-end items-center overflow-hidden relative rounded-md hover:scale-110 duration-200 cursor-pointer group active:bg-light-blue `}>
-                <div className={`${!hasPermissionConsultoria ? 'w-full h-full bg-[#f2f2f2]/80  absolute z-50' : 'hidden'}`} />
+            <div className={`h-20 w-20 flex flex-col justify-end items-center overflow-hidden relative rounded-md  group active:bg-light-blue `}>
+                <div className={`${!hasPermissionConsultoria ? 'w-full h-full bg-[#f2f2f2]/80  absolute z-50 ' : 'hidden'}`} />
                 <div className={`h-20 w-20  flex flex-col justify-end items-center rounded-md relative pb-1  group-hover:cursor-pointer active:bg-light-blue ${hasPermissionSupervisao && filtroCategoria.name === 'Lio' ? 'text-white bg-light-blue' : 'bg-light-gray text-gray-menu-icon'} `} onClick={() => handleFilter(categories.find(category=> category.name.includes("Lio")))}>
                     <span><Eye size={48} className={`${!hasPermissionConsultoria && 'text-[#909090]'}`}/></span>
-                    <label className='group-hover:cursor-pointer group-active:text-white'>Lio</label>
+                    <label className={`${hasPermissionConsultoria && 'group-hover:cursor-pointer group-active:text-white'}`}>Lio</label>
                 </div>
             </div>
 
-            <div className={`h-20 w-20 flex flex-col justify-end items-center overflow-hidden relative rounded-md hover:scale-110 duration-200 cursor-pointer group active:bg-light-blue `}>
+            <div className={`h-20 w-20 flex flex-col justify-end items-center overflow-hidden relative rounded-md  group active:bg-light-blue  `}>
                 <div className={`${!hasPermissionSupervisao ? 'w-full h-full bg-[#f2f2f2]/80  absolute z-50' : 'hidden'}`} />
                 <div className={`h-20 w-20  flex flex-col justify-end items-center rounded-md relative pb-1  group-hover:cursor-pointer active:bg-light-blue active:text-white ${hasPermissionSupervisao && filtroCategoria.name === 'Uniforme' ? 'text-white bg-light-blue' : 'bg-light-gray text-gray-menu-icon'} `} onClick={() => handleFilter(categories.find(category=> category.name.includes("Uniforme")))}>
                     <span><Shirt size={48} className={`${!hasPermissionSupervisao && 'text-[#909090]'}`}/></span>
-                    <label className='group-hover:cursor-pointer group-active:text-white'>Uniforme</label>
+                    <label className={`${hasPermissionSupervisao && 'group-hover:cursor-pointer group-active:text-white'}`}>Uniforme</label>
                 </div>
             </div>
 
-            <div className={`h-20 w-20 flex flex-col justify-end items-center overflow-hidden relative rounded-md hover:scale-110 duration-200 cursor-pointer group active:bg-light-blue`}>
+            <div className={`h-20 w-20 flex flex-col justify-end items-center overflow-hidden relative rounded-md  group active:bg-light-blue `}>
                 <div className={`${!hasPermissionConsultoria ? 'w-full h-full bg-[#f2f2f2]/80  absolute z-50' : 'hidden'}`} />
                 <div className={`h-20 w-20  flex flex-col justify-end items-center rounded-md relative pb-1  group-hover:cursor-pointer active:bg-light-blue active:text-white ${hasPermissionSupervisao && filtroCategoria.name === 'Cirúrgico' ? 'text-white bg-light-blue' : 'bg-light-gray text-gray-menu-icon'}`} onClick={() => handleFilter(categories.find(category=> category.name.includes("Cirúrgico")))}>
                     <span><Stethoscope size={48} className={`${!hasPermissionConsultoria && 'text-[#909090]'}`}/></span>
-                    <label className='group-hover:cursor-pointer group-active:text-white '>Cirúrgico</label>
+                    <label className={`${hasPermissionConsultoria && 'group-hover:cursor-pointer group-active:text-white'}`}>Cirúrgico</label>
                 </div>
             </div>
 
-            <div className={`h-20 w-20 flex flex-col justify-end items-center overflow-hidden relative rounded-md hover:scale-110 duration-200 cursor-pointer group active:bg-light-blue`}>
+            <div className={`h-20 w-20 flex flex-col justify-end items-center overflow-hidden relative rounded-md  group active:bg-light-blue `}>
                 <div className={`${!hasPermissionSupervisao ? 'w-full h-full bg-[#f2f2f2]/80  absolute z-50' : 'hidden'}`} />
                 <div className={`h-20 w-20  flex flex-col justify-end items-center rounded-md relative pb-1  group-hover:cursor-pointer active:bg-light-blue active:text-white ${hasPermissionSupervisao && filtroCategoria.name === 'Limpeza' ? 'text-white bg-light-blue' : 'bg-light-gray text-gray-menu-icon'}`} onClick={() => handleFilter(categories.find(category=> category.name.includes("Limpeza")))}>
                     <span><Paintbrush size={48} className={`${!hasPermissionSupervisao && 'text-[#909090]'}`}/></span>
-                    <label className='group-hover:cursor-pointer group-active:text-white'>Limpeza</label>
+                    <label className={`${hasPermissionSupervisao && 'group-hover:cursor-pointer group-active:text-white'}`}>Limpeza</label>
                 </div>
             </div>
 
-            <div className={`h-20 w-20 flex flex-col justify-end items-center overflow-hidden relative rounded-md hover:scale-110 duration-200 cursor-pointer group active:bg-light-blue`}>
+            <div className={`h-20 w-20 flex flex-col justify-end items-center overflow-hidden relative rounded-md  group active:bg-light-blue `}>
                 <div className={`${!hasPermissionSupervisao ? 'w-full h-full bg-[#f2f2f2]/80  absolute z-50' : 'hidden'}`} />
                 <div className={`h-20 w-20  flex flex-col justify-end items-center rounded-md relative pb-1  group-hover:cursor-pointer active:bg-light-blue active:text-white ${hasPermissionSupervisao && filtroCategoria.name === 'Insumo' ? 'text-white bg-light-blue' : 'bg-light-gray text-gray-menu-icon'} `} onClick={() => handleFilter(categories.find(category=> category.name.includes("Insumo")))}>
                     <span><Coffee size={48} className={`${!hasPermissionSupervisao && 'text-[#909090]'}`}/></span>
-                    <label className='group-hover:cursor-pointer group-active:text-white' >Insumo</label>
+                    <label className={`${hasPermissionSupervisao && 'group-hover:cursor-pointer group-active:text-white'}`} >Insumo</label>
                 </div>
             </div>
 
-            <div className={`h-20 w-20 flex flex-col justify-end items-center overflow-hidden relative rounded-md hover:scale-110 duration-200 cursor-pointer group active:bg-light-blue`}>
+            <div className={`h-20 w-20 flex flex-col justify-end items-center overflow-hidden relative rounded-md  group active:bg-light-blue `}>
                 <div className={`${!hasPermissionSupervisao ? 'w-full h-full bg-[#f2f2f2]/80  absolute z-50' : 'hidden'}`} />
                 <div className={`h-20 w-20  flex flex-col justify-end items-center rounded-md relative pb-1  group-hover:cursor-pointer active:bg-light-blue active:text-white ${hasPermissionSupervisao && filtroCategoria.name === 'Escritório' ? 'text-white bg-light-blue' : 'bg-light-gray text-gray-menu-icon'}`} onClick={() => handleFilter(categories.find(category=> category.name.includes("Escritório")))}>
                     <span><Printer size={48} className={`${!hasPermissionSupervisao  && 'text-[#909090]'}`}/></span>
-                    <label className='group-hover:cursor-pointer group-active:text-white'>Escritório</label>
+                    <label className={`${hasPermissionSupervisao && 'group-hover:cursor-pointer group-active:text-white'}`}>Escritório</label>
                 </div>
             </div>
 
