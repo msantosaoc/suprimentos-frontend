@@ -48,11 +48,7 @@ export default function Categorias({ selectedCategory, onCategoryChange }: Categ
 
     const userRole = session?.user.role;
 
-    const isUserRoleInMock = mock.some((item: { role: (string | undefined)[]; }) => item.role.includes(userRole));
-    const hasUserRole = (userRole: any, role: any) => {
-        console.log(role);
-        return role.includes(userRole);
-    };
+   
 
     const [categories, setCategories] = useState<any[]>(mock);
     const [filtroCategoria, setFiltroCategoria] = useState<Categoria>(selectedCategory);
@@ -74,16 +70,7 @@ export default function Categorias({ selectedCategory, onCategoryChange }: Categ
         setFiltroCategoria(category);
     };
 
-    const arrayCategorias: any = categories.map(categoria => {
-        const isUserRoleInMock = hasUserRole(userRole, categoria.role);
-        console.log(categoria)
-        return (
-            <div key={categoria.id} className={`h-20 w-20 group ${hasUserRole(userRole, categoria.role) && 'bg-black'})}  flex flex-col justify-end items-center rounded-md relative pb-1 hover:scale-110 duration-200 cursor-pointer active:bg-light-blue `} onClick={() => handleFilter(categoria)}>
-                <span className={`  group-hover:cursor-pointer group-active:text-white ${filtroCategoria.name === categoria.name ? 'text-white' : 'text-gray-menu-icon'}`}>{categoria.Icon || <Skeleton />}</span>
-                <label className={`text-center font-semibold text-sm  group-active:text-white group-hover:cursor-pointer ${filtroCategoria.name === categoria.name ? 'text-white' : 'text-gray-menu-icon'}`}>{categoria.name || <Skeleton />}</label>
-            </div>
-        )
-    });
+    
     
 
     return (
