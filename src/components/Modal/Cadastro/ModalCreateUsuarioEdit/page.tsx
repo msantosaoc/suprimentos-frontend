@@ -24,7 +24,8 @@ export default function ModalCreateUsuarioEdit({ toggle, isOpen, editarUsuario, 
         { id: 1, name: 'SUPERVISAO' },
         { id: 2, name: 'ESTOQUE' },
         { id: 3, name: 'COMPRAS' },
-        { id: 4, name: 'DIRETORIA' },
+        { id: 4, name: 'CONSULTORIA' },
+        { id: 5, name: 'DIRETORIA' },
     ]
 
     const schema: ZodType<Usuarios> = z.object({
