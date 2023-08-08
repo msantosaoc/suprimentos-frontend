@@ -12,22 +12,25 @@ import { useEffect } from "react";
 import moment from 'moment';
 import ViewFileButton from "@/components/Button/ViewFileButton";
 import DropdownStatus from "@/components/Dropdown/DropdownStatus";
-import { BuscaSolicitacaoInicial, Produtos, Unidades } from "@/lib/types/global";
+import { BuscaSolicitacaoInicial, Produtos, SolicitacaolioEdit, Unidades } from "@/lib/types/global";
 
 interface Props {
     formData: BuscaSolicitacaoInicial;
     isOpen: boolean;
     toggle: () => void;
-    updateSolicitacao: (solicitacao: UpdateSolicitacao) => void;
+    updateSolicitacao: (solicitacao: SolicitacaolioEdit) => void;
     unidades: Unidades[] | undefined;
     produtos: Produtos[] | undefined;
     dioptrias: Dioptrias[] | undefined;
     cilindros: Cilindros[] | undefined;
     medicos: Medicos[] | undefined;
+    user?: User | null;
+    btnLoadingLioEdit?: boolean;
 };
 
 interface UpdateSolicitacao {
     id: string;
+    idSolicitacaoInicial: number;
     resposta?: string;
     status?: string;
 };
@@ -74,39 +77,30 @@ interface Medicos {
     name: string;
 };
 
-export default function ModalLioEdit({ formData, cilindros, dioptrias, medicos, produtos, unidades, isOpen, toggle, updateSolicitacao }: Props) {
-  
+export default function ModalLioEdit({ formData, cilindros, dioptrias, medicos, produtos, unidades, isOpen, user, toggle, updateSolicitacao, btnLoadingLioEdit }: Props) {
+
     const status = [
         { value: 'Em análise', label: 'Em análise' },
         { value: 'Recusado', label: 'Recusado' },
         { value: 'Em compra', label: 'Em compra' },
         { value: 'Disponível', label: 'Disponível' },
         { value: 'Finalizado', label: 'Finalizado' },
-    ]
+    ];
 
-    const schema: ZodType<FormData> = z.object({
-        paciente: z.string(),
-        dtCirurgia: z.string(),
-        lentePrincipal: z.string(),
-        dioptria: z.string(),
-        cilindro: z.string(),
-        lenteReserva: z.string(),
-        dioptriaReserva: z.string(),
-        cilindroReserva: z.string(),
-        medico: z.string(),
-        unidade: z.string(),
-        solicitante: z.string(),
-        injetorCartucho: z.string(),
-        dtPagamento: z.string(),
-        comprovante: z.string(),
-        formCirurgico: z.string(),
-        status: z.string(),
-        categoria: z.string(),
+    const role = user?.user?.role;
+    const hasPermissionEstoque = role === "ESTOQUE" ? true : false;
+
+    const schema: ZodType<SolicitacaolioEdit> = z.object({
         id: z.string(),
-        resposta: z.string()
-    });
+        idSolicitacaoInicial: z.number(),
+        resposta: z.string(),
+        status: z.string(),
+    }).transform((fields) => ({
+        ...fields,
+        idSolicitacaoInicial: formData.id
+    }))
 
-    const { register, handleSubmit, formState: { errors }, control, reset } = useForm<FormData>({
+    const { register, handleSubmit, formState: { errors }, control, reset } = useForm<any>({
         resolver: zodResolver(schema), defaultValues: {
             id: formData.SolicitacaoLio?.id,
             paciente: formData.SolicitacaoLio?.paciente,
@@ -125,17 +119,21 @@ export default function ModalLioEdit({ formData, cilindros, dioptrias, medicos, 
             comprovante: formData.SolicitacaoLio?.comprovante,
             formCirurgico: formData.SolicitacaoLio?.formCirurgico,
             status: formData.SolicitacaoLio?.status,
-            resposta: formData.SolicitacaoLio?.resposta
+            resposta: formData.SolicitacaoLio?.resposta,
+            idSolicitacaoInicial: formData.id
         }
     })
 
 
     
-
-    const submitData = (data: FormData) => {
-        let { id, resposta, status } = data;
+    
+    const submitData = (data: any) => {
+        // const idSolicitacaoInicial = formData?.id;
+        console.log(errors)
+        let { id, resposta, status, idSolicitacaoInicial } = data;
         let values = {
             id,
+            idSolicitacaoInicial,
             resposta,
             status
         };
@@ -145,9 +143,10 @@ export default function ModalLioEdit({ formData, cilindros, dioptrias, medicos, 
 
         reset({
             ...formData.SolicitacaoLio,
+            idSolicitacaoInicial: formData.id,
             unidade: formData.Unidade.name,
             solicitante: formData.User.name,
-            dtCirurgia: moment(formData.SolicitacaoLio?.dtCirurgia).format('YYYY-MM-DD'), 
+            dtCirurgia: moment(formData.SolicitacaoLio?.dtCirurgia).format('YYYY-MM-DD'),
             dtPagamento: moment(formData.SolicitacaoLio?.dtPagamento).format('YYYY-MM-DD')
         })
     }, [isOpen, reset])
@@ -279,7 +278,7 @@ export default function ModalLioEdit({ formData, cilindros, dioptrias, medicos, 
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
                                         Resposta
                                     </label>
-                                    <textarea {...register("resposta")} disabled rows={4} className="appearance-none block min-h-[105px]  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-1 " id="grid-name" />
+                                    <textarea {...register("resposta")} disabled={!hasPermissionEstoque} placeholder="Insira uma resposta para o soclicitante" rows={4} className="appearance-none block min-h-[105px]  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-1 " id="grid-name" />
                                 </div>
 
                                 <div className="md:w-1/4 w-full px-3 flex-col ">
@@ -307,16 +306,20 @@ export default function ModalLioEdit({ formData, cilindros, dioptrias, medicos, 
 
                             <div className="md:flex mb-2">
 
+                                <div className="md:w-2/4 w-full px-3 flex mb-1 items-end">
+                                    <DropdownStatus name="status" control={control} options={status} isDisabled={!hasPermissionEstoque} />
+
+                                </div>
+                                <div className="md:w-1/4 w-full px-3 flex justify-end items-center ">
+
+                                    <label className="text-title hover:cursor-pointer" onClick={toggle}>Cancelar</label>
+
+                                </div>
                                 <div className="md:w-1/4 w-full px-3 flex mb-1 items-end">
-                                    <DropdownStatus name="status" control={control} options={status} isDisabled={true} />
+
+                                    <SaveButton type="submit" loading={btnLoadingLioEdit}>Salvar</SaveButton>
 
                                 </div>
-                                <div className="md:w-3/4 w-full px-3 flex justify-end items-center ">
-
-                                    <label className="text-title hover:cursor-pointer" onClick={toggle}>Fechar</label>
-
-                                </div>
-
 
 
 

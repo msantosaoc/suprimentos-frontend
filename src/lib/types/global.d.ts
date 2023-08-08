@@ -337,6 +337,13 @@ type Usuarios = {
     name: string;
     email: string;
     role: string;
+};
+
+type SolicitacaolioEdit = {
+    id: string;
+    idSolicitacaoInicial: number;
+    resposta?: string;
+    status?: string;
 }
 
-export { Usuarios, FormSolicitacaoProduto, ListarProdutosSolicitados, BuscaSolicitacaoInicial, Marcas, Produtos, CreateProduto, CreateMarca, CreateSubCategoria, SubCategoria, CreateCategoria, Categoria, EditarProduto, Medico, FormData, Unidades, Dioptria, Cilindro, SolicitacaoProps}
+export { Usuarios, FormSolicitacaoProduto, SolicitacaolioEdit, ListarProdutosSolicitados, BuscaSolicitacaoInicial, Marcas, Produtos, CreateProduto, CreateMarca, CreateSubCategoria, SubCategoria, CreateCategoria, Categoria, EditarProduto, Medico, FormData, Unidades, Dioptria, Cilindro, SolicitacaoProps}

@@ -248,7 +248,7 @@ export default function Solicitacoes() {
     async function updateSolicitacao(solicitacao: UpdateSolicitacao) {
         
         const update = await api.put('/api/solicitacao/lio/edit', solicitacao).then(response => {
-            buscarSolicitacoes();
+            buscarSolicitacoesInciais()
             toggleModalSolicitaLioEdit();
         }).catch(error => console.log(error));
 
@@ -309,7 +309,6 @@ export default function Solicitacoes() {
                 cilindros={cilindros}
                 medicos={medicos}
                 updateSolicitacao={updateSolicitacao}
-
             />
             <ModalProduto
                 isOpen={modalSolicitaProduto}

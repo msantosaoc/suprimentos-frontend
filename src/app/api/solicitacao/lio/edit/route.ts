@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 
 interface RequestBody {
     id: string;
+    idSolicitacaoInicial: number;
     resposta: string;
     status: string;
 }
@@ -31,7 +32,16 @@ export async function PUT(req:Request) {
             }
         });
 
-        return new Response(JSON.stringify(updateResposta))
+        const updateRespostaSolicitacaoInicial = await prisma.solicitacaoInicial.update({
+            where: {
+                id: body.idSolicitacaoInicial,
+            },
+            data: {
+                status: body.status
+            }
+        })
+
+        return new Response(JSON.stringify(updateRespostaSolicitacaoInicial))
 
     }
 

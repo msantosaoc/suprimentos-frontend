@@ -5,7 +5,7 @@ import Categorias from "@/components/Categorias/page";
 import ModalLioEdit from "@/components/Modal/ModalLioEdit/page";
 import ModalProdutoEdit from "@/components/Modal/ModalProdutoEdit/page";
 import Sidebar from "@/components/Sidebar/Sidebar";
-import { BuscaSolicitacaoInicial, Categoria, Cilindro, Dioptria, ListarProdutosSolicitados, Medico, Produtos, SolicitacaoProps, Unidades } from "@/lib/types/global";
+import { BuscaSolicitacaoInicial, Categoria, Cilindro, Dioptria, ListarProdutosSolicitados, Medico, Produtos, SolicitacaoProps, SolicitacaolioEdit, Unidades } from "@/lib/types/global";
 import { api } from "@/services/api";
 import { PlusCircle, ShoppingCart, Eye, Shirt, Stethoscope, Printer } from "lucide-react";
 import Link from 'next/link'
@@ -37,6 +37,8 @@ export default function Estoque() {
     const [isLoading, setIsLoading] = useState(false);
 
     const [btnLoadingLio, setBtnLoadingLio] = useState(false);
+
+    const [btnLoadingLioEdit, setBtnLoadingLioEdit] = useState(false);
 
     const [btnLoadingProduto, setBtnLoadingProduto] = useState(false);
 
@@ -154,11 +156,12 @@ export default function Estoque() {
         buscarSolicitacoesInciais();
     }, []);
 
-    async function updateSolicitacao(solicitacao: UpdateSolicitacao) {
-        
+    async function updateSolicitacao(solicitacao: SolicitacaolioEdit) {
+        setBtnLoadingLioEdit(true);
         const update = await api.put('/api/solicitacao/lio/edit', solicitacao).then(response => {
-            buscarSolicitacoes();
+            buscarSolicitacoesInciais();
             toggleModalSolicitaLioEdit();
+            setBtnLoadingLioEdit(false);
         }).catch(error => console.log(error));
 
         return update;
@@ -205,7 +208,8 @@ export default function Estoque() {
                 cilindros={cilindros}
                 medicos={medicos}
                 updateSolicitacao={updateSolicitacao}
-
+                user={session}
+                btnLoadingLioEdit={btnLoadingLioEdit}
             />
 
             <ModalProdutoEdit
