@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useSession } from 'next-auth/react';
+import ModalEstoqueProdutoEdit from "@/components/Modal/ModalEstoqueProdutoEdit/ModalEstoqueProdutoEdit";
 
 interface UpdateSolicitacao {
     id: string;
@@ -212,7 +213,20 @@ export default function Estoque() {
                 btnLoadingLioEdit={btnLoadingLioEdit}
             />
 
-            <ModalProdutoEdit
+            {/* <ModalProdutoEdit
+                isOpen={modalSolicitaProdutoEdit}
+                toggle={toggleModalSolicitaProdutoEdit}
+                categoria={categoria}
+                categorias={categorias}
+                user={session}
+                unidades={unidades}
+                medicos={medicos}
+                formData={solicitacaoProdutos}
+                updateSolicitacaoProduto={updateSolicitacaoProduto}
+                produtos={produtos}
+            /> */}
+
+            <ModalEstoqueProdutoEdit
                 isOpen={modalSolicitaProdutoEdit}
                 toggle={toggleModalSolicitaProdutoEdit}
                 categoria={categoria}
