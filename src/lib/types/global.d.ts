@@ -73,6 +73,7 @@ interface ListarProdutosSolicitados {
             id: string;
             produtoId: string;
             produto: string;
+            qtdeLiberada?: number | null;
             solicitacaoId: string;
             qtde: number;
         }
@@ -109,7 +110,8 @@ interface BuscaSolicitacaoInicial {
         ProdutosSolicitados: [{
             id: string;
             produtoId: number;
-            produto?: string;
+            produto: string;
+            qtdeLiberada?: number | null;
             solicitacaoId: number;
             qtde: number;
         }]

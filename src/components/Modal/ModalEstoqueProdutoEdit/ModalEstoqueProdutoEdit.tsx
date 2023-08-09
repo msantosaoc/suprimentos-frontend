@@ -35,11 +35,12 @@ interface Medicos {
 export default function ModalEstoqueProdutoEdit({ isOpen, toggle, unidades, categoria, user, formData, produtos, categorias, medicos, updateSolicitacaoProduto }: Props) {
 
     const status = [
-        { value: 'Em análise', label: 'Em análise' },
         { value: 'Recusado', label: 'Recusado' },
+        { value: 'Em análise', label: 'Em análise' },
         { value: 'Em compra', label: 'Em compra' },
         { value: 'Disponível', label: 'Disponível' },
         { value: 'Finalizado', label: 'Finalizado' },
+        { value: 'Disp. Parcial', label: 'Disp. Parcial' },
     ];
 
     const role = user?.user?.role;
@@ -58,8 +59,10 @@ export default function ModalEstoqueProdutoEdit({ isOpen, toggle, unidades, cate
             id: produtoSolicitado.id,
             produtoId: produtoSolicitado.produtoId,
             produto: produtoEncontrado?.name,
+            qtdeLiberada: produtoSolicitado.qtde,
             SolicitacaoId: formData.Solicitacao?.id,
-            qtde: produtoSolicitado.qtde
+            qtde: produtoSolicitado.qtde,
+            checked: true
         };
     });
 
@@ -87,22 +90,17 @@ export default function ModalEstoqueProdutoEdit({ isOpen, toggle, unidades, cate
             id: z.string(),
             produtoId: z.number(),
             produto: z.string().optional(),
+            qtdeLiberada: z.coerce.number().nullable(),
             SolicitacaoId: z.number().optional(),
-            qtde: z.coerce.number().min(1)
+            qtde: z.coerce.number().min(1),
+            checked: z.boolean().optional()
         })).nonempty()
 
-    }).transform((fields) => ({
-        // ...fields,
-    }))
+    })
 
-    const { register, handleSubmit, formState: { errors }, control, reset } = useForm<ListarProdutosSolicitados>({
+    const { register, handleSubmit, formState: { errors }, control, reset, watch } = useForm<any>({
         resolver: zodResolver(schema), defaultValues: {
-            // name: formData.name,
-            // userId: formData.usuario.name,
-            // categoria: formData.categoria?.name,
-            // resposta: formData.resposta,
-            // unidade: formData.unidade?.name,
-            // produto: formData.ProdutosSolicitados,
+            
 
         }
     });
@@ -117,7 +115,6 @@ export default function ModalEstoqueProdutoEdit({ isOpen, toggle, unidades, cate
     useEffect(() => {
 
         reset({
-            // ...formData,
             name: formData.Solicitacao?.name,
             categoria: formData?.Categoria,
             unidade: formData.Unidade,
@@ -126,9 +123,6 @@ export default function ModalEstoqueProdutoEdit({ isOpen, toggle, unidades, cate
             status: formData.status,
             createdAt: moment(formData.createdAt).format('YYYY-MM-DD')
 
-            // userId: user?.user?.name,
-            // unidade: 'barra',
-            // resposta: 'asdasd'
         });
     }, [isOpen, reset]);
 
@@ -137,20 +131,11 @@ export default function ModalEstoqueProdutoEdit({ isOpen, toggle, unidades, cate
         updateSolicitacaoProduto(data);
     };
 
-    function addNewProduto() {
-        append({ id: '', produtoId: '', produto: '', solicitacaoId: '', qtde: 0 })
-    };
-
-
-
+    
     const arraySolicitaProdutos = fields.map((field, index) => {
         return (
             <div key={field.id} className="flex w-full gap-2 mb-1 items-center ">
                 <div className="w-3/4">
-                    {/* <input {...register(`ProdutosSolicitados.${index}.produto` as any)}
-                    className="appearance-none w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-1 "
-                    /> */}
-                    {/* <SelectComponentProdutos name={`ProdutosSolicitados.${index}.produto` as any}  control={control} options={produtos} /> */}
                     <SelectComponent name={`ProdutosSolicitados.${index}.produto` as any} isDisabled={true} control={control} options={produtos} />
                 </div>
                 <div className="w-1/4 flex gap-2 ">
@@ -160,23 +145,22 @@ export default function ModalEstoqueProdutoEdit({ isOpen, toggle, unidades, cate
                         {...register(`ProdutosSolicitados.${index}.qtde` as any)}
                         className="appearance-none w-2/4 bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2  "
                         id="grid-name"
-                        placeholder="Qtde" />
+                        placeholder="Qtde" 
+                    />
 
                     <input
                         type='number'
                         disabled={!hasPermissionEstoque}
-                        value={12}
+                        {...register(`ProdutosSolicitados.${index}.qtdeLiberada` as any)}
                         className="appearance-none w-2/4 bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2  "
                         id="grid-name"
-                        placeholder="Qtde" />
-
+                        placeholder="Qtde" 
+                    />
 
                 </div>
-                        <Input type='checkbox' className="h-6 w-6 mb-1 " checked/>
+                        <input type='checkbox' className=" h-6 w-6  accent-blue-300 text-white cursor-pointer" checked={watch(`ProdutosSolicitados.${index}.qtdeLiberada`) == watch(`ProdutosSolicitados.${index}.qtde`)} {...register(`ProdutosSolicitados.${index}.checked` as any)} />
                 <div className="flex gap-1 items-center">
 
-                    {/* <Plus size={20} className="bg-light-gray rounded-full text-gray-menu-icon hover:cursor-pointer hover:scale-105 " onClick={addNewProduto} /> */}
-                    {/* <Minus size={20} className={`bg-light-gray rounded-full text-gray-menu-icon ${fields.length === 1 ? 'hidden' : ''}`} onClick={() => remove(index)} /> */}
 
                 </div>
             </div>
@@ -226,7 +210,7 @@ export default function ModalEstoqueProdutoEdit({ isOpen, toggle, unidades, cate
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name">
                                         Categoria <span className={`text-red-500 ${!errors.categoria?.message && 'hidden'}`}>*</span>
                                     </label>
-                                    {/* <input {...register("categoria.name")} disabled className="appearance-none block  w-full bg-grey-lighter text-grey-darker text-sm border border-grey-lighter rounded-lg py-2 px-2 mb-3" id="grid-name" placeholder="Usuário solicitante" /> */}
+                                    
                                     <SelectComponent name="categoria.name" isDisabled={true} control={control} options={categorias} placeholder="Selecione" />
                                 </div>
 
@@ -244,7 +228,7 @@ export default function ModalEstoqueProdutoEdit({ isOpen, toggle, unidades, cate
                                 <div className="md:w-4/4 w-full px-3">
 
                                     <label className="flex tracking-wide text-subTitle text-xs font-semibold mb-2 border-t border-l border-r rounded-t-lg p-2 w-full " htmlFor="grid-name">
-                                        {/* Produtos <span className={`text-red-500 ${!errors.ProdutosSolicitados && 'hidden'}`}>*</span> */}
+                                        
                                         <label className="w-3/4 ">Produtos</label>
                                         <div className="w-1/4 flex ">
                                             <label className="w-2/4">Qtde. Solic.</label>

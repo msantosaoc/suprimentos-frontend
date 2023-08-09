@@ -85,7 +85,7 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
         ProdutosSolicitados: z.array(z.object({
             id: z.string(),
             produtoId: z.number(),
-            produto: z.string().optional(),
+            qtdeLiberada: z.coerce.number().optional(),
             SolicitacaoId: z.number().optional(),
             qtde: z.coerce.number().min(1)
         })).nonempty()
@@ -137,7 +137,7 @@ export default function ModalProdutoEdit({ isOpen, toggle, unidades, categoria, 
     };
 
     function addNewProduto() {
-        append({ id: '', produtoId: '', produto: '', solicitacaoId: '', qtde: 0 })
+        append({ id: '', produtoId: '', produto: '', qtdeLiberada: 0, solicitacaoId: '', qtde: 0 })
     };
 
    

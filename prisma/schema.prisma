@@ -175,7 +175,7 @@ model ProdutosSolicitados {
   id            String      @id @default(cuid())
   produtos      Produto     @relation(fields: [produtoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   produtoId     Int
-  produto       String?
+  qtdeLiberada       Int?
   solicitaco    Solicitacao @relation(fields: [solicitacaoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   solicitacaoId Int
   qtde          Int
