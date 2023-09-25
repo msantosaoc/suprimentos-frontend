@@ -70,22 +70,9 @@ export default function ModalEstoqueProdutoEdit({ isOpen, toggle, unidades, cate
 
     const schema: ZodType<any> = z.object({
         id: z.string(),
-        name: z.string().nonempty(),
-        usuario: z.object({
-            id: z.string(),
-            name: z.string()
-        }),
-        unidade: z.object({
-            id: z.string(),
-            name: z.string()
-        }),
-        categoria: z.object({
-            id: z.number(),
-            name: z.string()
-        }),
-        status: z.string(),
+        idSolicitacaoInicial: z.number(),
         resposta: z.string(),
-        createdAt: z.string(),
+        status: z.string(),
         ProdutosSolicitados: z.array(z.object({
             id: z.string(),
             produtoId: z.number(),

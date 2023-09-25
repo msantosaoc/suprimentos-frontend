@@ -346,6 +346,21 @@ type SolicitacaolioEdit = {
     idSolicitacaoInicial: number;
     resposta?: string;
     status?: string;
-}
+};
 
-export { Usuarios, FormSolicitacaoProduto, SolicitacaolioEdit, ListarProdutosSolicitados, BuscaSolicitacaoInicial, Marcas, Produtos, CreateProduto, CreateMarca, CreateSubCategoria, SubCategoria, CreateCategoria, Categoria, EditarProduto, Medico, FormData, Unidades, Dioptria, Cilindro, SolicitacaoProps}
+type SolicitacaoProdutoEdit = {
+    id: string;
+    idSolicitacaoInicial: number;
+    resposta?: string;
+    status?: string;
+    ProdutosSolicitados: [{
+        id: string;
+        produtoId: number;
+        produto: string;
+        qtdeLiberada: string;
+        SolicitacaoId: string;
+        qtde: number;
+    }]
+};
+
+export { Usuarios, FormSolicitacaoProduto, SolicitacaolioEdit,SolicitacaoProdutoEdit, ListarProdutosSolicitados, BuscaSolicitacaoInicial, Marcas, Produtos, CreateProduto, CreateMarca, CreateSubCategoria, SubCategoria, CreateCategoria, Categoria, EditarProduto, Medico, FormData, Unidades, Dioptria, Cilindro, SolicitacaoProps}
