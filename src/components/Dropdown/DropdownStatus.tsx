@@ -59,6 +59,7 @@ const DropdownStatus: React.FC<SelectComponentProps> = ({ name, control, options
               label: value
             }}
             isSearchable
+            
             noOptionsMessage={() => "Não encontrado"}
             styles={{
               placeholder: (baseStyles, state) => ({

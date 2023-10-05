@@ -147,6 +147,9 @@ export default function Sidebar() {
                                         <Link href="/cadastro/usuarios" shallow className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group  hover:-translate-y-1 dark:hover:bg-[#363636] hover:bg-gray-300 dark:text-gray-400  `}>Usuários</Link>
                                     </li>
                                     <li>
+                                        <Link href="/cadastro/categorias" shallow className={`flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:-translate-y-1 dark:hover:bg-[#363636] hover:bg-gray-300 dark:text-gray-400 `}>Categorias</Link>
+                                    </li>
+                                    <li>
                                         <Link href="/cadastro/autorizadores" shallow className={`flex items-center w-full p-2 text-base font-normal transition duration-75 rounded-lg pl-11 hover:bg-gray-300  hover:-translate-y-1dark:hover:bg-[#363636] text-gray-900 dark:text-gray-400 `}>Autorizadores</Link>
                                     </li>
                                     <li>
