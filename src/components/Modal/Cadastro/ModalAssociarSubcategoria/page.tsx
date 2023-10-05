@@ -164,7 +164,7 @@ export default function ModalAssociarSubcategoria({ toggle, isOpen, categorias, 
                                     <label className="block tracking-wide text-subTitle text-xs font-semibold mb-2 " htmlFor="grid-name" >
                                         {/* Subcategoria <span className={`text-red-500 ${!errors.name && 'hidden'}`}>*</span> */}
                                     </label>
-
+ 
                                     <Select
                                         placeholder="buscar Subcategoria"
                                         isClearable
