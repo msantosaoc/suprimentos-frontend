@@ -46,7 +46,7 @@ interface Unidades {
 
 export default function ModalLIO({ isOpen, toggle, unidades, produtos, dioptrias, cilindros, medicos, user, categorias, createSolicitacao, btnLoadingLio }: Props) {
 
-   
+   console.log(produtos)
 
     const schema: ZodType<FormData> = z.object({
         paciente: z.string().nonempty('Nome do paciente é obrigatório'),

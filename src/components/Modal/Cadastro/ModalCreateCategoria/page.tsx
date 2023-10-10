@@ -37,8 +37,11 @@ export default function ModalCreateCategoria ({ toggle, isOpen, createCategoria,
         });
     }, [isOpen, reset]);
 
+    // console.log(errors)
+
     const submitData = (data: CreateCategoria) => {
         createCategoria(data);
+        // console.log(data)
     };
 
     return (
