@@ -106,15 +106,15 @@ export default function Categorias() {
                 <div className="flex flex-col justify-end ">
 
                     <h1 className="font-semibold text-3xl">Categorias</h1>
-                    <div className="w-full sm:h-2/6 sm:px-2 max-sm:py-1 grid grid-cols-[5fr_4fr_1fr] max-md:gap-2 max-sm:grid-cols-1  rounded-xl shadow-xl bg-white">
+                    <div className="w-full sm:h-2/6 sm:px-2 max-sm:py-1 grid grid-cols-[3fr_4fr_1fr] max-md:gap-2 max-sm:grid-cols-1  rounded-xl shadow-xl bg-white">
                         <ModalCreateCategoria isOpen={modal} toggle={toggle} createCategoria={createCategoria} categorias={categorias} btnLoading={btnLoading}/>
-                        <ModalCreateSubcategoria isOpen={modalSubcategoria} categorias={categorias} toggle={toggleModalSubcategoria} createSubcategoria={createSubcategoria} btnLoading={btnLoading} />
-                        <ModalAssociarSubcategoria isOpen={modalAssociar} categorias={categorias} toggle={toggleModalAssociar} subcategorias={subcategorias} btnLoading={btnLoading}/>
+                        <ModalCreateSubcategoria isOpen={modalSubcategoria} categorias={categorias} toggle={toggleModalSubcategoria} createSubcategoria={createSubcategoria} btnLoading={false} />
+                        {/* <ModalAssociarSubcategoria isOpen={modalAssociar} categorias={categorias} toggle={toggleModalAssociar} subcategorias={subcategorias} btnLoading={btnLoading}/> */}
                         {/* <ModalCreatecategoriaEdit formData={selectedcategoria} isOpen={modalEdit} toggle={toggleEdit} categorias={categorias} marcas={marcas} editarcategoria={editarcategoria}/> */}
                         <div className="flex items-center justify-center gap-2 px-2 ">
                             <ButtonCadastrar onClick={toggle}>Cadastrar Categoria</ButtonCadastrar>
                             <ButtonCadastrar onClick={toggleModalSubcategoria}>Cadastrar Subcategoria</ButtonCadastrar>
-                            <ButtonCadastrar onClick={toggleModalAssociar}>Associar</ButtonCadastrar>
+                            {/* <ButtonCadastrar onClick={toggleModalAssociar}>Associar</ButtonCadastrar> */}
                         </div>
                         <div className="flex items-center justify-center ">
 

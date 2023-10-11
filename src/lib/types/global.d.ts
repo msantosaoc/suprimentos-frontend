@@ -208,7 +208,7 @@ type CreateMarca = {
 
 type CreateSubCategoria = {
     name: string;
-    categoriaId: string;
+    id: number;
 };
 
 type SubCategoria = {
