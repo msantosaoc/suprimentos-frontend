@@ -56,7 +56,7 @@ export default function Categorias() {
     async function createSubcategoria(data: CreateSubCategoria) {
         setBtnLoading(true);
         const subcategoria = await api.post('/api/subcategoria', data).then(response => {
-            buscarSubCartegorias();
+            buscarCartegorias();
             toggleModalSubcategoria();
             setBtnLoading(false);
         }).catch(error => console.log(error));
@@ -76,7 +76,7 @@ export default function Categorias() {
 
     const arrayListCategorias = categorias.map((categoria, index) => {
         return (
-            <tr  className="bg-white border-b text-center text-subTitle dark:bg-gray-800 dark:border-gray-700 hover:cursor-pointer hover:bg-light-blue/20 duration-300" key={categoria.id} >
+            <tr  className="bg-white border-b text-center text-subTitle dark:bg-gray-800 dark:border-gray-700 hover:cursor-text hover:bg-light-blue/20 duration-300" key={categoria.id} >
                 <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {categoria.id}
                 </td>
@@ -84,7 +84,10 @@ export default function Categorias() {
                     {categoria.name}
                 </td>
                 <td className="px-6 py-4">
-                    {categoria.categoriaOnSubCategoria[0]?.SubCategoria.name}
+                <button className="hover:scale-110 duration-300">{`${categoria.categoriaOnSubCategoria.length > 0 ? 
+                    categoria.categoriaOnSubCategoria[0]?.SubCategoria.name+' +'+(categoria.categoriaOnSubCategoria.length - 1)
+                    : 
+                    '' }`}</button>
                 </td>
                 {/* <td className="px-6 py-4">
                     {moment(categoria.).format('DD/MM/YYYY HH:MM:SS')}
@@ -109,12 +112,10 @@ export default function Categorias() {
                     <div className="w-full sm:h-2/6 sm:px-2 max-sm:py-1 grid grid-cols-[3fr_4fr_1fr] max-md:gap-2 max-sm:grid-cols-1  rounded-xl shadow-xl bg-white">
                         <ModalCreateCategoria isOpen={modal} toggle={toggle} createCategoria={createCategoria} categorias={categorias} btnLoading={btnLoading}/>
                         <ModalCreateSubcategoria isOpen={modalSubcategoria} categorias={categorias} toggle={toggleModalSubcategoria} createSubcategoria={createSubcategoria} btnLoading={false} />
-                        {/* <ModalAssociarSubcategoria isOpen={modalAssociar} categorias={categorias} toggle={toggleModalAssociar} subcategorias={subcategorias} btnLoading={btnLoading}/> */}
-                        {/* <ModalCreatecategoriaEdit formData={selectedcategoria} isOpen={modalEdit} toggle={toggleEdit} categorias={categorias} marcas={marcas} editarcategoria={editarcategoria}/> */}
+                        
                         <div className="flex items-center justify-center gap-2 px-2 ">
                             <ButtonCadastrar onClick={toggle}>Cadastrar Categoria</ButtonCadastrar>
                             <ButtonCadastrar onClick={toggleModalSubcategoria}>Cadastrar Subcategoria</ButtonCadastrar>
-                            {/* <ButtonCadastrar onClick={toggleModalAssociar}>Associar</ButtonCadastrar> */}
                         </div>
                         <div className="flex items-center justify-center ">
 
