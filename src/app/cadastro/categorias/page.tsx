@@ -110,7 +110,7 @@ export default function Categorias() {
                             ''}`}</button></span>
 
                     {showPopup && categoria.id === categoryId && (
-                        <div id="dropdown" className={`z-10 absolute translate-x-44 translate-y-1 bg-white rounded-lg shadow py-2 px-4  dark:bg-gray-700`}>
+                        <div id="dropdown" className={`z-10 absolute translate-x-44 translate-y-1 bg-white rounded-lg shadow py-2 px-4 cursor-default dark:bg-gray-700`}>
                             <ul className="text-sm p-0 m-0 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
                                 {subcategories?.map((sub: any) => (
                                     <li key={sub.id}>
