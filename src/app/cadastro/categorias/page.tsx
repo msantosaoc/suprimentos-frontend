@@ -8,25 +8,31 @@ import Sidebar from "@/components/Sidebar/Sidebar";
 import { Categoria, CreateCategoria, CreateSubCategoria, SubCategoria } from "@/lib/types/global";
 import { api } from "@/services/api";
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { ButtonHTMLAttributes, useEffect, useState } from "react";
 import { BsPencilSquare } from "react-icons/bs";
 import Skeleton from "react-loading-skeleton";
 
 export default function Categorias() {
 
     const [isLoading, setIsLoading] = useState(false);
-    const [categorias, setCategorias] = useState<Categoria[]>([{ id: 0, name: '', categoriaOnSubCategoria: [{SubCategoria: {id: 0, name: '', createdAt: '', updatedAt: ''}}] }]);
-    const [subcategorias, setSubcategorias] = useState<SubCategoria[]>([{id: 0, name: '', createdAt: '', updatedAt: ''}]);
-    const [selectedProduto, setSelectedProduto] = useState<Categoria>({ id: 0, name: '', categoriaOnSubCategoria: [{SubCategoria: {id: 0, name: '', createdAt: '', updatedAt: ''}}] });
+    const [categorias, setCategorias] = useState<Categoria[]>([{ id: 0, name: '', categoriaOnSubCategoria: [{ SubCategoria: { id: 0, name: '', createdAt: '', updatedAt: '' } }] }]);
+    const [subcategorias, setSubcategorias] = useState<SubCategoria[]>([{ id: 0, name: '', createdAt: '', updatedAt: '' }]);
+    const [selectedProduto, setSelectedProduto] = useState<Categoria>({ id: 0, name: '', categoriaOnSubCategoria: [{ SubCategoria: { id: 0, name: '', createdAt: '', updatedAt: '' } }] });
+
+    const [showPopup, setShowPopup] = useState(false);
+    const [subcategories, setSubcategories] = useState([] as any);
 
     const [modal, setModal] = useState(false);
     const [modalEdit, setModalEdit] = useState(false);
     const [modalSubcategoria, setModalSubcategoria] = useState(false);
     const [modalAssociar, setModalAssociar] = useState(false);
+    const [card, setCard] = useState(false);
     const toggle = () => setModal(!modal);
     const toggleModalSubcategoria = () => setModalSubcategoria(!modalSubcategoria);
     const toggleEdit = () => setModalEdit(!modalEdit);
     const toggleModalAssociar = () => setModalAssociar(!modalAssociar);
+    const toggleCard = () => setCard(!card);
+
 
     const [btnLoading, setBtnLoading] = useState(false);
 
@@ -72,11 +78,23 @@ export default function Categorias() {
     function handleSelectCategoria(produto: Categoria) {
         setSelectedProduto(produto);
         toggleEdit()
-    }
+    };
+
+    function handleClick(categoria: Categoria) {
+        const categoryId = categoria.id;
+        const { categoriaOnSubCategoria } = categoria;
+        const sub = categoriaOnSubCategoria.map((subcategoria) => subcategoria.SubCategoria);
+
+        // Abre o popup com todas as subcategorias
+        setShowPopup(!showPopup);
+        setSubcategories(sub);
+    };
+
+
 
     const arrayListCategorias = categorias.map((categoria, index) => {
         return (
-            <tr  className="bg-white border-b text-center text-subTitle dark:bg-gray-800 dark:border-gray-700 hover:cursor-text hover:bg-light-blue/20 duration-300" key={categoria.id} >
+            <tr className="bg-white border-b text-center text-subTitle dark:bg-gray-800 dark:border-gray-700 hover:cursor-text hover:bg-light-blue/20 duration-300" key={categoria.id} >
                 <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {categoria.id}
                 </td>
@@ -84,20 +102,37 @@ export default function Categorias() {
                     {categoria.name}
                 </td>
                 <td className="px-6 py-4">
-                <button className="hover:scale-110 duration-300">{`${categoria.categoriaOnSubCategoria.length > 0 ? 
-                    categoria.categoriaOnSubCategoria[0]?.SubCategoria.name+' +'+(categoria.categoriaOnSubCategoria.length - 1)
-                    : 
-                    '' }`}</button>
+                    <span>{`${categoria.categoriaOnSubCategoria.length > 0 ? categoria.categoriaOnSubCategoria[0]?.SubCategoria.name : ''} `}
+                        <button onClick={() => handleClick(categoria)} className="text-light-blue duration-300 underline">{`${categoria.categoriaOnSubCategoria.length > 1 ? '+' + (categoria.categoriaOnSubCategoria.length - 1)
+                            :
+                            ''}`}</button></span>
+
+                    {showPopup && categoria.categoriaOnSubCategoria.length > 0 && (
+                        <div id="dropdown" className={`z-10 absolute translate-x-44 translate-y-1 bg-white rounded-lg shadow py-2 px-4  dark:bg-gray-700`}>
+                            <ul className="text-sm p-0 m-0 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                                {subcategories?.map((sub: any) => (
+                                    <li key={sub.id}>
+                                        <span className="block my-1 ">{sub.name}</span>
+                                    </li>
+
+                                ))}
+
+                            </ul>
+                        </div>
+
+                    )}
+
+
                 </td>
-                {/* <td className="px-6 py-4">
-                    {moment(categoria.).format('DD/MM/YYYY HH:MM:SS')}
-                </td> */}
+
                 <td className="px-6 py-4 text-center">
-                    <BsPencilSquare size={15} className="hover:cursor-pointer" onClick={()=> handleSelectCategoria(categoria)}/>
+                    <BsPencilSquare size={15} className="hover:cursor-pointer" onClick={() => handleSelectCategoria(categoria)} />
                 </td>
             </tr>
         )
     })
+
+
 
     return (
         <div className="h-screen w-screen flex flex-col bg-background pl-[4.3rem]">
@@ -110,9 +145,9 @@ export default function Categorias() {
 
                     <h1 className="font-semibold text-3xl">Categorias</h1>
                     <div className="w-full sm:h-2/6 sm:px-2 max-sm:py-1 grid grid-cols-[3fr_4fr_1fr] max-md:gap-2 max-sm:grid-cols-1  rounded-xl shadow-xl bg-white">
-                        <ModalCreateCategoria isOpen={modal} toggle={toggle} createCategoria={createCategoria} categorias={categorias} btnLoading={btnLoading}/>
+                        <ModalCreateCategoria isOpen={modal} toggle={toggle} createCategoria={createCategoria} categorias={categorias} btnLoading={btnLoading} />
                         <ModalCreateSubcategoria isOpen={modalSubcategoria} categorias={categorias} toggle={toggleModalSubcategoria} createSubcategoria={createSubcategoria} btnLoading={false} />
-                        
+
                         <div className="flex items-center justify-center gap-2 px-2 ">
                             <ButtonCadastrar onClick={toggle}>Cadastrar Categoria</ButtonCadastrar>
                             <ButtonCadastrar onClick={toggleModalSubcategoria}>Cadastrar Subcategoria</ButtonCadastrar>
@@ -127,39 +162,39 @@ export default function Categorias() {
                     <div className="w-full h-full rounded-xl shadow-xl my-4 bg-white overflow-auto">
 
                         <div className="relative overflow-x-auto shadow-md sm:rounded-lg " >
-                        {
-                            isLoading
-                                ?
-                                <Skeleton count={10} className="h-16 overflow-hidden" />
-                                :
+                            {
+                                isLoading
+                                    ?
+                                    <Skeleton count={10} className="h-16 overflow-hidden" />
+                                    :
 
 
-                            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
-                                <thead className="text-sm text-gray-700  dark:bg-gray-700 dark:text-gray-400">
-                                    <tr>
-                                        <th scope="col" className="px-6 py-3 text-center">
-                                            Id
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            <div className="flex items-center justify-center">
-                                                Categoria
-                                            </div>
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            <div className="flex items-center justify-center">
-                                                Subcategoria
-                                            </div>
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            <BsPencilSquare size={15} className="hover:cursor-pointer" />
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody >
-                                    { arrayListCategorias}
-                                </tbody>
-                            </table>
-}
+                                    <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
+                                        <thead className="text-sm text-gray-700  dark:bg-gray-700 dark:text-gray-400">
+                                            <tr>
+                                                <th scope="col" className="px-6 py-3 text-center">
+                                                    Id
+                                                </th>
+                                                <th scope="col" className="px-6 py-3">
+                                                    <div className="flex items-center justify-center">
+                                                        Categoria
+                                                    </div>
+                                                </th>
+                                                <th scope="col" className="px-6 py-3">
+                                                    <div className="flex items-center justify-center">
+                                                        Subcategoria
+                                                    </div>
+                                                </th>
+                                                <th scope="col" className="px-6 py-3">
+                                                    <BsPencilSquare size={15} className="hover:cursor-pointer" />
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody >
+                                            {arrayListCategorias}
+                                        </tbody>
+                                    </table>
+                            }
                         </div>
 
                     </div>
