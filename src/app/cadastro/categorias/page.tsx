@@ -20,6 +20,7 @@ export default function Categorias() {
     const [selectedProduto, setSelectedProduto] = useState<Categoria>({ id: 0, name: '', categoriaOnSubCategoria: [{ SubCategoria: { id: 0, name: '', createdAt: '', updatedAt: '' } }] });
 
     const [showPopup, setShowPopup] = useState(false);
+    const [categoryId, setCategoryId] = useState(0);
     const [subcategories, setSubcategories] = useState([] as any);
 
     const [modal, setModal] = useState(false);
@@ -81,13 +82,14 @@ export default function Categorias() {
     };
 
     function handleClick(categoria: Categoria) {
-        const categoryId = categoria.id;
+        
         const { categoriaOnSubCategoria } = categoria;
         const sub = categoriaOnSubCategoria.map((subcategoria) => subcategoria.SubCategoria);
 
         // Abre o popup com todas as subcategorias
         setShowPopup(!showPopup);
         setSubcategories(sub);
+        setCategoryId(categoria.id)
     };
 
 
@@ -107,7 +109,7 @@ export default function Categorias() {
                             :
                             ''}`}</button></span>
 
-                    {showPopup && categoria.categoriaOnSubCategoria.length > 0 && (
+                    {showPopup && categoria.id === categoryId && (
                         <div id="dropdown" className={`z-10 absolute translate-x-44 translate-y-1 bg-white rounded-lg shadow py-2 px-4  dark:bg-gray-700`}>
                             <ul className="text-sm p-0 m-0 text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
                                 {subcategories?.map((sub: any) => (
